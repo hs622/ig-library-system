@@ -37,6 +37,7 @@ export const BookSchema = z.object({
   category: z.string(),
 });
 
+
 export type IcategorySchema = z.infer<typeof categorySchema>;
 export type IBookSchema = z.infer<typeof BookSchema>;
 
