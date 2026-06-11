@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
 // import MultipleInput from "@/components/inputs/multiple-input";
 import { Spinner } from "@/components/ui/spinner";
+import { AddBook_Action } from "@/app/actions/add-book";
+import { toast } from "sonner";
 
 
 
@@ -29,10 +31,21 @@ export default function AddBook() {
     resolver: zodResolver(BookSchema)
   })
 
-  const handleForm = (data: IBookSchema) => {
-    console.log(data)
+  const handleForm = async (data: IBookSchema) => {
+    const response: boolean = await AddBook_Action(data)
+    
+    if (!response) {
+      toast.error("Error", {
+        description: "something want wrong.",
+        position: "bottom-left"
+      })
+    }
 
     reset()
+    toast.success("Success" ,{
+      description: "book register successfully",
+      position: "bottom-left"
+    })
   }
 
   return (

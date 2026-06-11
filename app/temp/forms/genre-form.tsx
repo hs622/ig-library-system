@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { categorySchema, IcategorySchema } from "@/types/zod";
+import { CategorySchema, IcategorySchema } from "@/types/zod";
 import { useForm } from "react-hook-form";
 import { Spinner } from "@/components/ui/spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,7 @@ export default function AddcategoryForm() {
     handleSubmit,
     reset
   } = useForm<IcategorySchema>({
-    resolver: zodResolver(categorySchema)
+    resolver: zodResolver(CategorySchema)
   })
 
   const handleForm = (data: IcategorySchema) => {
