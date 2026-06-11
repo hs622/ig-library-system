@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const categorySchema = z.object({
+export const CategorySchema = z.object({
   category: z
     .string()
     .min(1, { message: "category is required." })
@@ -37,7 +37,6 @@ export const BookSchema = z.object({
   category: z.string(),
 });
 
-
-export type IcategorySchema = z.infer<typeof categorySchema>;
+export type IcategorySchema = z.infer<typeof CategorySchema>;
 export type IBookSchema = z.infer<typeof BookSchema>;
 
