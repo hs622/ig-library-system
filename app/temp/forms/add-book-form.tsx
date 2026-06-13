@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
 // import MultipleInput from "@/components/inputs/multiple-input";
 import { Spinner } from "@/components/ui/spinner";
-import { AddBook_Action } from "@/app/actions/add-book";
+import { AddBookAction } from "@/app/actions/addBookAction";
 import { toast } from "sonner";
 
 
@@ -32,19 +32,18 @@ export default function AddBook() {
   })
 
   const handleForm = async (data: IBookSchema) => {
-    const response: boolean = await AddBook_Action(data)
-    
-    if (!response) {
-      toast.error("Error", {
-        description: "something want wrong.",
-        position: "bottom-left"
+    const response: { status: boolean, message: string } | undefined = await AddBookAction(data)
+    console.log({ response })
+
+    if (response?.status) {
+      toast.success(`Success! ${response!.message as string}`, {
+        position: "bottom-center",
       })
+      return reset()
     }
 
-    reset()
-    toast.success("Success" ,{
-      description: "book register successfully",
-      position: "bottom-left"
+    return toast.error(`Error! ${response!.message as string}`, {
+      position: "bottom-center",
     })
   }
 
