@@ -12,6 +12,9 @@ export const AddBookAction = async (data: IBookSchema): Promise<{ status: boolea
   const collection = database.collection("books");
   collection.createIndex({ title: 1 }, { unique: true }) // unquie field
 
+  // unicode validation for the Title field.
+  data.title.trim().normalize("NFC").toLowerCase()
+
   try {
     const document = {
       ...data,
