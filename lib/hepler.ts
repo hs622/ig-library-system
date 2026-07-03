@@ -6,6 +6,8 @@
 export function formatSegmentName(segment: string): string {
 
   switch (segment) {
+    case "d":
+      return "Dashboard"
     case "ci":
       return "Cataloguing & Inventory"
     case "mm":
