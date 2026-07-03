@@ -1,13 +1,29 @@
+import { ObjectId } from "mongodb";
 import z from "zod";
 
 export const Role = z.enum(["admin", "member", "idle"]);
 
+// ----- Category ----- //
+
 export const CategorySchema = z.object({
-  category: z
+  title: z
     .string()
     .min(1, { message: "category is required." })
     .max(150, { message: "Max 150 characters long" }),
+  parentId: z.string(),
+  isAccosicated: z.boolean(),
+  isParent: z.boolean(),
+  visiable: z.boolean()
 });
+
+export const SubCategory = z.string().min(3, "Must be a valid sub category.").max(150, "Must be less than 150 characters.")
+
+export const AddCategorySchema = z.object({
+  category: z.string().min(3, "category is required!").max(150, "Must be less than 150 characters."),
+  sub_category: z.array(SubCategory).optional()
+})
+
+// ----- book ----- //
 
 export const BookSchema = z.object({
   title: z
@@ -44,18 +60,12 @@ export const LoginSchema = z.object({
   password: z.string().min(1, "please enter the password")
 })
 
-export const SubCategory = z.string().min(3, "Must be a valid sub category.").max(150, "Must be less than 150 characters.")
-
-export const AddCategorySchema = z.object({
-  category: z.string().min(3, "category is required!").max(150, "Must be less than 150 characters."),
-  sub_category: z.array(SubCategory).optional()
-})
 
 export type ISubCategory = z.infer<typeof SubCategory>;
 export type IAddCategorySchema = z.infer<typeof AddCategorySchema>;
 
 export type TRole = z.infer<typeof Role>;
-export type IcategorySchema = z.infer<typeof CategorySchema>;
+export type ICategorySchema = z.infer<typeof CategorySchema>;
 export type IBookSchema = z.infer<typeof BookSchema>;
 export type ILoginSchema = z.infer<typeof LoginSchema>;
 
