@@ -16,6 +16,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { ChevronRightIcon } from "lucide-react"
+import Link from "next/link"
 
 export function NavMain({
   items,
@@ -23,20 +24,21 @@ export function NavMain({
   items: {
     title: string
     url: string
+    isActive: boolean
     icon?: React.ReactNode
-    isActive?: boolean
     items?: {
       title: string
       url: string
+      isActive: boolean
     }[]
   }[]
 }) {
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-
           if (item.items?.length) return (
             <Collapsible
               key={item.title}
@@ -56,7 +58,7 @@ export function NavMain({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton asChild isActive={subItem.isActive}>
                           <a href={subItem.url}>
                             <span>{subItem.title}</span>
                           </a>
@@ -70,12 +72,13 @@ export function NavMain({
           )
           else return (
             <SidebarMenuItem key={item.title}>
-
-              <SidebarMenuButton isActive={item.isActive}>
-                {item.icon}
-                <span>
-                  {item.title}
-                </span>
+              <SidebarMenuButton asChild isActive={item.isActive}>
+                <Link href={item.url}>
+                  {item.icon}
+                  <span>
+                    {item.title}
+                  </span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           )
