@@ -20,8 +20,8 @@ export default function Page() {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center items-center h-full">
-        <Card className="min-w-6xl">
+      <div className="flex justify-center items-center h-screen">
+        <Card className="min-w-4xl">
           <CardContent>
             <AddCategoryForm/>
           </CardContent>
