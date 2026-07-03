@@ -48,6 +48,20 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     enableHiding: false,
   },
   {
+    id: "publicationYear",
+    accessorKey: "publicationYear",
+    header: "Publication Year",
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    id: "category",
+    accessorKey: "category",
+    header: "Category",
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     id: "createdAt",
     accessorKey: "createdAt",
     header: "Ingested At",
