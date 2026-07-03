@@ -14,6 +14,7 @@ import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
 import { ModeToggle } from "./buttons/theme-button";
 import React from "react";
+import { formatSegmentName } from "@/lib/hepler";
 
 interface Chunk {
   name: string;
@@ -27,9 +28,9 @@ export default function NavBreadcrumbs() {
   // (handles leading "/" and any trailing "/").
   const segments = pathname.split("?")[0].split("/").filter(Boolean);
 
-  // Build cumulative hrefs: /dashboard, /dashboard/students, /dashboard/students/1, ...
-  const chunks: Chunk[] = segments.map((name, i) => ({
-    name,
+  // Build cumulative hrefs: /dashboard, /dashboard/book-inventory, ...
+  const chunks: Chunk[] = segments.map((segment, i) => ({
+    name: formatSegmentName(segment),
     href: "/" + segments.slice(0, i + 1).join("/"),
   }));
 
@@ -50,14 +51,10 @@ export default function NavBreadcrumbs() {
                   <React.Fragment key={chunk.href}>
                     <BreadcrumbItem className="hidden md:block">
                       {isLast ? (
-                        <BreadcrumbPage className="capitalize">
-                          {chunk.name}
-                        </BreadcrumbPage>
+                        <BreadcrumbPage>{chunk.name}</BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink asChild>
-                          <Link href={chunk.href} className="capitalize">
-                            {chunk.name}
-                          </Link>
+                          <Link href={chunk.href}>{chunk.name}</Link>
                         </BreadcrumbLink>
                       )}
                     </BreadcrumbItem>
