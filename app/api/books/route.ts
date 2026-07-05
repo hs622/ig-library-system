@@ -1,48 +1,3 @@
-// import clientPromise from "@/lib/mongodb";
-// import parseInteger from "@/lib/parsing/parseInteger";
-// import { NextRequest } from "next/server";
-// import { paginatedResponse } from "../_common/helper";
-// import { IBookSchema } from "@/types/zod";
-// import { Document } from "mongodb";
-
-// const PRIMARY_COLLECTION: string = "books";
-
-// export async function GET(request: NextRequest) {
-//   const { searchParams } = new URL(request.url);
-
-//   // const BID: string = searchParams.get("bid")
-//   const KEY: string = searchParams.get("key") || "";
-//   const _SKIP: number = parseInteger(searchParams.get("skip")) || 0;
-//   const _LIMIT: number = parseInteger(searchParams.get("limit")) || 10;
-
-//   const client = await clientPromise;
-//   const database = client.db(process.env.DATABASE_NAME);
-//   const collection = database.collection(PRIMARY_COLLECTION);
-
-//   const cursor = collection.aggregate([
-//     {
-//       $match: {
-//         $or: [
-//           { title: { $regex: `^${KEY}`, $options: "i" } },
-//           { shortDescription: { $regex: `^${KEY}`, $options: "i" } },
-//           { authorName: { $regex: `^${KEY}`, $options: "i" } },
-//           { PublisherName: { $regex: `^${KEY}`, $options: "i" } },
-//         ],
-//       },
-//     },
-//     { $skip: _SKIP },
-//     { $limit: _LIMIT },
-//   ]);
-
-//   const allDocumnets = await cursor.toArray();
-
-//   return paginatedResponse<Document>(
-//       allDocumnets,
-//       _SKIP,
-//       _LIMIT,
-//   );
-// }
-
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb"; // your singleton client pattern
@@ -63,6 +18,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search")?.trim();
     const author = searchParams.get("author")?.trim();
     const genre = searchParams.get("genre")?.trim();
+    const bookId = searchParams.get("bookId")?.trim();
 
     if (cursor && !ObjectId.isValid(cursor)) {
       return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
@@ -75,6 +31,42 @@ export async function GET(req: NextRequest) {
     // Build the filter
     const filter: Record<string, unknown> = {};
 
+    if (bookId && ObjectId.isValid(bookId)) {
+      const book = await collection
+        .aggregate([
+          { $match: { _id: new ObjectId(bookId) } },
+          {
+            $addFields: {
+              categoryId: { $toObjectId: "$categoryId" },
+            },
+          },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "categoryId",
+              foreignField: "_id",
+              as: "category",
+            },
+          },
+          {
+            $unwind: {
+              path: "$category_obj",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $project: {
+              categoryId: 0,
+            },
+          },
+        ])
+        .toArray();
+
+      return NextResponse.json({
+        book,
+      });
+    }
+
     if (cursor) {
       // assumes default sort by _id (insertion order / ObjectId timestamp)
       filter._id = { $lt: new ObjectId(cursor) };
@@ -83,8 +75,9 @@ export async function GET(req: NextRequest) {
     if (search) {
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
-        { author: { $regex: search, $options: "i" } },
-        { isbn: { $regex: search, $options: "i" } },
+        { authorName: { $regex: search, $options: "i" } },
+        // { isbn13: { $regex: search, $options: "i" } },
+        { isbn10: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -98,10 +91,17 @@ export async function GET(req: NextRequest) {
 
     // Fetch limit + 1 to know if there's a next page without a second query
     const books = await collection
-      .find(filter)
-      .sort({ _id: -1 })
-      .limit(limit + 1)
-      .toArray();
+      .aggregate([
+        {$match: filter}, // where clause.
+        {$sort: {_id: -1}}, // for sorting clause.
+        {$limit: limit + 1 }, // for limited response
+        {$addFields: { categoryId: { $toObjectId: "$categoryId"}}}, // casting
+        {$lookup: { from: "categories", localField: "categoryId", foreignField: "_id", as: "category" }}, // joining
+        {$unwind: {path: "$category", preserveNullAndEmptyArrays: true}}, // preserve in case of null relation.
+        {$addFields: { category: "$category.title"}}, // specify field.
+        {$project: {categoryId: 0}} // removing value from the object.
+      ])
+      .toArray()
 
     const hasMore = books.length > limit;
     const items = hasMore ? books.slice(0, limit) : books;
