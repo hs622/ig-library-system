@@ -34,6 +34,7 @@ export const AddCategory = async (data: IAddCategorySchema) => {
     const now = new Date();
 
     const hasSubCategories = !!sub_category && sub_category.length > 0;
+    // console.log({ hasSubCategories });
 
     await session.withTransaction(async () => {
       // Parent category document
@@ -42,14 +43,14 @@ export const AddCategory = async (data: IAddCategorySchema) => {
           _id: parentId,
           title: category,
           parentId: null,
-          isParent: hasSubCategories,
+          isParent: true,
           isAccosciated: false,
           visiable: true,
           createdAt: now,
           updatedAt: now,
           deletedAt: null,
         },
-        { session }
+        { session },
       );
 
       // Sub-category documents, each linked back to the parent
@@ -77,7 +78,12 @@ export const AddCategory = async (data: IAddCategorySchema) => {
     });
   } catch (error: unknown) {
     // Duplicate title (unique index violation)
-    if (typeof error === "object" && error !== null && "code" in error && (error as { code: number }).code === 11000) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code: number }).code === 11000
+    ) {
       return ActionResponse({
         message: "A category with this title already exists.",
         statusCode: 409,
