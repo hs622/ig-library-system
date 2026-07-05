@@ -11,6 +11,7 @@ import z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AddCategorySchema, IAddCategorySchema } from "@/types/zod"
 import { AddCategory } from "@/app/actions/addCategories"
+import { toast } from "sonner"
 
 export default function AddCategoryForm() {
 
@@ -18,7 +19,8 @@ export default function AddCategoryForm() {
     control,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
+    reset
   } = useForm<IAddCategorySchema>({
     resolver: zodResolver(AddCategorySchema)
   })
@@ -26,6 +28,19 @@ export default function AddCategoryForm() {
   const handleFrom = async (data: IAddCategorySchema) => {
     const res = await AddCategory(data)
     console.log(res)
+
+    if (res.code == 200) {
+      reset()
+      return toast.success(res.message, {
+        position: "bottom-center",
+        closeButton: true
+      })
+    }
+
+    return toast.error(res.message, {
+      position: "bottom-center",
+      closeButton: true
+    })
   }
 
   return (
@@ -34,7 +49,7 @@ export default function AddCategoryForm() {
         <FieldSet>
           <Field>
             <Label htmlFor="add-category-form-field">Category</Label>
-            <Input id="add-category-form-field" type="text" {...register("category")} />
+            <Input id="add-category-form-field" type="text" {...register("category")}/>
             {errors.category && <div className="text-red-400 text-xs">{errors.category.message}</div>}
           </Field>
 
