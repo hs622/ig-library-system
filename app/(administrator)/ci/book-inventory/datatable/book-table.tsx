@@ -90,12 +90,14 @@ export default function BookTable({
       ref={scrollContainerRef}
       className="p-0! max-h-full h-fit overflow-y-auto"
     >
-      <Table>
+      <Table className="table-fixed min-w-full">
         <TableHeader className="sticky top-0 bg-background z-10">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(header.column.columnDef.header, header.getContext())}
@@ -109,7 +111,10 @@ export default function BookTable({
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className={`${cell.column.columnDef.meta?.className}`}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
