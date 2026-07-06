@@ -34,15 +34,16 @@ export const CreateBookAction = async (data: IBookSchema) => {
   } catch (error) {
     if (error instanceof MongoServerError) {
       if (error.code === 11000) {
-        return {
-          status: false,
+        return ActionResponse({
+          statusCode: 409,
           message: "Book already exist!",
-        };
+        });
       }
     } else
-      return {
-        status: false,
+      return ActionResponse({
+        statusCode: 500,
         message: "something went wrong.",
-      };
+      });
   }
 };
+
