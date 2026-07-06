@@ -29,7 +29,7 @@ export default function AddCategoryForm() {
     const res = await AddCategory(data)
     console.log(res)
 
-    if (res.code == 200) {
+    if (res.statusCode == 200) {
       reset()
       return toast.success(res.message, {
         position: "bottom-center",
