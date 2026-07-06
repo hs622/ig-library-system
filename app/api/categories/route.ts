@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       MAX_LIMIT,
     );
     const search = searchParams.get("search")?.trim();
+    const type = searchParams.get("type")?.trim();
 
     if (cursor && !ObjectId.isValid(cursor)) {
       return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
@@ -33,10 +34,11 @@ export async function GET(req: NextRequest) {
       filter._id = { $lt: new ObjectId(cursor) };
     }
 
+    if (type == "child") filter.isParent = false;
+    if (type == "parent") filter.isParent = true;
+
     if (search) {
-      filter.$or = [
-        { title: { $regex: search, $options: "i" } }
-      ];
+      filter.$or = [{ title: { $regex: search, $options: "i" } }];
     }
 
     // Fetch limit + 1 to know if there's a next page without a second query
