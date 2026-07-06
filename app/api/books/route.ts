@@ -35,35 +35,16 @@ export async function GET(req: NextRequest) {
       const book = await collection
         .aggregate([
           { $match: { _id: new ObjectId(bookId) } },
-          {
-            $addFields: {
-              categoryId: { $toObjectId: "$categoryId" },
-            },
-          },
-          {
-            $lookup: {
-              from: "categories",
-              localField: "categoryId",
-              foreignField: "_id",
-              as: "category",
-            },
-          },
-          {
-            $unwind: {
-              path: "$category_obj",
-              preserveNullAndEmptyArrays: true,
-            },
-          },
-          {
-            $project: {
-              categoryId: 0,
-            },
-          },
+          { $addFields: { categoryId: { $toObjectId: "$categoryId" } } },
+          { $lookup: { from: "categories", localField: "categoryId",foreignField: "_id", as: "category"} },
+          { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
+          { $addFields: { category: { $ifNull: ["$category", null] } } },
+          { $project: { categoryId: 0 } },
         ])
         .toArray();
 
       return NextResponse.json({
-        book,
+        book: book.at(0),
       });
     }
 
@@ -92,16 +73,23 @@ export async function GET(req: NextRequest) {
     // Fetch limit + 1 to know if there's a next page without a second query
     const books = await collection
       .aggregate([
-        {$match: filter}, // where clause.
-        {$sort: {_id: -1}}, // for sorting clause.
-        {$limit: limit + 1 }, // for limited response
-        {$addFields: { categoryId: { $toObjectId: "$categoryId"}}}, // casting
-        {$lookup: { from: "categories", localField: "categoryId", foreignField: "_id", as: "category" }}, // joining
-        {$unwind: {path: "$category", preserveNullAndEmptyArrays: true}}, // preserve in case of null relation.
-        {$addFields: { category: "$category.title"}}, // specify field.
-        {$project: {categoryId: 0}} // removing value from the object.
+        { $match: filter }, // where clause.
+        { $sort: { _id: -1 } }, // for sorting clause.
+        { $limit: limit + 1 }, // for limited response
+        { $addFields: { categoryId: { $toObjectId: "$categoryId" } } }, // casting
+        {
+          $lookup: {
+            from: "categories",
+            localField: "categoryId",
+            foreignField: "_id",
+            as: "category",
+          },
+        }, // joining
+        { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } }, // preserve in case of null relation.
+        { $addFields: { category: "$category.title" } }, // specify field.
+        { $project: { categoryId: 0 } }, // removing value from the object.
       ])
-      .toArray()
+      .toArray();
 
     const hasMore = books.length > limit;
     const items = hasMore ? books.slice(0, limit) : books;
