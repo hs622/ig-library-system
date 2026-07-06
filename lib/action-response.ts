@@ -1,6 +1,6 @@
 
 
-interface ActionResponse<TData, TError> {
+export interface ActionResponse<TData, TError> {
   data?: TData, 
   errors?: TError,
   message: string, 
@@ -12,6 +12,6 @@ export const ActionResponse = <TData, TError>(props: ActionResponse<TData, TErro
     data: props.data ? props.data : null,
     errors: props.errors ? props : null,
     message: props.message,
-    code: props.statusCode
+    statusCode: props.statusCode
   }
 }
