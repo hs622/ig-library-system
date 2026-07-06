@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea";
 // import MultipleInput from "@/components/inputs/multiple-input";
 import { Spinner } from "@/components/ui/spinner";
-import { AddBookAction } from "@/app/actions/addBookAction";
+import { CreateBookAction } from "@/app/actions/createBookAction";
 import { toast } from "sonner";
 
 
@@ -32,12 +32,13 @@ export default function AddBook() {
   })
 
   const handleForm = async (data: IBookSchema) => {
-    const response: { status: boolean, message: string } | undefined = await AddBookAction(data)
+    const response = await CreateBookAction(data)
     console.log({ response })
 
-    if (response?.status) {
-      toast.success(`Success! ${response!.message as string}`, {
+    if (response?.statusCode == 200) {
+      toast.success(`Success! ${response?.message as string}`, {
         position: "bottom-center",
+
       })
       return reset()
     }
@@ -55,27 +56,8 @@ export default function AddBook() {
           <Field className="gap-1">
             <FieldLabel htmlFor="add-book-category">Category</FieldLabel>
             <Input id="add-book-category" type="text" {...register("category")} />
-            {/* <Field>
-              <FieldLabel htmlFor="add-book-category">category</FieldLabel>
-              <Controller
-                name="categoryID"
-                control={control}
-                render={
-                  <Combobox>
-                    <ComboboxInput placeholder="category" />
-                    <ComboboxContent>
-                      
-                    </ComboboxContent>
-                  </Combobox>
-                }
-              />
-            </Field> */}
             {errors.category && <div className="text-xs text-red-400">{errors.category.message}</div>}
           </Field>
-          {/* <Field className="gap-1">
-            <FieldLabel htmlFor="add-book-sub-category">Sub Category</FieldLabel>
-            
-          </Field> */}
         </FieldSet>
       </FieldGroup>
 
@@ -124,49 +106,6 @@ export default function AddBook() {
         </FieldSet>
       </FieldGroup>
 
-      {/* <FieldGroup>
-          <FieldSet>
-            <Field className="gap-1">
-              <FieldLabel htmlFor="add-book-tags">Tags</FieldLabel>
-              <MultipleInput />
-            </Field>
-          </FieldSet>
-        </FieldGroup> */}
-
-
-      {/* ref={anchor} */}
-      {/* anchor={anchor} */}
-      {/* <Combobox
-          multiple
-          autoHighlight
-          // items={frameworks}
-          // defaultValue={[frameworks[0]]}
-        >
-          <ComboboxChips  className="w-full max-w-xs">
-            <ComboboxValue>
-              {(values) => (
-                <React.Fragment>
-                  {values.map((value: string) => (
-                    <ComboboxChip key={value}>{value}</ComboboxChip>
-                  ))}
-                  <ComboboxChipsInput />
-                </React.Fragment>
-              )}
-            </ComboboxValue>
-          </ComboboxChips>
-          <ComboboxContent >
-            <ComboboxEmpty>No items found.</ComboboxEmpty>
-            <ComboboxList>
-              {(item) => (
-                <ComboboxItem key={item} value={item}>
-                  {item}
-                </ComboboxItem>
-              )}
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox> */}
-
-
       <FieldGroup>
         <FieldSet>
           <Field className="gap-1">
@@ -176,7 +115,6 @@ export default function AddBook() {
           </Field>
         </FieldSet>
       </FieldGroup>
-
 
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting}>
