@@ -7,15 +7,12 @@ import Link from "next/link";
 import React from "react";
 
 export default function Home() {
-
-
   const { count, error, status } = useBookCount()
-
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="flex flex-col justify-between">
-        <h1 className="text-3xl font-bold">IG Library System</h1>
+        <h1 className="text-3xl font-bold">Inaara Garden Library System</h1>
         <Button variant={"link"} className="cursor-pointer" asChild>
           <Link href="/temp" >
             Process to dashboard
