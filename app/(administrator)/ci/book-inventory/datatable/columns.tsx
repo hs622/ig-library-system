@@ -5,10 +5,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { IBookSchema } from "@/types/zod";
 import { formatReadableDate } from "@/lib/format-date";
 import { Button } from "@/components/ui/button";
-import { InfoIcon } from "lucide-react";
+import { Copy, InfoIcon, Pencil, Trash, Trash2 } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { BookDrawer } from "@/components/book-drawer";
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export type BookRow = IBookSchema & { _id: string; createdAt: string };
 
@@ -32,22 +34,29 @@ export const BookColumns: ColumnDef<BookRow>[] = [
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        aria-label="Select row"
-        className="translate-y-0.5"
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-      />
-    ),
+    cell: ({ row }) => {
+
+
+      return (
+        <Checkbox
+          aria-label="Select row"
+          className="translate-y-0.5"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+        />
+      )
+    },
     enableHiding: false,
     enableSorting: false,
-    size: 40
+    size: 100
   },
   {
     id: "title",
     accessorKey: "title",
     header: "Title",
+    meta: {
+      className: "w-[20px] truncate border-b",
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -55,6 +64,9 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     id: "author",
     accessorKey: "authorName",
     header: "Author",
+    meta: {
+      className: "w-[20px] truncate border-l border-b",
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -62,6 +74,9 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     id: "publicationYear",
     accessorKey: "publicationYear",
     header: "Publication Year",
+    meta: {
+      className: "w-[20px] truncate border",
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -69,6 +84,9 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     id: "category",
     accessorKey: "category",
     header: "Category",
+    meta: {
+      className: "w-[20px] truncate border",
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -77,6 +95,9 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     accessorKey: "createdAt",
     header: "Ingested At",
     cell: ({ row }) => formatReadableDate(row.original.createdAt),
+    meta: {
+      className: "w-[20px] truncate border-l border-b",
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -84,6 +105,32 @@ export const BookColumns: ColumnDef<BookRow>[] = [
     id: "actions",
     accessorKey: "actions",
     header: "",
-    // cell: ({ row }) => (<BookDarwerFn row={row} />)
+    meta: {
+      className: "w-[20px] truncate border-b",
+    },
+    cell: ({ row }) => ActionGroup(row)
   }
 ]
+
+const ActionGroup = (row: Row<BookRow>) => {
+  const pathname = usePathname()
+
+  return (
+    <ButtonGroup>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"} asChild>
+        <Link href={`${pathname}/${row.original._id}`}>
+          <Pencil />
+        </Link>
+      </Button>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+        <InfoIcon />
+      </Button>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+        <Trash2 />
+      </Button>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+        <Copy />
+      </Button>
+    </ButtonGroup>
+  )
+}
