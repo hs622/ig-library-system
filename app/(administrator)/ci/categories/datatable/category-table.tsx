@@ -8,6 +8,8 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { CategoryColumns, CategoryRow } from "./columns";
+import Addcategory from "../add-category";
+import { toast } from "sonner";
 
 interface CategoryTableProps {
   initialData: CategoryRow[];
@@ -46,7 +48,7 @@ export default function CategoryTable({
       if (!res.ok) throw new Error("Failed to load more books");
 
       const json = await res.json();
-      setData((prev) => [...prev, ...json.books]);
+      setData((prev) => [...prev, ...json.categories]);
       setCursor(json.nextCursor);
       setHasMore(json.hasMore);
     } catch (err) {
@@ -78,6 +80,13 @@ export default function CategoryTable({
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [loadMore]);
+
+  if (!hasMore && data.length > 0) {
+    toast.info("No more books", {
+      position: "top-center",
+      closeButton: true
+    })
+  }
 
   const table = useReactTable({
     data,
@@ -140,11 +149,7 @@ export default function CategoryTable({
         </div>
       )}
 
-      {!hasMore && data.length > 0 && (
-        <div className="py-2 text-center text-sm text-muted-foreground">
-          No more books.
-        </div>
-      )}
+      {/* <Addcategory open={true} /> */}
     </Card>
   );
 }
