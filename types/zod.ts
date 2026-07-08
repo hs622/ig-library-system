@@ -99,6 +99,12 @@ export const BookEditSchema = z.object({
   categoryId: z.string().min(1, "Please select the category."),
 });
 
+// ------ delete resource dialog ------
+
+export const DeleteConfirmationDialog = z.object({ confirmation: z.string() })
+
+// ------ auth validation form -------
+
 export const LoginSchema = z.object({
   username: z.string().min(1, "please enter the username"),
   password: z.string().min(1, "please enter the password"),
@@ -112,5 +118,10 @@ export type TRole = z.infer<typeof Role>;
 export type ICategorySchema = z.infer<typeof CategorySchema>;
 export type IBookSchema = z.infer<typeof BookSchema>;
 export type IBookEditSchema = z.infer<typeof BookEditSchema>;
+
+
+
+
+export type IDeleteConfirmationDialog = z.infer<typeof DeleteConfirmationDialog>;
 export type ILoginSchema = z.infer<typeof LoginSchema>;
 
