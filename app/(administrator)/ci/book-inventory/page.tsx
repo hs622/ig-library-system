@@ -2,9 +2,12 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Plus } from "lucide-react";
 import BookTable from "./datatable/book-table";
-import { BookSearchInput } from "./datatable/search-input";
+import { BookSearchInput, BookSearchTags, DeleteBulkResources } from "./datatable/search-input";
 // import { RefreshButton } from "./datatable/refresh-button";
 import { getBaseUrl } from "@/lib/get-base-url";
+import { BookDetailsDrawer } from "@/components/book-details-drawer";
+import DeleteBulkResourcesDialog from "@/components/delete-bulk-resources.dialog";
+import DeleteResourceDialog from "@/components/delete-resource.dialog";
 
 interface PageProps {
   searchParams: Promise<{ search?: string }>;
@@ -31,13 +34,20 @@ export default async function BookInventory({ searchParams }: PageProps) {
     <div className="flex flex-col h-[calc(100vh-5rem)] gap-4 p-4">
       <div className="col-span-2 flex flex-col flex-1 min-h-0">
         <div className="flex justify-between py-2 shrink-0">
-          <BookSearchInput />
-          <ButtonGroup>
-            {/* <RefreshButton /> */}
-            <Button variant="outline">
-              <Plus />
-            </Button>
-          </ButtonGroup>
+          <div className="flex items-center gap-4">
+            <BookSearchInput />
+            <BookSearchTags />
+          </div>
+
+          <div className="flex gap-4">
+            <DeleteBulkResources />
+            <ButtonGroup>
+              {/* <RefreshButton /> */}
+              <Button variant="outline">
+                <Plus />
+              </Button>
+            </ButtonGroup>
+          </div>
         </div>
 
         <div className="flex-1 min-h-0">
@@ -49,7 +59,11 @@ export default async function BookInventory({ searchParams }: PageProps) {
             search={search}
           />
         </div>
+
       </div>
+      <BookDetailsDrawer />
+      <DeleteResourceDialog />
+      <DeleteBulkResourcesDialog />
     </div>
   );
 }
