@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { useDrawerStore } from "@/hooks/use-drawer-store";
-import { QRCodeGenerator } from "./qrcode-generator";
 import { Pencil, X } from "lucide-react";
 import React from "react";
 import { ButtonGroup } from "./ui/button-group";
 import Link from "next/link";
+import QRCodeWithSequence from "./qr-code-generator";
 
 export function BookDetailsDrawer() {
   const { isOpen, selectedBook, closeDrawer } = useDrawerStore();
@@ -41,16 +41,16 @@ export function BookDetailsDrawer() {
             </div>
 
             <ButtonGroup>
-            <Button variant={"outline"} asChild>
-              <Link href={`/ci/book-inventory/${selectedBook?._id}`}>
-                <Pencil />
-              </Link>
-            </Button>
-            <DrawerClose asChild>
-              <Button type="button" className="text-accent" variant={"outline"}>
-                <X />
+              <Button variant={"outline"} asChild>
+                <Link href={`/ci/book-inventory/${selectedBook?._id}`}>
+                  <Pencil />
+                </Link>
               </Button>
-            </DrawerClose>
+              <DrawerClose asChild>
+                <Button type="button" className="cursor-pointer" variant={"outline"}>
+                  <X />
+                </Button>
+              </DrawerClose>
             </ButtonGroup>
             {/* <DrawerDescription>
               {selectedBook?.category ?? "Uncategorized"}
@@ -80,7 +80,12 @@ export function BookDetailsDrawer() {
 
           <div className="px-5">
             {selectedBook?._id ? (
-              <QRCodeGenerator resourceId={selectedBook?._id ?? ""} />
+              // <QRCodeGenerator resourceId={selectedBook?._id ?? ""} />
+              <QRCodeWithSequence
+                value={selectedBook?._id ?? ""}
+                sequence="SN-98234-A"
+                size={160}
+              />
             ) : (
               <React.Fragment>
                 Couldn&apls;t found ResourceId
