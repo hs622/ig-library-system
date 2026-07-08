@@ -5,114 +5,113 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { IBookSchema } from "@/types/zod";
 import { formatReadableDate } from "@/lib/format-date";
 import { Button } from "@/components/ui/button";
-import { Copy, InfoIcon, Pencil, Trash, Trash2 } from "lucide-react";
+import { Copy, InfoIcon, Pencil, Trash2 } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { BookDrawer } from "@/components/book-drawer";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDrawerStore } from "@/hooks/use-drawer-store";
+import { useDeleteDialogStore } from "@/hooks/use-delete-dialog-store";
 
 export type BookRow = IBookSchema & { _id: string; createdAt: string };
 
-// const BookColumns = (onView: (id: string) => void) => ColumnDef<BookRow> =z [
-//   {
-
-//   }
-// ];
-
-export const BookColumns: ColumnDef<BookRow>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        aria-label="Select all"
-        className="translate-y-0.5"
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => {
-
-
-      return (
+export const BookColumns = () => {
+  const BookColumns: ColumnDef<BookRow>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
         <Checkbox
-          aria-label="Select row"
+          aria-label="Select all"
           className="translate-y-0.5"
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
-      )
+      ),
+      cell: ({ row }) => {
+        return (
+          <Checkbox
+            aria-label="Select row"
+            className="translate-y-0.5"
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+          />
+        )
+      },
+      enableHiding: false,
+      enableSorting: false,
+      size: 40
     },
-    enableHiding: false,
-    enableSorting: false,
-    size: 100
-  },
-  {
-    id: "title",
-    accessorKey: "title",
-    header: "Title",
-    meta: {
-      className: "w-[20px] truncate border-b",
+    {
+      id: "title",
+      accessorKey: "title",
+      header: "Title",
+      meta: {
+        className: "w-[20px] truncate border-b",
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "author",
-    accessorKey: "authorName",
-    header: "Author",
-    meta: {
-      className: "w-[20px] truncate border-l border-b",
+    {
+      id: "author",
+      accessorKey: "authorName",
+      header: "Author",
+      meta: {
+        className: "w-[20px] truncate border-l border-b",
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "publicationYear",
-    accessorKey: "publicationYear",
-    header: "Publication Year",
-    meta: {
-      className: "w-[20px] truncate border",
+    {
+      id: "publicationYear",
+      accessorKey: "publicationYear",
+      header: "Publication Year",
+      meta: {
+        className: "w-[20px] truncate border",
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "category",
-    accessorKey: "category",
-    header: "Category",
-    meta: {
-      className: "w-[20px] truncate border",
+    {
+      id: "category",
+      accessorKey: "category",
+      header: "Category",
+      meta: {
+        className: "w-[20px] truncate border",
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "createdAt",
-    accessorKey: "createdAt",
-    header: "Ingested At",
-    cell: ({ row }) => formatReadableDate(row.original.createdAt),
-    meta: {
-      className: "w-[20px] truncate border-l border-b",
+    {
+      id: "createdAt",
+      accessorKey: "createdAt",
+      header: "Ingested At",
+      cell: ({ row }) => formatReadableDate(row.original.createdAt),
+      meta: {
+        className: "w-[20px] truncate border-l border-b",
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "actions",
-    accessorKey: "actions",
-    header: "",
-    meta: {
-      className: "w-[20px] truncate border-b",
-    },
-    cell: ({ row }) => ActionGroup(row)
-  }
-]
+    {
+      id: "actions",
+      accessorKey: "actions",
+      header: "",
+      meta: {
+        className: "border-b",
+      },
+      cell: ({ row }) => ActionGroup(row)
+    }
+  ]
+
+  return BookColumns;
+}
 
 const ActionGroup = (row: Row<BookRow>) => {
+  const openDrawer = useDrawerStore((s) => s.openDrawer);
+  const { openDialog } = useDeleteDialogStore()
   const pathname = usePathname()
 
   return (
@@ -122,15 +121,18 @@ const ActionGroup = (row: Row<BookRow>) => {
           <Pencil />
         </Link>
       </Button>
-      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDrawer(row.original)}>
         <InfoIcon />
       </Button>
-      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => {
+        const { title, _id } = row.original
+        return openDialog({ resourceId: _id, title, module: "books" })
+      }}>
         <Trash2 />
       </Button>
-      <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
+      {/* <Button className="cursor-pointer" variant={"outline"} size={"xs"}>
         <Copy />
-      </Button>
+      </Button> */}
     </ButtonGroup>
   )
 }

@@ -1,6 +1,11 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
+import { useSelectedResourceIds } from "@/hooks/use-book-selection-store";
+import { useDeleteBulkDialogStore } from "@/hooks/use-delete-dialog-store";
+import { Trash2 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -29,4 +34,29 @@ export function BookSearchInput() {
       onChange={(e) => setValue(e.target.value)}
     />
   );
+}
+
+export function DeleteBulkResources() {
+  const selectedIds = useSelectedResourceIds()
+  const { openDialog } = useDeleteBulkDialogStore()
+
+  return (
+    <Button type="button" variant={"outline"} disabled={selectedIds.length < 1} onClick={() => openDialog({
+      module: "books",
+      title: "discard all resources"
+    })}>
+      <Trash2 /> {selectedIds.length}
+    </Button>
+  )
+}
+
+export function refetchData() { }
+
+export function BookSearchTags() {
+
+  return (
+    <Combobox>
+      <Button variant={"outline"} className="border-dotted">Tags</Button>
+    </Combobox>
+  )
 }

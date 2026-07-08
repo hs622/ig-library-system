@@ -8,6 +8,7 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { BookColumns, BookRow } from "./columns";
+import { useResourceSelectionStore } from "@/hooks/use-book-selection-store";
 
 interface BookTableProps {
   initialData: BookRow[];
@@ -27,6 +28,10 @@ export default function BookTable({
   const [hasMore, setHasMore] = React.useState(initialHasMore);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  const rowSelection = useResourceSelectionStore((s) => s.rowSelection)
+  const setRowSelection = useResourceSelectionStore((s) => s.setRowSelection)
+  const clearSelection = useResourceSelectionStore((s) => s.clearSelection)
 
   const loadingRef = React.useRef(false);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
@@ -79,10 +84,18 @@ export default function BookTable({
     return () => observer.disconnect();
   }, [loadMore]);
 
+  React.useEffect(() => {
+    return () => clearSelection()
+  }, [clearSelection])
+
   const table = useReactTable({
     data,
-    columns: BookColumns,
+    columns: BookColumns(),
     getCoreRowModel: getCoreRowModel(),
+    getRowId: (row) => row._id,
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    state: { rowSelection }
   });
 
   return (
@@ -109,7 +122,9 @@ export default function BookTable({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+              <TableRow
+                key={row.id} data-state={row.getIsSelected() && "selected"}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
