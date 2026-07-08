@@ -8,7 +8,6 @@ import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-tabl
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { CategoryColumns, CategoryRow } from "./columns";
-import Addcategory from "../add-category";
 import { toast } from "sonner";
 
 interface CategoryTableProps {
@@ -148,8 +147,6 @@ export default function CategoryTable({
           </button>
         </div>
       )}
-
-      {/* <Addcategory open={true} /> */}
     </Card>
   );
 }
