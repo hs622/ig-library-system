@@ -24,7 +24,7 @@ import z from "zod"
 import { Input } from "@/components/ui/input"
 import { usePathname } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
-import { AttachCategory } from "@/app/actions/attachCategoryToBook"
+import { AttachCategoryAction } from "@/app/actions/attachCategoryToBookAction"
 import { CategoryForm, ICategoryForm } from "@/types/zod"
 import { Document } from "mongodb"
 
@@ -90,7 +90,7 @@ export function CategoryDropdown({ selectedCategoryId }: { selectedCategoryId: s
   }, [])
 
   const handleForm = async (data: ICategoryForm) => {
-    const doc = await AttachCategory(data)
+    const doc = await AttachCategoryAction(data)
     setDocument(doc.data)
     reset()
   }
