@@ -8,6 +8,7 @@ import { IAddCategorySchema, SubCategory } from "@/types/zod";
 import { Minus, Plus } from "lucide-react";
 import React from "react";
 import { Control, Controller, ControllerFieldState, ControllerRenderProps } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid"
 
 interface AddMoreCategoryProps {
   control: Control<IAddCategorySchema>
@@ -37,9 +38,11 @@ interface SubCategoryFieldsProps {
 
 function SubCategoryFields({ field, fieldState }: SubCategoryFieldsProps) {
 
+  const id = uuidv4();
+  
   const [inputFields, setInputFields] = React.useState<FieldRow[]>(() => {
     const initial = field.value?.length ? field.value : [""];
-    return initial.map((v) => ({ id: crypto.randomUUID(), value: v }))
+    return initial.map((v) => ({ id, value: v }))
   });
 
   const sync = (rows: FieldRow[]) => {
@@ -49,7 +52,7 @@ function SubCategoryFields({ field, fieldState }: SubCategoryFieldsProps) {
   }
 
   const handleAddField = () => {
-    sync([...inputFields, { id: crypto.randomUUID(), value: "" }])
+    sync([...inputFields, { id, value: "" }])
   }
 
   const handleChange = (
