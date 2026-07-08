@@ -1,0 +1,100 @@
+"use client";
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { useDrawerStore } from "@/hooks/use-drawer-store";
+import { QRCodeGenerator } from "./qrcode-generator";
+import { Pencil, X } from "lucide-react";
+import React from "react";
+import { ButtonGroup } from "./ui/button-group";
+import Link from "next/link";
+
+export function BookDetailsDrawer() {
+  const { isOpen, selectedBook, closeDrawer } = useDrawerStore();
+
+  return (
+    <Drawer
+      direction="left"
+      open={isOpen}
+      onOpenChange={(open) => !open && closeDrawer()}
+    >
+      <DrawerContent
+        aria-describedby="left"
+        className="
+          data-[vaul-drawer-direction=right]:w-full
+          data-[vaul-drawer-direction=right]:sm:max-w-none
+          data-[vaul-drawer-direction=right]:md:w-1/2
+          h-screen
+        "
+      >
+        <div className="flex flex-col h-full max-w-sm">
+          <DrawerHeader className="flex flex-row justify-between items-center">
+            <div>
+              <DrawerTitle className="trancate">{selectedBook?.title ?? "Book details"}</DrawerTitle>
+            </div>
+
+            <ButtonGroup>
+            <Button variant={"outline"} asChild>
+              <Link href={`/ci/book-inventory/${selectedBook?._id}`}>
+                <Pencil />
+              </Link>
+            </Button>
+            <DrawerClose asChild>
+              <Button type="button" className="text-accent" variant={"outline"}>
+                <X />
+              </Button>
+            </DrawerClose>
+            </ButtonGroup>
+            {/* <DrawerDescription>
+              {selectedBook?.category ?? "Uncategorized"}
+            </DrawerDescription> */}
+          </DrawerHeader>
+
+          <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2 text-sm">
+            <p>
+              <span className="font-medium">Author:</span> {selectedBook?.authorName}
+            </p>
+            <p>
+              <span className="font-medium">ISBN-10:</span> {selectedBook?.isbn10 ?? "Not available"}
+            </p>
+            <p>
+              <span className="font-medium">ISBN-13:</span> {selectedBook?.isbn13 ?? "Not available"}
+            </p>
+            <p>
+              <span className="font-medium">Publication Year:</span> {selectedBook?.publicationYear}
+            </p>
+            <p>
+              <span className="font-medium">Publisher Name:</span> {selectedBook?.publisherName}
+            </p>
+            <p>
+              <span className="font-medium">Short Description:</span> {selectedBook?.shortDescription}
+            </p>
+          </div>
+
+          <div className="px-5">
+            {selectedBook?._id ? (
+              <QRCodeGenerator resourceId={selectedBook?._id ?? ""} />
+            ) : (
+              <React.Fragment>
+                Couldn&apls;t found ResourceId
+              </React.Fragment>
+            )}
+          </div>
+
+          <DrawerFooter>
+            <Button type="button" variant="outline" onClick={closeDrawer}>
+              Close
+            </Button>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  );
+}
