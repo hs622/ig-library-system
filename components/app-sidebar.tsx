@@ -10,7 +10,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon } from "lucide-react"
+import { BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon, UsersRound } from "lucide-react"
 import SidebarMenuHeader from "./menu-header"
 import { NavUser } from "./nav-user"
 import { usePathname } from "next/navigation"
@@ -81,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         title: "Member Management",
         url: "/mm",
-        icon: (<Settings2Icon />),
+        icon: (<UsersRound />),
         isActive: Boolean(chunks[0] == "mm"),
         items: [
           {
@@ -134,7 +134,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
-  
     ],
     projects: [
       {
