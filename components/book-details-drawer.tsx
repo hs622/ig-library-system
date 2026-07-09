@@ -7,6 +7,7 @@ import {
   DrawerTitle,
   DrawerFooter,
   DrawerClose,
+  DrawerDescription,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { useDrawerStore } from "@/hooks/use-drawer-store";
@@ -32,12 +33,16 @@ export function BookDetailsDrawer() {
           data-[vaul-drawer-direction=right]:sm:max-w-none
           data-[vaul-drawer-direction=right]:md:w-1/2
           h-screen
+          p-6
         "
       >
-        <div className="flex flex-col h-full max-w-sm">
-          <DrawerHeader className="flex flex-row justify-between items-center">
+        <div className="flex flex-col h-full max-w-md">
+          <DrawerHeader className="px-0 pt-0 flex flex-row justify-between items-center">
             <div>
               <DrawerTitle className="trancate">{selectedBook?.title ?? "Book details"}</DrawerTitle>
+              <DrawerDescription>
+                {selectedBook?.category?.title ?? "Uncategorized"}
+              </DrawerDescription>
             </div>
 
             <ButtonGroup>
@@ -52,12 +57,9 @@ export function BookDetailsDrawer() {
                 </Button>
               </DrawerClose>
             </ButtonGroup>
-            {/* <DrawerDescription>
-              {selectedBook?.category ?? "Uncategorized"}
-            </DrawerDescription> */}
           </DrawerHeader>
 
-          <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2 text-sm">
+          <div className="flex-1 overflow-y-auto pb-4 space-y-2 text-sm">
             <p>
               <span className="font-medium">Author:</span> {selectedBook?.authorName}
             </p>
@@ -78,9 +80,8 @@ export function BookDetailsDrawer() {
             </p>
           </div>
 
-          <div className="px-5">
+          <div className="flex justify-center w-full">
             {selectedBook?._id ? (
-              // <QRCodeGenerator resourceId={selectedBook?._id ?? ""} />
               <QRCodeWithSequence
                 value={selectedBook?._id ?? ""}
                 sequence="SN-98234-A"
@@ -93,11 +94,11 @@ export function BookDetailsDrawer() {
             )}
           </div>
 
-          <DrawerFooter>
+          {/* <DrawerFooter>
             <Button type="button" variant="outline" onClick={closeDrawer}>
               Close
             </Button>
-          </DrawerFooter>
+          </DrawerFooter> */}
         </div>
       </DrawerContent>
     </Drawer>
