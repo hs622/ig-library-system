@@ -35,7 +35,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
       suppressHydrationWarning={true}
     >
-      <body className="min-h-full flex md:flex-col" suppressHydrationWarning={true}>
+      <body className="" suppressHydrationWarning={true}>
         {/* <StoreWrapper> */}
           <TooltipWrapper>
             <ThemeProvider
