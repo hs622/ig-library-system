@@ -38,7 +38,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 rounded-xl bg-white shadow-md border max-w-md">
+    <div className="flex flex-col items-center gap-4 p-6 rounded-xl bg-white shadow-md border w-fit">
       
       {/* Master SVG Canvas */}
       <svg
