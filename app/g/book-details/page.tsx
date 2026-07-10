@@ -2,19 +2,67 @@
 
 import React from "react"
 import QrCodeReader from "./qr-code-reader"
+import { Card, CardContent } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+// import { getBaseUrl } from "@/lib/get-base-url"
+import { BookRow } from "@/app/(administrator)/ci/book-inventory/datatable/columns"
+import { toast } from "sonner"
 
 export default function Page() {
   const [value, setValue] = React.useState<string | null>(null)
+  const [book, setBook] = React.useState<BookRow | null>(null)
+  const [errors, setErrors] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    if (value !== null) {
+      try {
+        const fetchBookdetails = async () => {
+          const response = await fetch(`/api/books?bookId=${value}`)
+          if (!response.ok) throw new Error("Couldn't find the book.")
+
+          const jsonDecoded = await response.json()
+          setBook(jsonDecoded)
+        }
+
+        fetchBookdetails()
+      } catch(error) {
+        if (error instanceof Error) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setErrors(error.message ?? "something went wrong.")
+          toast.error(errors, {
+            position: "top-center"
+          })
+        }
+      }
+    }
+  }, [value, errors, book])
 
   return (
-    <div className="flex h-screen justify-center">
-      <QrCodeReader  onScan={
-        (value) => setValue(value)
-      }/>
+    <Card className="h-full">
+      <CardContent className="flex flex-col gap-5">
+        <div className="pb-4">
+          <div className="text-2xl font-bold uppercase">
+            Book Finder
+          </div>
+          <div>
+            Search book deatils through QR Code.
+          </div>
+        </div>
 
-      <div>
-        {value}
-      </div>
-    </div>
+        <div className="flex justify-center w-full">
+          <div className="size-64 oveerflow-hidden">
+            <QrCodeReader onScan={
+              (value) => setValue(value)
+            } />
+          </div>
+        </div>
+
+        <ScrollArea className="h-50 p-2">
+          <pre>
+            {JSON.stringify(book, null, 2)}
+          </pre>
+        </ScrollArea>
+      </CardContent>
+    </Card>
   )
 }

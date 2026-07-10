@@ -10,7 +10,7 @@ export default function GuestLayout(
 ) {
 
   return (
-    <div>
+    <div className="p-4 h-dvh">
       {children}
     </div>
   )
