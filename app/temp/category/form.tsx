@@ -6,12 +6,12 @@ import { Label } from "@/components/ui/label"
 import AddMoreCategoryInput from "./add-more-category-button"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
-import { Spinner } from "@/components/ui/spinner"
-import z from "zod"
+import { Spinner } from "@/components/ui/spinner" 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AddCategorySchema, IAddCategorySchema } from "@/types/zod"
+import { IAddCategorySchema } from "@/types/zod"
 import { AddCategory } from "@/app/actions/addCategories"
 import { toast } from "sonner"
+import { AddCategorySchema } from "@/types/add-category-form.zod"
 
 export default function AddCategoryForm() {
 
