@@ -13,34 +13,40 @@ import { ModeToggle } from "@/components/buttons/theme-button-3"
 
 export default function Page() {
   const [value, setValue] = React.useState<string | null>(null)
-  const [book, setBook] = React.useState<BookRow | null>(null)
+  const [book, setBook] = React.useState<BookRow & { deletedAt: string } | null>(null)
   const [errors, setErrors] = React.useState<string | null>(null)
   const [paused, setPaused] = React.useState<boolean>(false)
+  const { _id, deletedAt,   ...bookWithId } = book || {}
 
   React.useEffect(() => {
-    if (value !== null) {
+    if (value === null) return
+
+    let cancelled = false
+
+    const fetchBookdetails = async () => {
       try {
-        const fetchBookdetails = async () => {
-          const response = await fetch(`/api/books?bookId=${value}`)
-          if (!response.ok) throw new Error("Couldn't find the book.")
-          else setPaused(true)
+        const response = await fetch(`/api/books?bookId=${value}`)
+        if (!response.ok) throw new Error("Couldn't find the book.")
 
-          const jsonDecoded = await response.json()
-          setBook(jsonDecoded)
-        }
+        const jsonDecoded = await response.json()
+        if (cancelled) return
 
-        fetchBookdetails()
+        setBook(jsonDecoded.book)
+        setPaused(true)
       } catch (error) {
-        if (error instanceof Error) {
-          // eslint-disable-next-line react-hooks/set-state-in-effect
-          setErrors(error.message ?? "something went wrong.")
-          toast.error(errors, {
-            position: "top-center"
-          })
-        }
+        if (cancelled) return
+        const message = error instanceof Error ? error.message : "something went wrong."
+        setErrors(message)
+        toast.error(message, { position: "top-center" })
       }
     }
-  }, [value, errors, book])
+
+    fetchBookdetails()
+
+    return () => {
+      cancelled = true
+    }
+  }, [value])
 
   const resume = React.useCallback(() => setPaused(false), []);
 
@@ -64,7 +70,7 @@ export default function Page() {
               type="button"
               onClick={resume}
               className="cursor-pointer"
-              disabled={paused}
+              disabled={!paused}
             >
               <Camera />
             </Button>
@@ -74,6 +80,7 @@ export default function Page() {
         <div className="flex justify-center w-full">
           <div className="size-64 oveerflow-hidden">
             <QrCodeReader
+              setPaused={setPaused}
               paused={paused}
               onScan={
                 (value) => setValue(value)
@@ -83,7 +90,7 @@ export default function Page() {
 
         <ScrollArea className="h-inherit p-2">
           <pre>
-            {JSON.stringify(book, null, 2)}
+            {JSON.stringify(bookWithId, null, 2)}
           </pre>
         </ScrollArea>
       </CardContent>
