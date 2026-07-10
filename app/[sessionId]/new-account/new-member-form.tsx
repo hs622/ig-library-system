@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FieldGroup } from "@/components/ui/field";
 import { calculateAge } from "@/lib/hepler";
 import { IMemberFormSchema } from "@/types/zod";
-import { ModeToggle2 } from "@/components/buttons/theme-button-2";
+import { ModeSwitcher } from "@/components/buttons/theme-button-2";
 import { MemberFormSchema } from "@/types/member-form.zod";
 import { stepAnimationStyles, StepField } from "./_common";
 import getSteps from "./_questions";
@@ -89,7 +89,7 @@ export default function NewMemberForm() {
                 style={{ width: `${((currentIndex + 1) / steps.length) * 100}%` }}
               />
             </div>
-            <ModeToggle2 />
+            <ModeSwitcher />
           </div>
         )}
       </div>
