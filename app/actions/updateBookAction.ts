@@ -2,7 +2,8 @@
 
 import { ActionResponse } from "@/lib/action-response";
 import clientPromise from "@/lib/mongodb";
-import { BookEditSchema, IBookEditSchema } from "@/types/zod";
+import { BookEditSchema } from "@/types/book-edit-form.zod";
+import { IBookEditSchema } from "@/types/zod";
 import { MongoServerError, ObjectId } from "mongodb";
 
 export const UpdateBookAction = async (data: IBookEditSchema & { _id: string }) => {
