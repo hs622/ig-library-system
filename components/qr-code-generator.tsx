@@ -1,52 +1,83 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 interface QRCodeProps {
   value: string;
   sequence: string; // The sequence string to display vertically (e.g., "123456")
-  size?: number;    // Size of the QR code itself
+  size?: number;    // Initial/default size of the QR code
 }
 
 export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCodeProps) {
   const containerRef = useRef<SVGSVGElement>(null);
+  const [qrSize, setQrSize] = useState<number>(size);
+  const [inputValue, setInputValue] = useState<string>(String(size));
 
-  // Layout calculations
+  // Layout calculations (derived from current qrSize, not the original prop)
   const textWidth = 60; // Space allocated for the vertical number column
-  const totalWidth = size + textWidth;
-  const totalHeight = size;
+  const totalWidth = qrSize + textWidth;
+  const totalHeight = qrSize;
 
-  // const downloadSVG = () => {
-  //   if (!containerRef.current) return;
+  const MIN_SIZE = 64;
+  const MAX_SIZE = 1024;
 
-  //   const serializer = new XMLSerializer();
-  //   const svgString = serializer.serializeToString(containerRef.current);
-  //   const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-  //   const svgUrl = URL.createObjectURL(svgBlob);
-    
-  //   const downloadLink = document.createElement("a");
-  //   downloadLink.href = svgUrl;
-  //   downloadLink.download = `qrcode-${sequence}.svg`;
-  //   document.body.appendChild(downloadLink);
-  //   downloadLink.click();
-  //   document.body.removeChild(downloadLink);
-  //   URL.revokeObjectURL(svgUrl);
-  // };
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    setInputValue(raw);
+
+    const parsed = Number(raw);
+    if (!raw || Number.isNaN(parsed)) return;
+
+    const clamped = Math.min(MAX_SIZE, Math.max(MIN_SIZE, parsed));
+    setQrSize(clamped);
+  };
+
+  const handleSizeBlur = () => {
+    // Snap the visible input back to whatever the clamped value actually is
+    setInputValue(String(qrSize));
+  };
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 rounded-xl bg-white shadow-md border w-fit">
-      
+    <div className="flex flex-col items-center gap-4 p-6 rounded-xl bg-white shadow-md border w-fit print:shadow-none print:border-none">
+
+      {/* Controls - hidden when printing */}
+      <div className="flex items-end gap-3 print:hidden">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="qr-size" className="text-sm font-medium text-gray-700">
+            QR Size (px)
+          </label>
+          <input
+            id="qr-size"
+            type="number"
+            min={MIN_SIZE}
+            max={MAX_SIZE}
+            value={inputValue}
+            onChange={handleSizeChange}
+            onBlur={handleSizeBlur}
+            className="border rounded-md px-3 py-2 text-sm w-28 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          onClick={handlePrint}
+          className="px-4 py-2 border hover:bg-gray-50 bg-white font-medium rounded-lg transition-colors text-sm"
+        >
+          Print
+        </button>
+      </div>
+
       {/* Master SVG Canvas */}
       <svg
         ref={containerRef}
         width={totalWidth}
         height={totalHeight}
         viewBox={`0 0 ${totalWidth} ${totalHeight}`}
-        xmlns="http://w3.org"
+        xmlns="http://www.w3.org/2000/svg"
         className="overflow-visible"
       >
         {/* White Background for the entire layout */}
@@ -72,7 +103,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
         <g transform={`translate(${textWidth}, 0)`}>
           <QRCodeSVG
             value={value}
-            size={size}
+            size={qrSize}
             bgColor={"#ffffff"}
             fgColor={"#000000"}
             level={"H"}
@@ -80,13 +111,28 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
           />
         </g>
       </svg>
-      
-      {/* <button
-        onClick={handlePrint}
-        className="mt-2 px-4 py-2 hover:bg-blue-700 bg-white font-medium rounded-lg transition-colors text-sm"
-      >
-        Print
-      </button> */}
+
+      {/* Print-only styling: hide everything except this component when printing */}
+      <style jsx global>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print\\:hidden,
+          .print\\:hidden * {
+            visibility: hidden !important;
+          }
+          svg,
+          svg * {
+            visibility: visible;
+          }
+          svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }
