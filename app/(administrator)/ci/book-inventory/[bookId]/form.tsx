@@ -1,10 +1,10 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { BookEditSchema, IBookEditSchema } from "@/types/zod"
+import { IBookEditSchema } from "@/types/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import React from "react"
@@ -14,6 +14,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { UpdateBookAction } from "@/app/actions/updateBookAction"
 import { toast } from "sonner"
 import { BookRow } from "../datatable/columns"
+import { BookEditSchema } from "@/types/book-edit-form.zod"
 
 
 export default function BookEditForm({ document }: { document: BookRow }) {

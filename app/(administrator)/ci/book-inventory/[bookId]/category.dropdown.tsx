@@ -25,8 +25,9 @@ import { Input } from "@/components/ui/input"
 import { usePathname } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
 import { AttachCategoryAction } from "@/app/actions/attachCategoryToBookAction"
-import { CategoryForm, ICategoryForm } from "@/types/zod"
+import { ICategoryForm } from "@/types/zod"
 import { Document } from "mongodb"
+import { CategoryForm } from "@/types/attach-category-form.zod"
 
 interface Category {
   _id: string
