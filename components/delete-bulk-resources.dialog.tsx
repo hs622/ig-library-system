@@ -10,7 +10,8 @@ import { Button } from "./ui/button"
 import React from "react"
 import { Spinner } from "./ui/spinner"
 import { useDeleteBulkDialogStore } from "@/hooks/use-delete-dialog-store"
-import { DeleteConfirmationDialog, IDeleteConfirmationDialog } from "@/types/zod"
+import { IDeleteConfirmationDialog } from "@/types/zod"
+import { DeleteConfirmationDialog } from "@/types/delete-confirmation-form.zod"
 
 export default function DeleteBulkResourcesDialog() {
 
