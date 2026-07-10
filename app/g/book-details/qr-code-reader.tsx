@@ -2,12 +2,13 @@
 
 import { useCameraStream } from "@/hooks/useCameraStream";
 import { useQrScanner } from "@/hooks/useQRSanner";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { QrScannerViewfinder } from "./qr-scanner-view-finder";
 import { QrScannerStatus } from "./qr-scanner-status";
 
 interface QrCodeReaderProps {
   /** Called with the decoded string every time a QR code is successfully read. */
+  paused: boolean;
   onScan: (value: string) => void;
   facingMode?: "user" | "environment";
   /** Pause scanning after a hit until the user chooses to scan again. Defaults to true. */
@@ -38,8 +39,6 @@ export default function QrCodeReader({
     onResult: handleResult,
   });
 
-  const resume = useCallback(() => setPaused(false), []);
-
   return (
     <div className={`flex flex-col items-center gap-3 ${className}`}>
       <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-lg bg-black">
@@ -49,16 +48,6 @@ export default function QrCodeReader({
 
         <QrScannerStatus status={status} errorMessage={errorMessage} onRetry={start} />
       </div>
-
-      {paused && (
-        <button
-          type="button"
-          onClick={resume}
-          className="rounded-md border px-4 py-2 text-sm font-medium"
-        >
-          Scan Another Code
-        </button>
-      )}
     </div>
   );
 }

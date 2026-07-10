@@ -4,14 +4,15 @@ import React from "react"
 import QrCodeReader from "./qr-code-reader"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-// import { getBaseUrl } from "@/lib/get-base-url"
 import { BookRow } from "@/app/(administrator)/ci/book-inventory/datatable/columns"
 import { toast } from "sonner"
+import { Camera } from "lucide-react"
 
 export default function Page() {
   const [value, setValue] = React.useState<string | null>(null)
   const [book, setBook] = React.useState<BookRow | null>(null)
   const [errors, setErrors] = React.useState<string | null>(null)
+  const [paused, setPaused] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     if (value !== null) {
@@ -19,13 +20,14 @@ export default function Page() {
         const fetchBookdetails = async () => {
           const response = await fetch(`/api/books?bookId=${value}`)
           if (!response.ok) throw new Error("Couldn't find the book.")
+          else setPaused(true)
 
           const jsonDecoded = await response.json()
           setBook(jsonDecoded)
         }
 
         fetchBookdetails()
-      } catch(error) {
+      } catch (error) {
         if (error instanceof Error) {
           // eslint-disable-next-line react-hooks/set-state-in-effect
           setErrors(error.message ?? "something went wrong.")
@@ -36,6 +38,8 @@ export default function Page() {
       }
     }
   }, [value, errors, book])
+
+  const resume = React.useCallback(() => setPaused(false), []);
 
   return (
     <Card className="h-full">
@@ -50,11 +54,21 @@ export default function Page() {
         </div>
 
         <div className="flex justify-center w-full">
-          <div className="size-64 oveerflow-hidden">
-            <QrCodeReader onScan={
-              (value) => setValue(value)
-            } />
-          </div>
+          {!paused ? (<div className="size-64 oveerflow-hidden">
+            <QrCodeReader
+              paused={paused}
+              onScan={
+                (value) => setValue(value)
+              } />
+          </div>) : (
+            <button
+              type="button"
+              onClick={resume}
+              className="cursor-pointer rounded-md border px-4 py-2"
+            >
+              <Camera />
+            </button>
+          )}
         </div>
 
         <ScrollArea className="h-50 p-2">
