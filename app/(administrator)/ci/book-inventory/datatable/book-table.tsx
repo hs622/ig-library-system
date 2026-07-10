@@ -161,11 +161,6 @@ export default function BookTable({
         </div>
       )}
 
-      {/* {!hasMore && data.length > 0 && (
-        <div className="py-2 text-center text-sm text-muted-foreground">
-          No more books.
-        </div>
-      )} */}
     </Card>
   );
 }
