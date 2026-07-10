@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
-import { IAddCategorySchema, SubCategory } from "@/types/zod";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SubCategory } from "@/types/add-category-form.zod";
+import { IAddCategorySchema } from "@/types/zod";
 import { Minus, Plus } from "lucide-react";
 import React from "react";
 import { Control, Controller, ControllerFieldState, ControllerRenderProps } from "react-hook-form";
@@ -39,7 +41,7 @@ interface SubCategoryFieldsProps {
 function SubCategoryFields({ field, fieldState }: SubCategoryFieldsProps) {
 
   const id = uuidv4();
-  
+
   const [inputFields, setInputFields] = React.useState<FieldRow[]>(() => {
     const initial = field.value?.length ? field.value : [""];
     return initial.map((v) => ({ id, value: v }))
@@ -77,29 +79,31 @@ function SubCategoryFields({ field, fieldState }: SubCategoryFieldsProps) {
         </Button>
       </div>
 
-      {inputFields?.map((inputField, index) => {
+      <ScrollArea className="h-75 py-5">
+        {inputFields?.map((inputField, index) => {
 
-        const isRowInvalid =
-          inputField.value.length > 0 &&
-          !SubCategory.safeParse(inputField.value).success;
+          const isRowInvalid =
+            inputField.value.length > 0 &&
+            !SubCategory.safeParse(inputField.value).success;
 
-        return (
-          <InputGroup key={inputField.id} className={"not-first:mt-4"}>
-            <InputGroupInput
-              id={`add-category-form-field-${index}`}
-              type="text"
-              value={inputField.value}
-              onChange={(e) => handleChange(inputField.id, e)}
-              aria-invalid={isRowInvalid}
-            />
-            {inputFields.length > 1 && (
-              <InputGroupButton type="button" variant="ghost" size="sm" onClick={() => handleRemoveField(inputField.id)}>
-                <Minus />
-              </InputGroupButton>
-            )}
-          </InputGroup>
-        )
-      })}
+          return (
+            <InputGroup key={inputField.id} className={"not-first:mt-4"}>
+              <InputGroupInput
+                id={`add-category-form-field-${index}`}
+                type="text"
+                value={inputField.value}
+                onChange={(e) => handleChange(inputField.id, e)}
+                aria-invalid={isRowInvalid}
+              />
+              {inputFields.length > 1 && (
+                <InputGroupButton type="button" variant="ghost" size="sm" onClick={() => handleRemoveField(inputField.id)}>
+                  <Minus />
+                </InputGroupButton>
+              )}
+            </InputGroup>
+          )
+        })}
+      </ScrollArea>
       {fieldState.invalid && <div className="text-red-400 text-xs">{fieldState.error?.message}</div>}
     </Field>
   )
