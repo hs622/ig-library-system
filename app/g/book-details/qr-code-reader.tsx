@@ -8,7 +8,7 @@ import { QrScannerStatus } from "./qr-scanner-status";
 
 interface QrCodeReaderProps {
   /** Called with the decoded string every time a QR code is successfully read. */
-  // onScan: (value: string) => void;
+  onScan: (value: string) => void;
   facingMode?: "user" | "environment";
   /** Pause scanning after a hit until the user chooses to scan again. Defaults to true. */
   pauseAfterScan?: boolean;
@@ -16,7 +16,7 @@ interface QrCodeReaderProps {
 }
 
 export default function QrCodeReader({
-  // onScan,
+  onScan,
   facingMode = "environment",
   pauseAfterScan = true,
   className = "",
@@ -26,10 +26,10 @@ export default function QrCodeReader({
 
   const handleResult = useCallback(
     (value: string) => {
-      // onScan(value);
+      onScan(value);
       if (pauseAfterScan) setPaused(true);
     },
-    [pauseAfterScan],
+    [onScan, pauseAfterScan],
   );
 
   const { isScanning } = useQrScanner({
