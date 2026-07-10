@@ -12,7 +12,7 @@ import {
 } from "./ui/breadcrumb";
 import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
-import { ModeToggle } from "./buttons/theme-button";
+import { ModeDropdown } from "./buttons/theme-button";
 import React from "react";
 import { formatSegmentName } from "@/lib/hepler";
 
@@ -70,7 +70,7 @@ export default function NavBreadcrumbs() {
       </header>
 
       <div className="px-4">
-        <ModeToggle />
+        <ModeDropdown />
       </div>
     </div>
   );
