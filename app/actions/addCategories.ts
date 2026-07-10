@@ -3,7 +3,8 @@
 import { ObjectId } from "mongodb";
 import { ActionResponse } from "@/lib/action-response";
 import clientPromise from "@/lib/mongodb";
-import { AddCategorySchema, IAddCategorySchema } from "@/types/zod";
+import { IAddCategorySchema } from "@/types/zod";
+import { AddCategorySchema } from "@/types/add-category-form.zod";
 
 export const AddCategory = async (data: IAddCategorySchema) => {
   const parsed = AddCategorySchema.safeParse(data);
