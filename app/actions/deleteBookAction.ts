@@ -2,8 +2,8 @@
 
 import { ActionResponse } from "@/lib/action-response";
 import clientPromise from "@/lib/mongodb";
-import {
-  DeleteConfirmationDialog,
+import { DeleteConfirmationDialog } from "@/types/delete-confirmation-form.zod";
+import { 
   IDeleteConfirmationDialog,
 } from "@/types/zod";
 import { ObjectId } from "mongodb";
