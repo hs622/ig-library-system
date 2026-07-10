@@ -3,7 +3,8 @@
 import { ActionResponse } from "@/lib/action-response"
 import { ApiError } from "@/lib/api-error"
 import getClientPromise from "@/lib/mongodb"
-import { CategoryForm, ICategoryForm } from "@/types/zod"
+import { CategoryForm } from "@/types/attach-category-form.zod"
+import { ICategoryForm } from "@/types/zod"
 import { ObjectId } from "mongodb"
 
 export const AttachCategoryAction = async (data: ICategoryForm) => {
