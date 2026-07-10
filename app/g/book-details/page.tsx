@@ -7,6 +7,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { BookRow } from "@/app/(administrator)/ci/book-inventory/datatable/columns"
 import { toast } from "sonner"
 import { Camera } from "lucide-react"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Button } from "@/components/ui/button"
+import { ModeToggle } from "@/components/buttons/theme-button-3"
 
 export default function Page() {
   const [value, setValue] = React.useState<string | null>(null)
@@ -44,34 +47,41 @@ export default function Page() {
   return (
     <Card className="h-full">
       <CardContent className="flex flex-col gap-5">
-        <div className="pb-4">
-          <div className="text-2xl font-bold uppercase">
-            Book Finder
-          </div>
+        <div className="flex justify-between items-center">
           <div>
-            Search book deatils through QR Code.
+            <div className="text-xl font-bold uppercase">
+              Book Finder
+            </div>
+            <div>
+              Search book details through QR Code.
+            </div>
           </div>
+
+          <ButtonGroup>
+            <ModeToggle />
+            <Button
+              variant={"outline"}
+              type="button"
+              onClick={resume}
+              className="cursor-pointer"
+              disabled={paused}
+            >
+              <Camera />
+            </Button>
+          </ButtonGroup>
         </div>
 
         <div className="flex justify-center w-full">
-          {!paused ? (<div className="size-64 oveerflow-hidden">
+          <div className="size-64 oveerflow-hidden">
             <QrCodeReader
               paused={paused}
               onScan={
                 (value) => setValue(value)
               } />
-          </div>) : (
-            <button
-              type="button"
-              onClick={resume}
-              className="cursor-pointer rounded-md border px-4 py-2"
-            >
-              <Camera />
-            </button>
-          )}
+          </div>
         </div>
 
-        <ScrollArea className="h-50 p-2">
+        <ScrollArea className="h-inherit p-2">
           <pre>
             {JSON.stringify(book, null, 2)}
           </pre>
