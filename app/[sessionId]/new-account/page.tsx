@@ -16,5 +16,4 @@ export default async function Page({ params, searchParams }: PageProps) {
       <NewMemberForm />
     </div>
   )
-
 }
