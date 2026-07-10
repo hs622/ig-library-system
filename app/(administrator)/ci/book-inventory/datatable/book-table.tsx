@@ -103,13 +103,14 @@ export default function BookTable({
       ref={scrollContainerRef}
       className="p-0! max-h-full h-fit overflow-y-auto"
     >
-      <Table className="table-fixed min-w-full">
+      <Table className="w-full table-auto">
         <TableHeader className="sticky top-0 bg-background z-10">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
+                  className={`${header.column.columnDef.meta?.className}`}
                 >
                   {header.isPlaceholder
                     ? null
@@ -160,11 +161,11 @@ export default function BookTable({
         </div>
       )}
 
-      {!hasMore && data.length > 0 && (
+      {/* {!hasMore && data.length > 0 && (
         <div className="py-2 text-center text-sm text-muted-foreground">
           No more books.
         </div>
-      )}
+      )} */}
     </Card>
   );
 }

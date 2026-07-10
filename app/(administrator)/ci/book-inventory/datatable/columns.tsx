@@ -34,22 +34,24 @@ export const BookColumns = () => {
         return (
           <Checkbox
             aria-label="Select row"
-            className="translate-y-0.5"
+            // className="translate-y-0.5"
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
           />
         )
       },
+      meta: {
+        className: "w-4"
+      },
       enableHiding: false,
-      enableSorting: false,
-      size: 40
+      enableSorting: false, 
     },
     {
       id: "title",
       accessorKey: "title",
       header: "Title",
       meta: {
-        className: "w-[20px] truncate border-b",
+        className: "w-8 truncate border-b",
       },
       enableSorting: false,
       enableHiding: false,
@@ -59,7 +61,7 @@ export const BookColumns = () => {
       accessorKey: "authorName",
       header: "Author",
       meta: {
-        className: "w-[20px] truncate border-l border-b",
+        className: "w-6 truncate border-l border-b",
       },
       enableSorting: false,
       enableHiding: false,
@@ -69,7 +71,7 @@ export const BookColumns = () => {
       accessorKey: "publicationYear",
       header: "Publication Year",
       meta: {
-        className: "w-[20px] truncate border",
+        className: "w-4 border",
       },
       enableSorting: false,
       enableHiding: false,
@@ -79,7 +81,7 @@ export const BookColumns = () => {
       accessorKey: "category",
       header: "Category",
       meta: {
-        className: "w-[20px] truncate border",
+        className: "w-6 truncate border",
       },
       enableSorting: false,
       enableHiding: false,
@@ -90,7 +92,7 @@ export const BookColumns = () => {
       header: "Ingested At",
       cell: ({ row }) => formatReadableDate(row.original.createdAt),
       meta: {
-        className: "w-[20px] truncate border-l border-b",
+        className: "w-6 border-l border-b",
       },
       enableSorting: false,
       enableHiding: false,
