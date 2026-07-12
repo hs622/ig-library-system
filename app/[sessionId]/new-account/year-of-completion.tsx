@@ -18,6 +18,9 @@ export default function AskYearOfCompletionForm(
         id={step.id}
         type="number"
         autoFocus
+        maxLength={4}
+        inputMode="numeric"
+        pattern="[0-9]*"
         className={underlineClass(!!error)}
         aria-invalid={!!error}
         {...register(step.id as "yearOfCompletion", { valueAsNumber: true })}

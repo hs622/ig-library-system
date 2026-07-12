@@ -12,6 +12,7 @@ import AskCINCForm from "./cnic";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { IMemberFormSchema } from "@/types/zod";
+import AskBFormNumberForm from "./b-form";
 
 type SectionKey = "personal" | "emergency" | "education" | "professional";
 
@@ -87,9 +88,9 @@ export function StepField({
     case "address":
     case "institution":
     case "progressDegree":
-    case "profession":
-    case "company":
-    case "designation":
+    // case "profession":
+    // case "company":
+    // case "designation":
     case "highestEducation":
       return (
         <Field data-invalid={!!error} className="gap-4">
@@ -100,7 +101,9 @@ export function StepField({
         </Field>
       );
 
-    case "formBNumber":
+    // case "formBNumber":
+    //   return <AskBFormNumberForm error={error} register={register} step={step} setValue={setValue} />;
+
     case "cnicNumber":
       return <AskCINCForm error={error} register={register} step={step} setValue={setValue} />;
 

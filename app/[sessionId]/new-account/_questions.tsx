@@ -17,14 +17,14 @@ export default function getSteps(age: number | null): StepDef[] {
 
   if (age !== null) {
     steps.push(
-      isJunior
-        ? { id: "formBNumber", section: "personal", label: "What's the Form B Number?" }
-        : {
-          id: "cnicNumber",
-          section: "personal",
-          label: "What is the CNIC Number?",
-          description: "Format: 12345-1234567-1",
-        }
+      //   isJunior
+      //     ? { id: "formBNumber", section: "personal", label: "What's the Form B Number?" }
+      {
+        id: "cnicNumber",
+        section: "personal",
+        label: isJunior ? "What is the B-Form Number?" : "What is the CNIC number?",
+        description: "Format: 12345-1234567-1",
+      }
     );
   }
 
@@ -46,13 +46,15 @@ export default function getSteps(age: number | null): StepDef[] {
     { id: "yearOfCompletion", section: "education", label: "What year was / will this be completed?" }
   );
 
-  if (!!isJunior && age !== null) {
-    steps.push(
-      { id: "profession", section: "professional", label: "What is the profession?" },
-      { id: "company", section: "professional", label: "Which company is this for?" },
-      { id: "designation", section: "professional", label: "What is the designation?" }
-    );
-  }
+  // Profession/company/designation are only required by the zod schema for
+  // senior (18+) members — must ask for them here or final submit fails silently.
+  // if (age !== null && !isJunior) {
+  //   steps.push(
+  //     { id: "profession", section: "professional", label: "What is the profession?" },
+  //     { id: "company", section: "professional", label: "Which company is this for?" },
+  //     { id: "designation", section: "professional", label: "What is the designation?" }
+  //   );
+  // }
 
   return steps;
 }
