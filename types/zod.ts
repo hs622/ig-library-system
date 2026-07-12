@@ -7,7 +7,7 @@ import { BookEditSchema } from "./book-edit-form.zod";
 import { BookSchema } from "./book.zod";
 import { CategorySchema } from "./category.zod";
 import { CategoryForm } from "./attach-category-form.zod";
-import { AddCategorySchema, SubCategory } from "./add-category-form.zod";
+import { AddCategorySchema, AddCategorySchema_v2, SubCategory } from "./add-category-form.zod";
 
 
 
@@ -18,6 +18,7 @@ export const Role = z.enum(["admin", "member", "idle"]);
 
 export type ISubCategory = z.infer<typeof SubCategory>;
 export type IAddCategorySchema = z.infer<typeof AddCategorySchema>;
+export type IAddCategorySchema_v2 = z.infer<typeof AddCategorySchema_v2>;
 
 export type TRole = z.infer<typeof Role>;
 export type ICategoryForm = z.infer<typeof CategoryForm>;

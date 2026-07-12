@@ -17,17 +17,19 @@ export const MemberFormSchema = z
     //   .date({ required_error: "Date of birth is required" })
     //   .max(new Date(), "Date of birth cannot be in the future"),
 
-    formBNumber: z
-      .string()
-      .regex(/^\d{5}-\d{7}-\d{1}$/, {
-        message: "Must be a valid B Form number: xxxxx-xxxxxxx-x.",
-      })
-      // strip hyphens if you want to store/send raw digits instead of the formatted string
-      .transform((value) => value.replace(/-/g, "")),
+    // formBNumber: z
+    //   .string()
+    //   .regex(/^\d{5}-\d{7}-\d{1}$/, {
+    //     message: "Must be a valid B Form number: xxxxx-xxxxxxx-x.",
+    //   })
+    //   // strip hyphens if you want to store/send raw digits instead of the formatted string
+    //   .transform((value) => value.replace(/-/g, ""))
+    //   .optional(),
+
     cnicNumber: z
       .string()
       .regex(/^\d{5}-\d{7}-\d{1}$/, {
-        message: "Must be a valid CNIC number: xxxxx-xxxxxxx-x.",
+        message: "Must be in the format: xxxxx-xxxxxxx-x.",
       })
       // strip hyphens if you want to store/send raw digits instead of the formatted string
       .transform((value) => value.replace(/-/g, "")),
@@ -56,52 +58,56 @@ export const MemberFormSchema = z
       .min(1950, "Enter a valid year")
       .max(2100, "Enter a valid year"),
 
-    profession: z.string().optional(),
-    company: z.string().optional(),
-    designation: z.string().optional(),
+    // profession: z.string().optional(),
+    // company: z.string().optional(),
+    // designation: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    const date = new Date(data.dob.year, data.dob.month, data.dob.day) // formating a date.
+    console.log("working...")
+    const date = new Date(data.dob.year, data.dob.month - 1, data.dob.day) // formating a date.
     const age = calculateAge(date);
     if (age === null) return;
 
-    if (age < 18) {
-      if (!data.formBNumber || data.formBNumber.trim().length < 5) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Form B Number is required for junior members",
-          path: ["formBNumber"],
-        });
-      }
-    } else {
-      if (!data.cnicNumber || !cnicRegex.test(data.cnicNumber)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message:
-            "Valid CNIC (12345-1234567-1) is required for senior members",
-          path: ["cnicNumber"],
-        });
-      }
-      if (!data.profession || data.profession.trim().length < 2) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Profession is required for senior members",
-          path: ["profession"],
-        });
-      }
-      if (!data.company || data.company.trim().length < 2) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Company is required for senior members",
-          path: ["company"],
-        });
-      }
-      if (!data.designation || data.designation.trim().length < 2) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Designation is required for senior members",
-          path: ["designation"],
-        });
-      }
-    }
+    console.log({age})
+    console.log(age < 18)
+
+    // if (age < 18) {
+      // if (!data.formBNumber || data.formBNumber.trim().length < 5) {
+      //   ctx.addIssue({
+      //     code: z.ZodIssueCode.custom,
+      //     message: "Form B Number is required for junior members",
+      //     path: ["formBNumber"],
+      //   });
+      // }
+    // } else {
+    //   if (!data.cnicNumber || !cnicRegex.test(data.cnicNumber)) {
+    //     ctx.addIssue({
+    //       code: z.ZodIssueCode.custom,
+    //       message:
+    //         "Valid CNIC (12345-1234567-1) is required for senior members",
+    //       path: ["cnicNumber"],
+    //     });
+    //   }
+      // if (!data.profession || data.profession.trim().length < 2) {
+      //   ctx.addIssue({
+      //     code: z.ZodIssueCode.custom,
+      //     message: "Profession is required for senior members",
+      //     path: ["profession"],
+      //   });
+      // }
+      // if (!data.company || data.company.trim().length < 2) {
+      //   ctx.addIssue({
+      //     code: z.ZodIssueCode.custom,
+      //     message: "Company is required for senior members",
+      //     path: ["company"],
+      //   });
+      // }
+      // if (!data.designation || data.designation.trim().length < 2) {
+      //   ctx.addIssue({
+      //     code: z.ZodIssueCode.custom,
+      //     message: "Designation is required for senior members",
+      //     path: ["designation"],
+      //   });
+      // }
+    // }
   });
