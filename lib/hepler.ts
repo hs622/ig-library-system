@@ -39,3 +39,9 @@ export const formatCNICNumber = (value: string): string => {
   return `${digits.slice(0, 5)}-${digits.slice(5, 12)}-${digits.slice(12)}`;
 };
 
+export const formatContactNumber = (value: string): string => {
+  const digits = value.replace(/\D/g, "").slice(0, 10); // hard cap — stops at 10 digits
+
+  if (digits.length <= 3) return digits;
+  return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+};
