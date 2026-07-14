@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import clientPromise from "@/lib/mongodb";
 import { MemberFormSchema } from "@/types/member-form.zod";
 import { IMemberFormSchema } from "@/types/zod";
+import { formatContactNumber } from "@/lib/hepler";
 
 // Adjust to whatever your actual database name is (or keep it in an env var).
 const DB_NAME = process.env.DATABASE_NAME;
@@ -27,13 +28,16 @@ export type CreateMemberResult =
 export async function createLibraryMember(
   values: IMemberFormSchema
 ): Promise<CreateMemberResult> {
-  // Re-validate on the server — a server action can be called directly,
-  // bypassing whatever client-side validation already ran.
 
   const formattedCNIC = String(values.cnicNumber).replace(/^(\d{5})(\d{7})(\d{1})$/, '$1-$2-$3');
   values.cnicNumber = formattedCNIC
 
+  const formattedNumber = formatContactNumber(values.contactNumber)
+  values.contactNumber = formattedNumber
+
   const parsed = MemberFormSchema.safeParse(values);
+
+
   if (!parsed.success) {
     return {
       success: false,
@@ -45,7 +49,9 @@ export async function createLibraryMember(
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
-    const users = db.collection<UserDocument>(COLLECTION);
+    const collection = db.collection<UserDocument>("users");
+
+    collection.createIndex({ email: 1}, { unique: true })
 
     const now = new Date();
     const libraryId = uuidv4();
@@ -59,7 +65,7 @@ export async function createLibraryMember(
       deletedAt: null,
     };
 
-    const result = await users.insertOne(doc);
+    const result = await collection.insertOne(doc);
 
     return {
       success: true,
