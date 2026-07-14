@@ -5,10 +5,10 @@ import { IMemberFormSchema } from "@/types/zod";
 
 export type StepDirection = "forward" | "backward";
 
-export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
-  gender: undefined, 
-  partOfReadingClub: undefined 
-};
+// export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
+//   gender: undefined, 
+//   partOfReadingClub: undefined 
+// };
 
 interface MemberFormUIState {
   stepIndex: number;
@@ -42,7 +42,7 @@ const initialState = {
   direction: "forward" as StepDirection,
   submitted: null,
   dateOfBirth: null,
-  formData: defaultMemberFormValues,
+  formData: {}
 };
 
 export const useMemberFormStore = create<MemberFormUIState>((set) => ({
@@ -75,5 +75,5 @@ export const useMemberFormStore = create<MemberFormUIState>((set) => ({
 
   skipToFirstStep: () => set({ stepIndex: 0, direction: "backward" }),
 
-  resetForm: () => set({ ...initialState, formData: defaultMemberFormValues }),
+  resetForm: () => set({ ...initialState, formData: {} }),
 }));
