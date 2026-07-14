@@ -7,7 +7,6 @@ export type StepDirection = "forward" | "backward";
 
 export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
   gender: undefined,
-  educationStatus: undefined,
 };
 
 interface MemberFormUIState {
