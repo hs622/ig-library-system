@@ -6,8 +6,7 @@ import { IMemberFormSchema } from "@/types/zod";
 export type StepDirection = "forward" | "backward";
 
 export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
-  gender: undefined,
-  educationStatus: undefined,
+  gender: undefined, 
 };
 
 interface MemberFormUIState {
