@@ -8,6 +8,7 @@ import { BookSchema } from "./book.zod";
 import { CategorySchema } from "./category.zod";
 import { CategoryForm } from "./attach-category-form.zod";
 import { AddCategorySchema, AddCategorySchema_v2, SubCategory } from "./add-category-form.zod";
+import { BookCreateSchema } from "./add-book-form.zod";
 
 
 
@@ -24,6 +25,7 @@ export type TRole = z.infer<typeof Role>;
 export type ICategoryForm = z.infer<typeof CategoryForm>;
 export type ICategorySchema = z.infer<typeof CategorySchema>;
 export type IBookSchema = z.infer<typeof BookSchema>;
+export type IBookCreateSchema = z.infer<typeof BookCreateSchema>;
 export type IBookEditSchema = z.infer<typeof BookEditSchema>;
 
 export type IDeleteConfirmationDialog = z.infer<

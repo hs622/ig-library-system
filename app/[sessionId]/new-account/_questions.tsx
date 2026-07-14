@@ -4,57 +4,111 @@ export default function getSteps(age: number | null): StepDef[] {
   const isJunior = age !== null && age < 18;
 
   const steps: StepDef[] = [
-    { id: "fullName", section: "personal", label: "What's your full name?" },
-    { id: "fatherName", section: "personal", label: "What's your father's name?" },
-    { id: "gender", section: "personal", label: "What's your gender?" },
+    {
+      id: "fullName",
+      section: "personal",
+      label: "Your full name?",
+    },
+    {
+      id: "fatherName",
+      section: "personal",
+      label: "Father/Husband Name?",
+    },
+    {
+      id: "gender",
+      section: "personal",
+      label: "Select you Gender?",
+    },
     {
       id: "dob",
       section: "personal",
-      label: "What's your date of birth?",
-      description: "Under 18 registers as a Junior Member, 18 and above as a Senior Member.",
+      label: "Your Date of Birth?",
+      description:
+        "If you're under 18, you'll be registered as a Junior Member. Otherwise, you'll be registered as a Senior Member.",
     },
   ];
 
   if (age !== null) {
-    steps.push(
-      //   isJunior
-      //     ? { id: "formBNumber", section: "personal", label: "What's the Form B Number?" }
-      {
-        id: "cnicNumber",
-        section: "personal",
-        label: isJunior ? "What is the B-Form Number?" : "What is the CNIC number?",
-        description: "Format: 12345-1234567-1",
-      }
-    );
+    steps.push({
+      id: "cnicNumber",
+      section: "personal",
+      label: isJunior
+        ? "Your B-Form Number?"
+        : "Your CNI Number?",
+      description: "Format: 12345-1234567-1",
+    });
   }
 
   steps.push(
-    { id: "address", section: "personal", label: "What's your address?" },
-    // { id: "jurisdiction", section: "personal", label: "Which jurisdiction does this fall under?" },
-    // { id: "province", section: "personal", label: "Which province is this in?" },
-    // { id: "city", section: "personal", label: "Which city is this in?" },
-    { id: "contactNumber", section: "personal", label: "What is the contact number?" },
-    { id: "email", section: "personal", label: "What is the email address?" },
-
-    // { id: "emergencyContactName", section: "emergency", label: "Who should we contact in an emergency?" },
-    // { id: "emergencyContactNumber", section: "emergency", label: "What is their contact number?" },
-
-    { id: "highestEducation", section: "education", label: "What is the highest level of education?" },
-    { id: "institution", section: "education", label: "Which institution was / is attended?" },
-    { id: "progressDegree", section: "education", label: "What is the progress / degree?" },
-    { id: "educationStatus", section: "education", label: "Is this completed or anticipated?" },
-    { id: "yearOfCompletion", section: "education", label: "What year was / will this be completed?" }
+    {
+      id: "address",
+      section: "personal",
+      label: "Complete Address?",
+    },
+    {
+      id: "contactNumber",
+      section: "personal",
+      label: "Your Contact Number?",
+    },
+    {
+      id: "email",
+      section: "personal",
+      label: "Your email Address?",
+    },
+    {
+      id: "highestEducation",
+      section: "education",
+      label: "Your highest education?",
+      description: "For example: School, College, or University",
+    },
+    {
+      id: "institution",
+      section: "education",
+      label: "Name of your educational institution?",
+    },
+    {
+      id: "areaOfInterest",
+      section: "interest",
+      label: "Which service of this facility, you will be most interested in?",
+    },
+    {
+      id: "partOfReadingClub",
+      section: "opinion",
+      label: "Would like to be a part of our Reading club?",
+    },
+    {
+      id: "genre",
+      section: "opinion",
+      label: "Tell us your favourite genre in books?",
+      description: "Use commas, if more than one. eg: Comedy, Mystery, Horror",
+    },
+    {
+      id: "activities",
+      section: "opinion",
+      label: "What services and activities would you like us plan for you?",
+    },
+    {
+      id: "suggestionForImpovement",
+      section: "opinion",
+      label: "Tell us anything that you would like to change or add to the library.",
+    },
+    // {
+    //   id: "progressDegree",
+    //   section: "education",
+    //   label: "What degree, diploma, or program are you pursuing or have you completed?",
+    // },
+    // {
+    //   id: "educationStatus",
+    //   section: "education",
+    //   label: "Have you completed it, or are you still studying?",
+    // },
+    // {
+    //   id: "yearOfCompletion",
+    //   section: "education",
+    //   label: "What year did you complete it, or when do you expect to finish?",
+    //   description: "Year"
+    // }
   );
-
-  // Profession/company/designation are only required by the zod schema for
-  // senior (18+) members — must ask for them here or final submit fails silently.
-  // if (age !== null && !isJunior) {
-  //   steps.push(
-  //     { id: "profession", section: "professional", label: "What is the profession?" },
-  //     { id: "company", section: "professional", label: "Which company is this for?" },
-  //     { id: "designation", section: "professional", label: "What is the designation?" }
-  //   );
-  // }
 
   return steps;
 }

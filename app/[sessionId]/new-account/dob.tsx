@@ -85,32 +85,7 @@ export default function AskDateOfBirthForm(
         </div>
       </div>
 
-
-      {/* <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="dob"
-            type="button"
-            variant="ghost"
-            className={cn(underlineClass(!!error), "w-full justify-start px-0 hover:bg-transparent", !dobValue && "text-zinc-600")}
-          >
-            <CalendarIcon className="mr-2 h-5 w-5" />
-            {dobValue ? format(dobValue, "PPP") : "Select date of birth"}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto border-zinc-700 bg-zinc-900 p-0 text-zinc-50">
-          <Calendar
-            mode="single"
-            selected={dobValue}
-            onSelect={(date) => date && setValue("dob", date, { shouldValidate: true })}
-            captionLayout="dropdown"
-            // fromYear={1930}
-            // toYear={new Date().getFullYear()}
-            disabled={(date) => date > new Date()}
-          />
-        </PopoverContent>
-      </Popover> */}
-      {step.id && <FieldDescription className="text-zinc-400">{step.description}</FieldDescription>}
+      {step.id && <FieldDescription className="text-black dark:text-white">{step.description}</FieldDescription>}
       {(errors?.year && errors?.month && errors?.day) ? (
         <FieldError className="text-red-500">Enter your date of birth.</FieldError>
       ) : (

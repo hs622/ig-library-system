@@ -36,7 +36,7 @@ export default function AskCINCForm(
           },
         })}
       />
-      {step.description && <FieldDescription className="text-zinc-400">{step.description}</FieldDescription>}
+      {step.description && <FieldDescription className="text-black dark:text-white">{step.description}</FieldDescription>}
       {error && <FieldError className="text-red-400">{error}</FieldError>}
     </Field>
   )

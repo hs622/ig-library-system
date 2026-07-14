@@ -13,10 +13,12 @@ import { calculateAge } from "@/lib/hepler";
 import { IMemberFormSchema } from "@/types/zod";
 import { ModeSwitcher } from "@/components/buttons/theme-button-2";
 import { MemberFormSchema } from "@/types/member-form.zod";
-import { stepAnimationStyles, StepField } from "./_common";
+import { StepField } from "./_common";
 import getSteps from "./_questions";
-import { defaultMemberFormValues, useMemberFormStore } from "@/hooks/member-form-store";
+import { defaultMemberFormValues, useMemberFormStore } from "@/store/member-form-store";
 import { createLibraryMember } from "@/app/actions/addNewMember";
+import { Spinner } from "@/components/ui/spinner";
+import { stepAnimationStyles } from "@/constants/new-account-form";
 
 export default function NewMemberForm() {
   const {
@@ -90,13 +92,12 @@ export default function NewMemberForm() {
 
   async function onSubmit(values: IMemberFormSchema) {
     setSubmitError(null);
+    console.log(values)
     const result = await createLibraryMember(values);
 
     if (result.success) {
       setSubmitted(values);
     } else {
-      // TODO: surface fieldErrors against individual steps if you want to route
-      // the user back to the offending step instead of a single banner message.
       setSubmitError(result.error);
       console.error("createLibraryMember failed:", result.error, "fieldErrors" in result ? result.fieldErrors : undefined);
     }
@@ -145,7 +146,7 @@ export default function NewMemberForm() {
           </Button>
         </div>
       ) : (
-        <form onSubmit={(e) => e.preventDefault()} className="flex flex-1 flex-col justify-center overflow-hidden">
+        <form onSubmit={(e) => e.preventDefault()} className="flex flex-1 flex-col justify-center overflow-hidden" noValidate>
           <style>{stepAnimationStyles}</style>
           <div
             key={currentStep.id}
@@ -159,6 +160,7 @@ export default function NewMemberForm() {
               {currentIndex > 0 && (
                 <button
                   type="button"
+                  disabled={form.formState.isSubmitting}
                   onClick={goBack}
                   className="text-sm md:text-lg text-zinc-400 underline-offset-4 hover:text-zinc-200 hover:underline"
                 >
@@ -167,10 +169,16 @@ export default function NewMemberForm() {
               )}
               <Button
                 type="button"
+                disabled={form.formState.isSubmitting}
                 onClick={goNext}
                 className="rounded-full h-16 w-16 dark:bg-white bg-black px-6 text-white dark:text-black hover:text-black hover:bg-accent"
               >
-                {isLastStep ? <SendHorizontal size={"md"} /> : <MoveRight size={25} />}
+                {!isLastStep 
+                  ? <MoveRight className="size-6" />
+                  : form.formState.isSubmitting 
+                    ? <Spinner className={cn("size-6")}/>
+                    : <SendHorizontal className="size-6"/> 
+                }
               </Button>
             </div>
           </div>
