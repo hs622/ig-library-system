@@ -29,17 +29,6 @@ export type StepDef = {
   description?: string;
 };
 
-export const InterestOfOptions = [
-  "reading room",
-  "digital literacy programs",
-  "computer fundamentals",
-  "coding and programming workshops",
-  "productivity software training",
-  "career development sessions",
-  "short-term certification and crash sources",
-  "Camps, Movies/ Documentaries",
-] as const;
-
 export const QuestionLabel = ({ step }: { step: { id: string, label: string } }) => (
   <FieldLabel htmlFor={step.id} className="text-4xl sm:text-6xl font-bold leading-snug dark:text-foreground text-foreground">
     {step.label}
@@ -60,19 +49,6 @@ export function underlineClass(hasError?: boolean) {
       : "focus:border-0 focus:border-b focus:border-black dark:focus:border-white" + "focus-visible:border-b focus-visible:border-white dark:focus-visible:border-white focus-visible:border-black"
   );
 }
-
-export const stepAnimationStyles = `
-@keyframes stepSlideInForward {
-  from { opacity: 0; transform: translateX(28px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes stepSlideInBackward {
-  from { opacity: 0; transform: translateX(-28px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.step-forward { animation: stepSlideInForward 320ms cubic-bezier(0.16, 1, 0.3, 1); }
-.step-backward { animation: stepSlideInBackward 320ms cubic-bezier(0.16, 1, 0.3, 1); }
-`;
 
 export function StepField({
   step,

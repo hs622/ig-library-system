@@ -13,11 +13,12 @@ import { calculateAge } from "@/lib/hepler";
 import { IMemberFormSchema } from "@/types/zod";
 import { ModeSwitcher } from "@/components/buttons/theme-button-2";
 import { MemberFormSchema } from "@/types/member-form.zod";
-import { stepAnimationStyles, StepField } from "./_common";
+import { StepField } from "./_common";
 import getSteps from "./_questions";
 import { defaultMemberFormValues, useMemberFormStore } from "@/store/member-form-store";
 import { createLibraryMember } from "@/app/actions/addNewMember";
 import { Spinner } from "@/components/ui/spinner";
+import { stepAnimationStyles } from "@/constants/new-account-form";
 
 export default function NewMemberForm() {
   const {
