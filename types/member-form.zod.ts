@@ -1,6 +1,12 @@
-import { calculateAge, cnicRegex, phoneRegex } from "@/lib/hepler";
+import { calculateAge } from "@/lib/hepler";
 import z from "zod";
-import { DateOfBirthSchema } from "./date-of-birth.zod";
+import { DateOfBirthSchema } from "./date-of-birth.zod"; 
+import { InterestOfOptions } from "@/constants/new-account-form";
+
+// export type AreaOfInterest = (typeof InterestOfOptions)[number];
+const allowedInterests = InterestOfOptions.map((v) =>
+  v.toLowerCase().replaceAll(" ", "-")
+);
 
 
 export const MemberFormSchema = z
@@ -9,23 +15,10 @@ export const MemberFormSchema = z
     fatherName: z
       .string()
       .min(2, "Father's name must be at least 2 characters"),
-    gender: z.enum(["male", "female", "other"], {
+    gender: z.enum(["male", "female"], {
       required_error: "Please select a gender",
     }),
     dob: DateOfBirthSchema,
-    // z.coerce
-    //   .date({ required_error: "Date of birth is required" })
-    //   .max(new Date(), "Date of birth cannot be in the future"),
-
-    // formBNumber: z
-    //   .string()
-    //   .regex(/^\d{5}-\d{7}-\d{1}$/, {
-    //     message: "Must be a valid B Form number: xxxxx-xxxxxxx-x.",
-    //   })
-    //   // strip hyphens if you want to store/send raw digits instead of the formatted string
-    //   .transform((value) => value.replace(/-/g, ""))
-    //   .optional(),
-
     cnicNumber: z
       .string()
       .regex(/^\d{5}-\d{7}-\d{1}$/, {
@@ -35,50 +28,62 @@ export const MemberFormSchema = z
       .transform((value) => value.replace(/-/g, "")),
 
     address: z.string().min(5, "Address is required"),
-    // jurisdiction: z.string().min(2, "Jurisdiction is required"),
-    // province: z.string().min(2, "Province is required"),
-    // city: z.string().min(2, "City is required"),
-    contactNumber: z.string().regex(phoneRegex, "Enter a valid contact number"),
+    contactNumber: z
+      .string()
+      .regex(/^\d{3}-\d{7}$/, {
+        message: "Must be in the format: xxx-xxxxxxx.",
+      })
+      .transform((value) => value.replace(/-/g, "")),
+
     email: z.string().email("Enter a valid email address"),
-
-    // emergencyContactName: z.string().min(2, "Name is required"),
-    // emergencyContactNumber: z
-    //   .string()
-    //   .regex(phoneRegex, "Enter a valid contact number"),
-
     highestEducation: z.string().min(2, "Highest education is required"),
     institution: z.string().min(2, "Institution is required"),
-    progressDegree: z.string().min(2, "Progress/Degree is required"),
-    educationStatus: z.enum(["completed", "anticipated"], {
-      required_error: "Please select a status",
-    }),
-    yearOfCompletion: z.coerce
-      .number({ invalid_type_error: "Enter a valid year" })
-      .int()
-      .min(1950, "Enter a valid year")
-      .max(2100, "Enter a valid year"),
+
+    areaOfInterest: z
+      .array(z.string(), {
+        message: "Select at least one of them."
+      })
+      .min(1, "Select at least one area of interest")
+      .refine(
+        (vals) => vals.every((v) => allowedInterests.includes(v)),
+        {
+          message: "Invalid area of interest selected",
+        },
+      ),
+
+    partOfReadingClub: z.boolean({ message: "Select anyone." }),
+    genre: z.string().min(1, "Enter at least one genre."),
+    activities: z.string().optional(),
+    suggestionForImpovement: z.string().max(200, { message: "200 characters limit."}).optional(),
+
+    // progressDegree: z.string().min(2, "Progress/Degree is required"),
+    // educationStatus: z.enum(["completed", "anticipated"], {
+    //   required_error: "Please select a status",
+    // }),
+    // yearOfCompletion: z.coerce
+    //   .number({ invalid_type_error: "Enter a valid year" })
+    //   .int()
+    //   .min(1950, "Enter a valid year")
+    //   .max(2100, "Enter a valid year"),
 
     // profession: z.string().optional(),
     // company: z.string().optional(),
     // designation: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    console.log("working...")
-    const date = new Date(data.dob.year, data.dob.month - 1, data.dob.day) // formating a date.
+    console.log("working...");
+    const date = new Date(data.dob.year, data.dob.month - 1, data.dob.day); // formating a date.
     const age = calculateAge(date);
     if (age === null) return;
 
-    console.log({age})
-    console.log(age < 18)
-
     // if (age < 18) {
-      // if (!data.formBNumber || data.formBNumber.trim().length < 5) {
-      //   ctx.addIssue({
-      //     code: z.ZodIssueCode.custom,
-      //     message: "Form B Number is required for junior members",
-      //     path: ["formBNumber"],
-      //   });
-      // }
+    // if (!data.formBNumber || data.formBNumber.trim().length < 5) {
+    //   ctx.addIssue({
+    //     code: z.ZodIssueCode.custom,
+    //     message: "Form B Number is required for junior members",
+    //     path: ["formBNumber"],
+    //   });
+    // }
     // } else {
     //   if (!data.cnicNumber || !cnicRegex.test(data.cnicNumber)) {
     //     ctx.addIssue({
@@ -88,26 +93,27 @@ export const MemberFormSchema = z
     //       path: ["cnicNumber"],
     //     });
     //   }
-      // if (!data.profession || data.profession.trim().length < 2) {
-      //   ctx.addIssue({
-      //     code: z.ZodIssueCode.custom,
-      //     message: "Profession is required for senior members",
-      //     path: ["profession"],
-      //   });
-      // }
-      // if (!data.company || data.company.trim().length < 2) {
-      //   ctx.addIssue({
-      //     code: z.ZodIssueCode.custom,
-      //     message: "Company is required for senior members",
-      //     path: ["company"],
-      //   });
-      // }
-      // if (!data.designation || data.designation.trim().length < 2) {
-      //   ctx.addIssue({
-      //     code: z.ZodIssueCode.custom,
-      //     message: "Designation is required for senior members",
-      //     path: ["designation"],
-      //   });
-      // }
+    // if (!data.profession || data.profession.trim().length < 2) {
+    //   ctx.addIssue({
+    //     code: z.ZodIssueCode.custom,
+    //     message: "Profession is required for senior members",
+    //     path: ["profession"],
+    //   });
+    // }
+    // if (!data.company || data.company.trim().length < 2) {
+    //   ctx.addIssue({
+    //     code: z.ZodIssueCode.custom,
+    //     message: "Company is required for senior members",
+    //     path: ["company"],
+    //   });
+    // }
+    // if (!data.designation || data.designation.trim().length < 2) {
+    //   ctx.addIssue({
+    //     code: z.ZodIssueCode.custom,
+    //     message: "Designation is required for senior members",
+    //     path: ["designation"],
+    //   });
+    // }
     // }
   });
+
