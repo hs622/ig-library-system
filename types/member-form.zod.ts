@@ -55,20 +55,6 @@ export const MemberFormSchema = z
     genre: z.string().min(1, "Enter at least one genre."),
     activities: z.string().optional(),
     suggestionForImpovement: z.string().max(200, { message: "200 characters limit."}).optional(),
-
-    // progressDegree: z.string().min(2, "Progress/Degree is required"),
-    // educationStatus: z.enum(["completed", "anticipated"], {
-    //   required_error: "Please select a status",
-    // }),
-    // yearOfCompletion: z.coerce
-    //   .number({ invalid_type_error: "Enter a valid year" })
-    //   .int()
-    //   .min(1950, "Enter a valid year")
-    //   .max(2100, "Enter a valid year"),
-
-    // profession: z.string().optional(),
-    // company: z.string().optional(),
-    // designation: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     console.log("working...");
