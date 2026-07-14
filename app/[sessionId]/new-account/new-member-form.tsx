@@ -15,7 +15,7 @@ import { ModeSwitcher } from "@/components/buttons/theme-button-2";
 import { MemberFormSchema } from "@/types/member-form.zod";
 import { StepField } from "./_common";
 import getSteps from "./_questions";
-import { defaultMemberFormValues, useMemberFormStore } from "@/store/member-form-store";
+import { useMemberFormStore } from "@/store/member-form-store";
 import { createLibraryMember } from "@/app/actions/addNewMember";
 import { Spinner } from "@/components/ui/spinner";
 import { stepAnimationStyles } from "@/constants/new-account-form";
@@ -139,7 +139,7 @@ export default function NewMemberForm() {
             className="mt-4 border-black bg-transparent text-black dark:text-white hover:bg-zinc-800 hover:text-zinc-50"
             onClick={() => {
               resetForm();
-              form.reset(defaultMemberFormValues);
+              // form.reset(defaultMemberFormValues);
             }}
           >
             Register another member
