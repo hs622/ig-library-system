@@ -6,7 +6,6 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 const LIBRARY_NAME = "Inaara Gardan Library";
 
@@ -19,7 +18,7 @@ function useTypewriter(text: string, speed = 90) {
       "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReduced) {
-      setDisplay(text);
+      setDisplay(text)
       setDone(true);
       return;
     }
@@ -39,13 +38,14 @@ function useTypewriter(text: string, speed = 90) {
 }
 
 const services = (sessionId: string) => [
-  { label: "Become a member", href: `/${sessionId}/new-account`, hue: "#6B7A3D" },
-  { label: "Get book details", href: `/g/book-details`, hue: "#8A9A5B" },
-  { label: "Announcements", href: "#", hue: "#4E5B2E" },
+  { label: "Become a member", href: `/g/${sessionId}/new-account`, hue: "#6B7A3D" },
+  // { label: "Get book details", href: `/g/book-finder`, hue: "#8A9A5B" },
+  { label: "Announcements", href: "/g/accouncements", hue: "#4E5B2E" },
+  { label: "Book Cataglog", href: "/g/book-catalog", hue: "#8A9A5B" },
 ];
 
 export default function Home() {
-  const { count, error, status } = useBookCount();
+  const { count, status } = useBookCount();
   const [sessionId] = useState(() => uuidv4());
   const { display, done } = useTypewriter(LIBRARY_NAME);
 
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
 
-          <p
+          {/* <p
             className="text-base sm:text-lg leading-relaxed max-w-md"
             style={{ color: "#5C5644" }}
           >
@@ -107,7 +107,7 @@ export default function Home() {
             {status === "error" && "Catalogue temporarily unavailable."}
             {status === "success" &&
               `${count?.toLocaleString()} volumes catalogued and counting.`}
-          </p>
+          </p> */}
         </div>
 
         {/* Right: services, styled as book spines */}
