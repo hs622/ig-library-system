@@ -2,6 +2,7 @@ import { getBaseUrl } from "@/lib/get-base-url";
 import { Metadata } from "next"
 import UserTable from "./datatable/user-table";
 import { MemberSearchInput } from "./datatable/headers";
+import { AddInitialDepsitByUserDialog } from "@/components/users/add-users-dialog";
 
 export const metadata: Metadata = {
   title: "IGLS — Members"
@@ -34,7 +35,7 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="col-span-2 flex flex-col flex-1 min-h-0">
         <div className="flex justify-between py-2 shrink-0">
           <div className="flex items-center gap-4">
-            {/* <MemberSearchInput /> */}
+            <MemberSearchInput />
           </div>
 
           <div className="flex gap-4">
@@ -52,6 +53,8 @@ export default async function Page({ searchParams }: PageProps) {
           />
         </div>
       </div>
+
+      <AddInitialDepsitByUserDialog />
     </div>
   )
 }
