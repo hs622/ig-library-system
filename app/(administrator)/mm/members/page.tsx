@@ -19,7 +19,7 @@ export default async function page({ searchParams }: PageProps) {
   const params = new URLSearchParams();
   if (search) params.set("search", search)
 
-  const res = await fetch(`https://igls.localhost/api/users?${params.toString()}`, {
+  const res = await fetch(`${baseUrl}/api/users?${params.toString()}`, {
     cache: "no-store",
   });
 
