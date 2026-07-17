@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
-import { useSelectedResourceIds } from "@/hooks/use-book-selection-store";
-import { useDeleteBulkDialogStore } from "@/hooks/use-delete-dialog-store";
+import { useSelectedResourceIds } from "@/store/use-resource-selection-store";
+import { useDeleteBulkDialogStore } from "@/store/use-delete-dialog-store";
 import { Trash2 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
@@ -28,7 +28,7 @@ export function BookSearchInput() {
 
   return (
     <Input
-      placeholder="search with title"
+      placeholder="Search with title"
       className="max-w-52"
       value={value}
       onChange={(e) => setValue(e.target.value)}
