@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Spinner } from "./ui/spinner";
 import React from "react";
-import { useDeleteDialogStore } from "@/hooks/use-delete-dialog-store"; 
+import { useDeleteDialogStore } from "@/store/use-delete-dialog-store"; 
 import DeleteBookAction from "@/app/actions/deleteBookAction";
 import { DeleteConfirmationDialog } from "@/types/delete-confirmation-form.zod";
 
