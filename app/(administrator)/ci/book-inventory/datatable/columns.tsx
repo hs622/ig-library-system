@@ -5,13 +5,14 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { IBookSchema } from "@/types/zod";
 import { formatReadableDate } from "@/lib/format-date";
 import { Button } from "@/components/ui/button";
-import { Copy, InfoIcon, Pencil, Trash2 } from "lucide-react";
+import { InfoIcon, Pencil, Trash2 } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useDrawerStore } from "@/hooks/use-drawer-store";
-import { useDeleteDialogStore } from "@/hooks/use-delete-dialog-store";
+import { useDrawerStore } from "@/store/use-drawer-store";
+import { useDeleteDialogStore } from "@/store/use-delete-dialog-store";
+
 
 export type BookRow = IBookSchema & { _id: string; createdAt: string };
 
@@ -34,14 +35,14 @@ export const BookColumns = () => {
         return (
           <Checkbox
             aria-label="Select row"
-            // className="translate-y-0.5"
+            className="translate-y-0.5"
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
           />
         )
       },
       meta: {
-        className: "w-4"
+        className: "w-6"
       },
       enableHiding: false,
       enableSorting: false, 
@@ -51,7 +52,7 @@ export const BookColumns = () => {
       accessorKey: "title",
       header: "Title",
       meta: {
-        className: "w-8 truncate border-b",
+        className: "w-8 truncate",
       },
       enableSorting: false,
       enableHiding: false,
@@ -61,9 +62,9 @@ export const BookColumns = () => {
       accessorKey: "authorName",
       header: "Author",
       meta: {
-        className: "w-6 truncate border-l border-b",
+        className: "w-6 truncate border-x",
       },
-      enableSorting: false,
+      enableSorting: true,
       enableHiding: false,
     },
     {
@@ -71,7 +72,7 @@ export const BookColumns = () => {
       accessorKey: "publicationYear",
       header: "Publication Year",
       meta: {
-        className: "w-4 border",
+        className: "w-4 border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -81,7 +82,7 @@ export const BookColumns = () => {
       accessorKey: "category",
       header: "Category",
       meta: {
-        className: "w-6 truncate border",
+        className: "w-6 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -92,7 +93,7 @@ export const BookColumns = () => {
       header: "Ingested At",
       cell: ({ row }) => formatReadableDate(row.original.createdAt),
       meta: {
-        className: "w-6 border-l border-b",
+        className: "w-6 border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -102,7 +103,7 @@ export const BookColumns = () => {
       accessorKey: "actions",
       header: "",
       meta: {
-        className: "border-b",
+        className: "border-x",
       },
       cell: ({ row }) => ActionGroup(row)
     }
