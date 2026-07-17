@@ -47,8 +47,8 @@ export default function UserTable({
       const params = new URLSearchParams({ cursor });
       if (search) params.set("search", search);
 
-      const res = await fetch(`/api/books?${params.toString()}`);
-      if (!res.ok) throw new Error("Failed to load more books");
+      const res = await fetch(`/api/users?${params.toString()}`);
+      if (!res.ok) throw new Error("Failed to load more members");
 
       const json = await res.json();
       setData((prev) => [...prev, ...json.books]);
@@ -98,7 +98,7 @@ export default function UserTable({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table?.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id} data-state={row.getIsSelected() && "selected"}
