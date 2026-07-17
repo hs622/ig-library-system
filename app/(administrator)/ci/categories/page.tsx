@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Plus } from "lucide-react";
 import CategoryTable from "./datatable/category-table";
-import { CategorySearchInput } from "./datatable/search-input";
-// import { RefreshButton } from "./datatable/refresh-button";
+import { AddCreateDialogTirgger, CategorySearchInput } from "./datatable/header";
 import { getBaseUrl } from "@/lib/get-base-url";
+import RefreshButton from "./datatable/refresh-button";
+import { AddCategoryDialog } from "@/components/category/add-category-dialog";
 
 interface PageProps {
   searchParams: Promise<{ search?: string }>;
@@ -33,10 +32,8 @@ export default async function Page({ searchParams }: PageProps) {
         <div className="flex justify-between py-2 shrink-0">
           <CategorySearchInput />
           <ButtonGroup>
-            {/* <RefreshButton /> */}
-            <Button variant="outline">
-              <Plus />
-            </Button>
+            <AddCreateDialogTirgger />
+            <RefreshButton />
           </ButtonGroup>
         </div>
 
@@ -48,8 +45,11 @@ export default async function Page({ searchParams }: PageProps) {
             initialHasMore={hasMore}
             search={search}
           />
+
         </div>
       </div>
+
+      <AddCategoryDialog />
     </div>
   );
 }
