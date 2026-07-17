@@ -3,15 +3,15 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox"
 import { IMemberSchema } from "@/types/zod";
-import { formatReadableDate } from "@/lib/format-date";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
+import { DollarSign, Pencil } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge, formatContactNumber } from "@/lib/hepler";
+import { useCreateDialog } from "@/store/use-create-dialog-store";
 
 export const MemberColumns = () => {
   const MemberColumns: ColumnDef<IMemberSchema>[] = [
@@ -146,7 +146,7 @@ export const MemberColumns = () => {
 }
 
 const ActionGroup = (row: Row<IMemberSchema>) => {
-  // const openDrawer = useDrawerStore((s) => s.openDrawer);
+  const openDialog = useCreateDialog((s) => s.openDialog);
   // const { openDialog } = useDeleteDialogStore()
   const pathname = usePathname()
 
@@ -157,9 +157,9 @@ const ActionGroup = (row: Row<IMemberSchema>) => {
           <Pencil />
         </Link>
       </Button>
-      {/* <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDrawer(row.original)}>
-        <InfoIcon />
-      </Button> */}
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDialog({ module: "users", resourceId: row.original._id })}>
+        <DollarSign />
+      </Button>
       {/* <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => {
         const { title, _id } = row.original
         return openDialog({ resourceId: _id, title, module: "books" })
