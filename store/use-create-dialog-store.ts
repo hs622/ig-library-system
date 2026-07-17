@@ -9,12 +9,12 @@ export interface CreateDialogState {
   isOpen: boolean;
   resource: CreateResource | null;
   closeDialog: () => void;
-  openDialog: () => void;
+  openDialog: (data: CreateResource) => void;
 }
 
 export const useCreateDialog = create<CreateDialogState>((set) => ({
   isOpen: false,
   resource: null,
   closeDialog: () => set({ isOpen: false }),
-  openDialog: () => set({ isOpen: true }),
+  openDialog: (data) => set({ isOpen: true, resource: data }),
 }));
