@@ -36,10 +36,10 @@ export function CategorySearchInput() {
 
 export function AddCreateDialogTirgger() {
 
-  const { openDialog } = useCreateDialog()
+  const openDialog = useCreateDialog(s => s.openDialog)
 
   return (
-    <Button variant={"outline"} type="button" onClick={openDialog}>
+    <Button variant={"outline"} type="button" onClick={() => openDialog}>
       <Plus />
     </Button>
   )
