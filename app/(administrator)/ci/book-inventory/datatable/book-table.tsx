@@ -2,13 +2,19 @@
 
 import { Card } from "@/components/ui/card";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { BookColumns, BookRow } from "./columns";
-import { useResourceSelectionStore } from "@/hooks/use-book-selection-store";
+import { useResourceSelectionStore } from "@/store/use-resource-selection-store";
 
 interface BookTableProps {
   initialData: BookRow[];
@@ -34,7 +40,6 @@ export default function BookTable({
   const clearSelection = useResourceSelectionStore((s) => s.clearSelection)
 
   const loadingRef = React.useRef(false);
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const sentinelRef = React.useRef<HTMLDivElement>(null);
 
   const loadMore = React.useCallback(async () => {
@@ -63,28 +68,6 @@ export default function BookTable({
   }, [cursor, hasMore, search]);
 
   React.useEffect(() => {
-    const sentinel = sentinelRef.current;
-    const root = scrollContainerRef.current;
-    if (!sentinel || !root) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMore();
-        }
-      },
-      {
-        root, // scope intersection to the scrollable table, not the page
-        rootMargin: "100px",
-        threshold: 0,
-      },
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [loadMore]);
-
-  React.useEffect(() => {
     return () => clearSelection()
   }, [clearSelection])
 
@@ -99,59 +82,68 @@ export default function BookTable({
   });
 
   return (
-    <Card
-      ref={scrollContainerRef}
-      className="p-0! max-h-full h-fit overflow-y-auto"
-    >
-      <Table className="w-full table-auto">
-        <TableHeader className="sticky top-0 bg-background z-10">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className={`${header.column.columnDef.meta?.className}`}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id} data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={`${cell.column.columnDef.meta?.className}`}
+    <Card className=" h-full p-0 overflow-hidden">
+        <Table className="w-full table-auto">
+          <TableHeader className="sticky top-0 bg-background z-10">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={`${header.column.columnDef.meta?.className}`}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={BookColumns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id} data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`${cell.column.columnDef.meta?.className}`}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={BookColumns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       {hasMore && (
-        <div ref={sentinelRef} className="flex items-center justify-center py-4">
-          {loading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+        <div
+          ref={sentinelRef}
+          className="mx-4 flex flex-col items-center justify-center gap-2 pb-4"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <Button
+              variant="outline"
+              onClick={loadMore}
+              disabled={loading}
+              className="w-full"
+            >
+              Load more
+            </Button>
+          )}
         </div>
       )}
-
       {error && (
         <div className="flex items-center justify-center gap-2 py-4 text-sm text-destructive">
           {error}
@@ -160,7 +152,6 @@ export default function BookTable({
           </button>
         </div>
       )}
-
     </Card>
   );
 }
