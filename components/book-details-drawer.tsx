@@ -10,12 +10,12 @@ import {
   DrawerDescription,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { useDrawerStore } from "@/hooks/use-drawer-store";
+import { useDrawerStore } from "@/store/use-drawer-store";
 import { Pencil, X } from "lucide-react";
 import React from "react";
 import { ButtonGroup } from "./ui/button-group";
 import Link from "next/link";
-import QRCodeWithSequence from "./qr-code-generator";
+import QRCodeWithSequence from "./QRCode/qr-code-generator";
 
 export function BookDetailsDrawer() {
   const { isOpen, selectedBook, closeDrawer } = useDrawerStore();
@@ -89,16 +89,10 @@ export function BookDetailsDrawer() {
               />
             ) : (
               <React.Fragment>
-                Couldn&apls;t found ResourceId
+                Couldn&apls;t found resource ID
               </React.Fragment>
             )}
           </div>
-
-          {/* <DrawerFooter>
-            <Button type="button" variant="outline" onClick={closeDrawer}>
-              Close
-            </Button>
-          </DrawerFooter> */}
         </div>
       </DrawerContent>
     </Drawer>
