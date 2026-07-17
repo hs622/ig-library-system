@@ -26,23 +26,27 @@ export type CreateMemberResult =
   | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
 export async function createLibraryMember(
-  values: IMemberFormSchema
+  values: IMemberFormSchema,
 ): Promise<CreateMemberResult> {
+  const formattedCNIC = String(values.cnicNumber).replace(
+    /^(\d{5})(\d{7})(\d{1})$/,
+    "$1-$2-$3",
+  );
+  values.cnicNumber = formattedCNIC;
 
-  const formattedCNIC = String(values.cnicNumber).replace(/^(\d{5})(\d{7})(\d{1})$/, '$1-$2-$3');
-  values.cnicNumber = formattedCNIC
-
-  const formattedNumber = formatContactNumber(values.contactNumber)
-  values.contactNumber = formattedNumber
+  const formattedNumber = formatContactNumber(values.contactNumber);
+  values.contactNumber = formattedNumber;
 
   const parsed = MemberFormSchema.safeParse(values);
-
 
   if (!parsed.success) {
     return {
       success: false,
       error: "Validation failed",
-      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >,
     };
   }
 
@@ -51,7 +55,7 @@ export async function createLibraryMember(
     const db = client.db(DB_NAME);
     const collection = db.collection<UserDocument>("users");
 
-    collection.createIndex({ email: 1}, { unique: true })
+    collection.createIndex({ cnicNumber: 1 }, { unique: true });
 
     const now = new Date();
     const libraryId = uuidv4();
