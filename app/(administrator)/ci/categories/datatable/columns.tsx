@@ -6,7 +6,8 @@ import { ICategorySchema } from "@/types/zod";
 import { formatReadableDate } from "@/lib/format-date";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, Trash2 } from "lucide-react";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 export type CategoryRow = ICategorySchema & { _id: string; createdAt: string };
 
@@ -40,6 +41,9 @@ export const CategoryColumns: ColumnDef<CategoryRow>[] = [
     id: "title",
     accessorKey: "title",
     header: "Title",
+    meta: {
+      className: "w-[200px]"
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -79,9 +83,14 @@ export const CategoryColumns: ColumnDef<CategoryRow>[] = [
     header: "",
     cell: ({ row }) => {
       return (
-        <Button size={"xs"} variant={"outline"}>
-          <InfoIcon /> 
-        </Button>
+        <ButtonGroup>
+          <Button size={"xs"} variant={"outline"}>
+            <InfoIcon />
+          </Button>
+          <Button size={"xs"} variant={"outline"}>
+            <Trash2 />
+          </Button>
+        </ButtonGroup>
       )
     }
   }
