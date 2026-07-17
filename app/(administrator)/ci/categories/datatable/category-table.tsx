@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import React from "react";
 import { Loader2 } from "lucide-react";
@@ -83,7 +84,6 @@ export default function CategoryTable({
   if (!hasMore && data.length > 0) {
     toast.info("No more books", {
       position: "top-center",
-      closeButton: true
     })
   }
 
@@ -134,8 +134,22 @@ export default function CategoryTable({
       </Table>
 
       {hasMore && (
-        <div ref={sentinelRef} className="flex items-center justify-center py-4">
-          {loading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+        <div
+          ref={sentinelRef}
+          className="flex flex-col items-center justify-center gap-2 py-4"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadMore}
+              disabled={loading}
+            >
+              Load more
+            </Button>
+          )}
         </div>
       )}
 
