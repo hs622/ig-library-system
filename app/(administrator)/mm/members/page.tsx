@@ -11,11 +11,11 @@ interface PageProps {
   searchParams: Promise<{ search?: string }>;
 }
 
-export default async function page({ searchParams }: PageProps) {
+export default async function Page({ searchParams }: PageProps) {
 
   const { search } = await searchParams;
 
-  const baseUrl = getBaseUrl()
+  const baseUrl = await getBaseUrl()
   const params = new URLSearchParams();
   if (search) params.set("search", search)
 
