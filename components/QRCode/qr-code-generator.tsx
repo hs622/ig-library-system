@@ -2,6 +2,8 @@
 
 import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 interface QRCodeProps {
   value: string;
@@ -51,7 +53,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
           <label htmlFor="qr-size" className="text-sm font-medium text-gray-700">
             QR Size (px)
           </label>
-          <input
+          <Input
             id="qr-size"
             type="number"
             min={MIN_SIZE}
@@ -63,12 +65,12 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
           />
         </div>
 
-        <button
+        <Button
+          variant={"outline"}
           onClick={handlePrint}
-          className="px-4 py-2 border hover:bg-gray-50 bg-white font-medium rounded-lg transition-colors text-sm"
         >
           Print
-        </button>
+        </Button>
       </div>
 
       {/* Master SVG Canvas */}
