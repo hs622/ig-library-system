@@ -39,18 +39,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: Boolean(chunks[0] == "cc"),
         items: [
           {
-            title: "Issue Book",
-            url: "#",
+            title: "Issue and return",
+            url: "/cc/issue-and-return",
             isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Return Book",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
+          }, 
           {
             title: "Holds & Reservations",
-            url: "#",
+            url: "/cc/holds-reservations",
             isActive: Boolean(chunks[1] == "")
           },
         ],
@@ -65,12 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "Book Inventory",
             url: "/ci/book-inventory",
             isActive: Boolean( chunks[1] == "book-inventory")
-          },
-          // {
-          //   title: "Acquisitions",
-          //   url: "#",
-          // isActive: Boolean(chunks[1] == "")
-          // },
+          }, 
           {
             title: "Categories",
             url: "/ci/categories",
@@ -85,55 +75,40 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: Boolean(chunks[0] == "mm"),
         items: [
           {
-            title: "General",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Team",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Billing",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Limits",
-            url: "#",
+            title: "Members",
+            url: "/mm/members",
             isActive: Boolean(chunks[1] == "")
           },
         ],
       },
-      {
-        title: "Settings & Configurations",
-        url: "/sc",
-        icon: (<Settings2Icon />),
-        isActive: Boolean(chunks[0] == "sc"),
-        items: [
-          {
-            title: "General",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Team",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Billing",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-          {
-            title: "Limits",
-            url: "#",
-            isActive: Boolean(chunks[1] == "")
-          },
-        ],
-      },
+      // {
+      //   title: "Settings & Configurations",
+      //   url: "/sc",
+      //   icon: (<Settings2Icon />),
+      //   isActive: Boolean(chunks[0] == "sc"),
+      //   items: [
+      //     {
+      //       title: "General",
+      //       url: "#",
+      //       isActive: Boolean(chunks[1] == "")
+      //     },
+      //     {
+      //       title: "Team",
+      //       url: "#",
+      //       isActive: Boolean(chunks[1] == "")
+      //     },
+      //     {
+      //       title: "Billing",
+      //       url: "#",
+      //       isActive: Boolean(chunks[1] == "")
+      //     },
+      //     {
+      //       title: "Limits",
+      //       url: "#",
+      //       isActive: Boolean(chunks[1] == "")
+      //     },
+      //   ],
+      // },
     ],
     projects: [
       {
