@@ -34,7 +34,7 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="col-span-2 flex flex-col flex-1 min-h-0">
         <div className="flex justify-between py-2 shrink-0">
           <div className="flex items-center gap-4">
-            <MemberSearchInput />
+            {/* <MemberSearchInput /> */}
           </div>
 
           <div className="flex gap-4">
