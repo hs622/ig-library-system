@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Plus } from "lucide-react";
 import BookTable from "./datatable/book-table";
-import { BookSearchInput, BookSearchTags, DeleteBulkResources } from "./datatable/search-input";
+import { BookSearchInput, DeleteBulkResources } from "./datatable/search-input";
 // import { RefreshButton } from "./datatable/refresh-button";
 import { getBaseUrl } from "@/lib/get-base-url";
 import { BookDetailsDrawer } from "@/components/book-details-drawer";
@@ -31,12 +31,12 @@ export default async function BookInventory({ searchParams }: PageProps) {
   const { books, nextCursor, hasMore } = await res.json();
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem)] gap-4 p-4">
+    <div className="flex flex-col h-[calc(100vh-4rem)] gap-4 p-4">
       <div className="col-span-2 flex flex-col flex-1 min-h-0">
         <div className="flex justify-between py-2 shrink-0">
           <div className="flex items-center gap-4">
             <BookSearchInput />
-            <BookSearchTags />
+            {/* <BookSearchTags /> */}
           </div>
 
           <div className="flex gap-4">
@@ -64,6 +64,14 @@ export default async function BookInventory({ searchParams }: PageProps) {
       <BookDetailsDrawer />
       <DeleteResourceDialog />
       <DeleteBulkResourcesDialog />
+
+
+      {/* <div>
+        <QRBatchPrint
+          resourceId={["LIB-000123", "LIB-000124", "LIB-000125", "LIB-000126", "LIB-000123", "LIB-000124", "LIB-000125", "LIB-000126", "LIB-000125", "LIB-000126"]}
+          resourceTags={["LIB-000123", "LIB-000124", "LIB-000125", "LIB-000126", "LIB-000123", "LIB-000124", "LIB-000125", "LIB-000126", "LIB-000125", "LIB-000126"]}
+        />
+      </div> */}
     </div>
   );
 }
