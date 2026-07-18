@@ -24,43 +24,42 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-
     // initializing database.
     const client = await clientPromise;
     const db = client.db(process.env.DATABASE_NAME);
     const collection = db.collection("users");
-  
+
     //
     const filter: Record<string, unknown> = {};
     const sort: Record<string, unknown> = {};
     const projection: Document[] = [];
     const pipeline: Document[] = [];
-  
+
     if (cursor) {
       filter._id = { $lt: new ObjectId(cursor) };
     }
-  
+
     if (search) {
-      filter.$or = { fullName: { $regex: search, $option: "i" } };
+      filter.$or = [{ fullName: { $regex: search, $options: "i" } }];
     }
-  
+
     if (rawTags) {
       const tagsArray: string[] = Array.isArray(rawTags)
         ? rawTags
         : rawTags // second condition (nested condition)
           ? [rawTags]
           : [];
-  
+
       const activeTags = JSON.stringify(req.nextUrl.search);
-  
+
       // const activeTags: { key: string, value: string }[] = tagsArray.map(str => {
       //   const [key, value] = str.split(":")
       //   return { key, value }
       // })
-  
+
       console.log(activeTags);
     }
-  
+
     // fields selection
     if (project) {
       const fields = project.split(",").map((v) => v.trim());
@@ -71,10 +70,10 @@ export async function GET(req: NextRequest) {
         },
         {} as Record<string, 1>,
       );
-  
+
       projection.push({ $project: p });
     }
-  
+
     // sorting
     if (order) {
       const orderItems: string[] = order.split(",");
@@ -84,36 +83,33 @@ export async function GET(req: NextRequest) {
         sort.$sort = { key, value: condition };
       } else sort.$sort = { _id: -1 };
     }
-  
+
     if (filter) pipeline.push({ $match: filter });
     if (project) pipeline.push(...projection);
     if (limit) pipeline.push({ $limit: limit + 1 });
     if (order) pipeline.push({ $sort: sort }); // descending by _id
-  
+
     const res = await collection.aggregate(pipeline as Document[]).toArray();
 
     const hasMore = res.length > limit;
     const items = hasMore ? res.slice(0, limit) : res;
     const nextCursor = hasMore ? items[items.length - 1]._id.toString() : null;
-  
-     return NextResponse.json({
+
+    return NextResponse.json({
       members: items,
       nextCursor,
       hasMore,
     });
-
-  } catch(error) {
-
+  } catch (error) {
     if (error instanceof MongoServerError) {
-      console.log(error.code)
+      console.log(error.code);
     }
 
     return NextResponse.json({
       success: false,
       message: "something went wrong.",
-      error
-    })
-
+      error,
+    });
   }
 }
 
