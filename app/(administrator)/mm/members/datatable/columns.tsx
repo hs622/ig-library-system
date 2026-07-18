@@ -116,15 +116,19 @@ export const MemberColumns = () => {
       id: "areaOfInterest",
       accessorKey: "areaOfInterest",
       header: "Interests",
-      cell: ({ row }) => (
-        <div>
-          {
-            row.original.areaOfInterest.map((interest, i) => (
-              <Badge key={interest + i} variant={"outline"} >{interest.replaceAll("-", " ")}</Badge>
-            ))
-          }
-        </div>
-      ),
+      cell: ({ row }) => {
+        const length = row.original.areaOfInterest.length
+        const limited = length <= 2
+          ? row.original.areaOfInterest
+          : row.original.areaOfInterest.slice(0, 2)
+
+        return (
+          <div className="flex gap-1">
+            { limited.map((item, i) => <Badge key={item + i} variant={"outline"} >{item.replaceAll("-", " ")}</Badge>) }
+            { length-2 > 0 && <Badge variant={"outline"} >{`${Number(length-2)}+`}</Badge> }
+          </div>
+        )
+      },
       meta: {
         className: "w-6 border-x",
       },
