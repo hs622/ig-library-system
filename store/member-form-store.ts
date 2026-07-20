@@ -5,10 +5,10 @@ import { IMemberFormSchema } from "@/types/zod";
 
 export type StepDirection = "forward" | "backward";
 
-// export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
-//   gender: undefined, 
-//   partOfReadingClub: undefined 
-// };
+export const defaultMemberFormValues: Partial<IMemberFormSchema> = {
+  gender: undefined, 
+  partOfReadingClub: undefined 
+};
 
 interface MemberFormUIState {
   stepIndex: number;
