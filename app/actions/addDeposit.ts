@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import { ActionResponse } from "@/lib/action-response";
 import { IDepositSchema } from "@/types/zod";
-import { DepositSchema } from "@/types/initail-depsit-form.zod";
+import { DepositSchema } from "@/types/deposit.zod";
 
 export const AddDeposit = async (data: IDepositSchema) => {
   const parsed = DepositSchema.safeParse(data);

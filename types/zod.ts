@@ -1,7 +1,7 @@
 import z from "zod";
 import { DateOfBirthSchema } from "./date-of-birth.zod";
 import { MemberFormSchema } from "./member-form.zod";
-import { LoginSchema } from "./login-form.zod";
+import { LoginSchema } from "./auth/login.zod";
 import { DeleteConfirmationDialog } from "./delete-confirmation-form.zod";
 import { BookEditSchema } from "./book-edit-form.zod";
 import { BookSchema } from "./book.zod";
@@ -10,6 +10,7 @@ import { CategoryForm } from "./attach-category-form.zod";
 import { AddCategorySchema, AddCategorySchema_v2, SubCategory } from "./add-category-form.zod";
 import { BookCreateSchema } from "./add-book-form.zod";
 import { MemberSchema } from "./member.zod";
+import { DepositSchema } from "./initail-depsit-form.zod";
 
 
 
@@ -38,3 +39,4 @@ export type IDateOfBirthValues = z.infer<typeof DateOfBirthSchema>;
 export type IMemberSchema = z.infer<typeof MemberSchema>;
 export type IMemberFormSchema = z.infer<typeof MemberFormSchema>;
 
+export type IDepositSchema = z.infer<typeof DepositSchema>;
