@@ -80,7 +80,7 @@ export default function UserTable({
 
   return (
     <Card className=" h-fit p-0 overflow-hidden">
-      <Table className="w-full table-auto">
+      <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
@@ -115,7 +115,7 @@ export default function UserTable({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={MemberColumns.length} className="h-24 text-center">
+              <TableCell colSpan={MemberColumns().length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
