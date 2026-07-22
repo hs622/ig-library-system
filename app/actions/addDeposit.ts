@@ -1,11 +1,22 @@
 "use server";
 
 import { ObjectId } from "mongodb";
-import { IInitialDepsitByUser } from "@/components/users/add-users-dialog";
 import clientPromise from "@/lib/mongodb";
 import { ActionResponse } from "@/lib/action-response";
+import { IDepositSchema } from "@/types/zod";
+import { DepositSchema } from "@/types/initail-depsit-form.zod";
 
-export const AddInitialDepsit = async (data: IInitialDepsitByUser) => {
+export const AddDeposit = async (data: IDepositSchema) => {
+  const parsed = DepositSchema.safeParse(data);
+
+  if (!parsed.success) {
+    return ActionResponse({
+      statusCode: 400,
+      message: "validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
+  }
+
   const { userId, amount } = data;
 
   try {
@@ -45,3 +56,4 @@ export const AddInitialDepsit = async (data: IInitialDepsitByUser) => {
     };
   }
 };
+
