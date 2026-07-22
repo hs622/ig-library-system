@@ -10,7 +10,7 @@ import { CategoryForm } from "./attach-category-form.zod";
 import { AddCategorySchema, AddCategorySchema_v2, SubCategory } from "./add-category-form.zod";
 import { BookCreateSchema } from "./add-book-form.zod";
 import { MemberSchema } from "./member.zod";
-import { DepositSchema } from "./initail-depsit-form.zod";
+import { DepositSchema } from "./deposit.zod";
 
 
 
@@ -33,7 +33,7 @@ export type IBookEditSchema = z.infer<typeof BookEditSchema>;
 export type IDeleteConfirmationDialog = z.infer<
   typeof DeleteConfirmationDialog
 >;
-export type ILoginSchema = z.infer<typeof LoginSchema>;
+// export type ILoginSchema = z.infer<typeof LoginSchema>;
 export type IDateOfBirthValues = z.infer<typeof DateOfBirthSchema>;
 
 export type IMemberSchema = z.infer<typeof MemberSchema>;
