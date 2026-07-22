@@ -4,42 +4,46 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox"
 import { IMemberSchema } from "@/types/zod";
 import { Button } from "@/components/ui/button";
-import { DollarSign, Pencil } from "lucide-react";
+import { DollarSign, Info, Trash2 } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge } from "@/lib/hepler";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 import { formatReadableDate } from "@/lib/format-date";
+import Link from "next/link";
 
 export const MemberColumns = () => {
   const MemberColumns: ColumnDef<IMemberSchema>[] = [
     {
       id: "select",
       header: ({ table }) => (
-        <Checkbox
-          aria-label="Select all"
-          className="translate-y-0.5"
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
+        <div className="size-full p-2">
+          <Checkbox
+            aria-label="Select all"
+            className="translate-y-0.5 cursor-pointer"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          />
+        </div>
       ),
       cell: ({ row }) => {
         return (
-          <Checkbox
-            aria-label="Select row"
-            className="translate-y-0.5"
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <div className="size-full p-2" onClick={(value) => row.toggleSelected(!!value)}>
+            <Checkbox
+              aria-label="Select row"
+              className="translate-y-0.5 cursor-pointer"
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+            />
+          </div>
         )
       },
       meta: {
-        className: "w-2"
+        className: "w-16 cursor-pointer p-0!"
       },
       enableHiding: false,
       enableSorting: false,
@@ -48,20 +52,21 @@ export const MemberColumns = () => {
       id: "fullName",
       accessorKey: "fullName",
       header: "Name",
+      cell: ({ row }) => <span className="capitalize">{row.original.fullName}</span>,
       meta: {
-        className: "w-8 lg:w-10 truncate",
+        className: "max-w-10 truncate",
       },
       enableSorting: false,
       enableHiding: false,
-      size: 40,
-      minSize: 40,
+
     },
     {
       id: "fatherName",
       accessorKey: "fatherName",
       header: "Father/Husband Name",
+      cell: ({ row }) => <span className="capitalize">{row.original.fatherName}</span>,
       meta: {
-        className: "w-6 truncate border-x",
+        className: "max-w-6 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -98,7 +103,7 @@ export const MemberColumns = () => {
         )
       },
       meta: {
-        className: "w-6 border-x",
+        className: "max-w-6 border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -120,7 +125,7 @@ export const MemberColumns = () => {
       header: "Gender",
       cell: ({ row }) => <Badge variant={"outline"}>{row.original.gender}</Badge>,
       meta: {
-        className: "w-6 truncate border-x",
+        className: "max-w-6 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -154,7 +159,7 @@ export const MemberColumns = () => {
       header: "Joined At",
       cell: ({ row }) => formatReadableDate(row.original.createdAt),
       meta: {
-        className: "w-6 truncate border-x",
+        className: "max-w-6 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -164,7 +169,7 @@ export const MemberColumns = () => {
       accessorKey: "actions",
       header: "",
       meta: {
-        className: "border-x",
+        className: "max-w-20 border-x",
       },
       cell: ({ row }) => ActionGroup(row)
     }
@@ -182,15 +187,15 @@ const ActionGroup = (row: Row<IMemberSchema>) => {
     <ButtonGroup>
       <Button className="cursor-pointer" variant={"outline"} size={"xs"} asChild>
         <Link href={`${pathname}/${row.original._id}`}>
-          <Pencil />
+          <Info />
         </Link>
       </Button>
-      {/* <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDialog({ module: "users", resourceId: row.original._id })}>
+      <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDialog({ module: "users", resourceId: row.original._id, dialog: "user-funds" })}>
         <DollarSign />
-      </Button> */}
-      {/* <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => {
-        const { title, _id } = row.original
-        return openDialog({ resourceId: _id, title, module: "books" })
+      </Button>
+      {/* <Button className="cursor-pointer text-red-400 hover:bg-red-400" variant={"outline"} size={"xs"} onClick={() => {
+        const { _id } = row.original
+        return openDialog({ resourceId: _id, module: "user", dialog: "user-trash" })
       }}>
         <Trash2 />
       </Button> */}
