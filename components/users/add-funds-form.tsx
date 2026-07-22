@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import { AddInitialDepsit } from "@/app/actions/addInitialdepsit";
+import { AddDeposit } from "@/app/actions/addInitialdepsit";
 import { toast } from "sonner";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 
@@ -38,7 +38,7 @@ export default function AddFunds({ options }: {
   }, [setValue, resource?.resourceId])
 
   const HandleFeeForm = async (data: IDepositSchema) => {
-    const response = await AddInitialDepsit(data)
+    const response = await AddDeposit(data)
 
     if (response.statusCode === 200) {
       reset()

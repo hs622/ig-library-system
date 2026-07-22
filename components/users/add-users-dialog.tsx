@@ -12,7 +12,7 @@ const options: string[] = [
   "donation"
 ] as const
 
-export function AddInitialDepsitDialog(
+export function AddDepositDialog(
   { module }: { module: string }
 ) {
 
