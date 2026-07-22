@@ -17,23 +17,23 @@ export const AddDeposit = async (data: IDepositSchema) => {
     });
   }
 
-  const { userId, amount } = data;
+  const { userId, reason, amount } = data;
 
   try {
     const client = await clientPromise;
     const db = client.db(process.env.DATABASE_NAME);
-    const collection = db.collection("users");
+    const collection = db.collection("payments");
 
-    const result = await collection.findOneAndUpdate(
-      { _id: new ObjectId(userId) },
-      {
-        $set: {
-          initialDeposit: amount,
-          updatedAt: new Date(),
-        },
-      },
-      { returnDocument: "after" },
-    );
+    const now = new Date();
+
+    const result = await collection.insertOne({
+      _id: new ObjectId(),
+      userId: new ObjectId(userId),
+      reason,
+      amount,
+      createdAt: now,
+      updatedAt: now,
+    });
 
     if (!result) {
       return {
@@ -42,10 +42,11 @@ export const AddDeposit = async (data: IDepositSchema) => {
       };
     }
 
+    console.log({ result });
     return ActionResponse({
       statusCode: 200,
       message: "fund updated successfully.",
-      data: result._id.toString(),
+      data: result,
     });
   } catch (error) {
     console.error("AddInitialDepsit error:", error);
