@@ -2,7 +2,7 @@ import { getBaseUrl } from "@/lib/get-base-url";
 import { Metadata } from "next"
 import UserTable from "./datatable/user-table";
 import { MemberSearchInput } from "./datatable/headers";
-import { AddInitialDepsitByUserDialog } from "@/components/users/add-users-dialog";
+import { AddDepositDialog } from "@/components/users/add-users-dialog";
 
 export const metadata: Metadata = {
   title: "IGLS — Members"
@@ -27,8 +27,9 @@ export default async function Page({ searchParams }: PageProps) {
   if (!res.ok) {
     throw new Error("Failed to fetch Members")
   }
-
+  
   const { members, nextCursor, hasMore } = await res.json()
+  // console.log(search, members)
 
   return (
     <div className="flex flex-col h-[calc(100vh-5rem)] gap-4 p-4">
@@ -54,7 +55,7 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <AddInitialDepsitByUserDialog />
+      <AddDepositDialog module="user-funds" />
     </div>
   )
 }
