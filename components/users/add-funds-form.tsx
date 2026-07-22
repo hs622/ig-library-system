@@ -4,13 +4,13 @@ import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field";
 import { Input } from "../ui/input";
 import { IDepositSchema } from "@/types/zod";
-import { DepositSchema } from "@/types/initail-depsit-form.zod";
+import { DepositSchema } from "@/types/deposit.zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import { AddDeposit } from "@/app/actions/addInitialdepsit";
+import { AddDeposit } from "@/app/actions/addDeposit";
 import { toast } from "sonner";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 
