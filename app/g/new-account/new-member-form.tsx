@@ -125,15 +125,17 @@ export default function NewMemberForm() {
       </div>
 
       {submitted ? (
-        <div className="sm:ml-40 flex flex-1 flex-col items-start justify-center gap-3">
+        <div className="sm:ml-40 w-[70%] flex flex-1 flex-col items-start justify-center gap-1">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10">
             <Check className="h-6 w-6 text-green-500" />
           </div>
-          <h1 className="text-3xl md:text-7xl text-black dark:text-white font-bold">Registration submitted</h1>
-          <p className="text-black dark:text-white">
-            {submitted.fullName} has been registered as a{" "}
-            {(calculateAge(dateOfBirth) ?? 0) < 18 ? "Junior" : "Senior"} member.
-          </p>
+          <div className="flex flex-col gap-4 text-3xl md:text-5xl text-black dark:text-white ">
+            <span>Thank you for registering with</span>
+            <span className="font-bold">INAARA GARDEN LIBRARY</span>
+            <span>
+              Kindly pay the registration fee at the library to confirm your membership.
+            </span>
+          </div>
           <Button
             variant="outline"
             className="mt-4 border-black bg-transparent text-black dark:text-white hover:bg-zinc-800 hover:text-zinc-50"
@@ -173,11 +175,11 @@ export default function NewMemberForm() {
                 onClick={goNext}
                 className="rounded-full h-16 w-16 dark:bg-white bg-black px-6 text-white dark:text-black hover:text-black hover:bg-accent"
               >
-                {!isLastStep 
+                {!isLastStep
                   ? <MoveRight className="size-6" />
-                  : form.formState.isSubmitting 
-                    ? <Spinner className={cn("size-6")}/>
-                    : <SendHorizontal className="size-6"/> 
+                  : form.formState.isSubmitting
+                    ? <Spinner className={cn("size-6")} />
+                    : <SendHorizontal className="size-6" />
                 }
               </Button>
             </div>
