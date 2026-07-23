@@ -3,8 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useBookCount } from "@/hooks/use-bookCount";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { v4 as uuidv4 } from "uuid";
+import Link from "next/link"; 
 import { useEffect, useState } from "react";
 
 const LIBRARY_NAME = "Inaara Gardan Library";
@@ -37,8 +36,8 @@ function useTypewriter(text: string, speed = 90) {
   return { display, done };
 }
 
-const services = (sessionId: string) => [
-  { label: "Become a member", href: `/g/${sessionId}/new-account`, hue: "#6B7A3D" },
+const services = () => [
+  { label: "Become a member", href: `/g/new-account`, hue: "#6B7A3D" },
   // { label: "Get book details", href: `/g/book-finder`, hue: "#8A9A5B" },
   { label: "Announcements", href: "/g/accouncements", hue: "#4E5B2E" },
   { label: "Book Cataglog", href: "/g/book-catalog", hue: "#8A9A5B" },
@@ -46,7 +45,7 @@ const services = (sessionId: string) => [
 
 export default function Home() {
   const { count, status } = useBookCount();
-  const [sessionId] = useState(() => uuidv4());
+  
   const { display, done } = useTypewriter(LIBRARY_NAME);
 
   return (
@@ -122,7 +121,7 @@ export default function Home() {
             <div className="h-px flex-1" style={{ backgroundColor: "#C9BE9A" }} />
           </div>
 
-          {services(sessionId).map((service) => (
+          {services().map((service) => (
             <Button
               key={service.label}
               variant="outline"
