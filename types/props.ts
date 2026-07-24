@@ -3,3 +3,12 @@ export default interface PageProps {
   params: Promise<{ bookId: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
+
+
+
+
+
+export interface UserProps {
+  params: Promise<{ userId: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
