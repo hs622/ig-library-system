@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { type UserProps } from "@/types/props";
+// import { type UserProps } from "@/types/props";
 import clientPromise from "@/lib/mongodb";
 import { Document, MongoServerError, ObjectId } from "mongodb";
 
-export async function GET(request: NextRequest, { params }: UserProps) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   const userId = (await params).userId;
   const searchParams = request.nextUrl.searchParams;
 
-  const project = searchParams.get("select")?.trim();
+  // const project = searchParams.get("select")?.trim();
   const w = searchParams.get("w")?.trim();
 
   if (userId && !ObjectId.isValid(userId)) {
