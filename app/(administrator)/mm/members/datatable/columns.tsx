@@ -13,6 +13,7 @@ import { useCreateDialog } from "@/store/use-create-dialog-store";
 import { formatReadableDate } from "@/lib/format-date";
 import Link from "next/link";
 import { useDrawer } from "@/store/useDrawerStore";
+import { getNewKey } from "@/lib/getNewKey";
 
 export const MemberColumns = () => {
   const MemberColumns: ColumnDef<IMemberSchema>[] = [
@@ -53,7 +54,7 @@ export const MemberColumns = () => {
       id: "fullName",
       accessorKey: "fullName",
       header: "Name",
-      cell: ({ row }) => <span className="capitalize">{row.original.fullName}</span>,
+      cell: ({ row }) => <span className="capitalize">{row.original.fullName.trim().toLocaleLowerCase()}</span>,
       meta: {
         className: "max-w-10 truncate",
       },
@@ -65,7 +66,7 @@ export const MemberColumns = () => {
       id: "fatherName",
       accessorKey: "fatherName",
       header: "Father/Husband Name",
-      cell: ({ row }) => <span className="capitalize">{row.original.fatherName}</span>,
+      cell: ({ row }) => <span className="capitalize">{row.original.fatherName.trim().toLocaleLowerCase()}</span>,
       meta: {
         className: "max-w-6 truncate border-x",
       },
@@ -186,7 +187,7 @@ const ActionGroup = (row: Row<IMemberSchema>) => {
   // const pathname = usePathname()
 
   return (
-    <ButtonGroup>
+    <ButtonGroup key={getNewKey()}>
       <Button
         className="cursor-pointer" variant={"outline"}
         size={"xs"}
