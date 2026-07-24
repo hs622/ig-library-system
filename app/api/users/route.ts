@@ -40,7 +40,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
-      filter.$or = [{ fullName: { $regex: search, $options: "i" } }];
+      filter.$or = [
+        { fullName: { $regex: search, $options: "i" } },
+        { fatherName: { $regex: search, $options: "i" } }, 
+      ];
     }
 
     if (rawTags) {
