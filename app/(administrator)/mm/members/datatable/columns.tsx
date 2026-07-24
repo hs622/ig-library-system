@@ -12,6 +12,7 @@ import { calculateAge } from "@/lib/hepler";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 import { formatReadableDate } from "@/lib/format-date";
 import Link from "next/link";
+import { useDrawer } from "@/store/useDrawerStore";
 
 export const MemberColumns = () => {
   const MemberColumns: ColumnDef<IMemberSchema>[] = [
@@ -180,17 +181,24 @@ export const MemberColumns = () => {
 
 const ActionGroup = (row: Row<IMemberSchema>) => {
   const openDialog = useCreateDialog((s) => s.openDialog);
+  const openDrawer = useDrawer(s => s.openDrawer)
   // const { openDialog } = useDeleteDialogStore()
-  const pathname = usePathname()
+  // const pathname = usePathname()
 
   return (
     <ButtonGroup>
-      <Button className="cursor-pointer" variant={"outline"} size={"xs"} asChild>
-        <Link href={`${pathname}/${row.original._id}`}>
-          <Info />
-        </Link>
+      <Button
+        className="cursor-pointer" variant={"outline"}
+        size={"xs"}
+        onClick={() => openDrawer({ module: "users", resourceId: row.original._id, dialog: "user-view" })}
+      >
+        <Info />
       </Button>
-      <Button className="cursor-pointer" variant={"outline"} size={"xs"} onClick={() => openDialog({ module: "users", resourceId: row.original._id, dialog: "user-funds" })}>
+      <Button
+        className="cursor-pointer" variant={"outline"}
+        size={"xs"}
+        onClick={() => openDialog({ module: "users", resourceId: row.original._id, dialog: "user-funds" })}
+      >
         <DollarSign />
       </Button>
       {/* <Button className="cursor-pointer text-red-400 hover:bg-red-400" variant={"outline"} size={"xs"} onClick={() => {
