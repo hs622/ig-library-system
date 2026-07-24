@@ -70,7 +70,7 @@ export function AddUserDrawer({ module }: { module: string }) {
                 <div className="text-lg pb-2">
                   Area of interest
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   {data?.areaOfInterest?.map((item, i) => (
                     <Badge variant={"outline"} key={i}>{item}</Badge>
                   ))}
