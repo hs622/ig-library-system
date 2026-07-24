@@ -17,7 +17,6 @@ interface MemberTableProps {
   search?: string;
 }
 
-
 export default function UserTable({
   initialData,
   initialCursor,
@@ -51,7 +50,7 @@ export default function UserTable({
       if (!res.ok) throw new Error("Failed to load more members");
 
       const json = await res.json();
-      setData((prev) => [...prev, ...json.books]);
+      setData((prev) => [...prev, ...json.members]);
       setCursor(json.nextCursor);
       setHasMore(json.hasMore);
     } catch (err) {
@@ -77,9 +76,8 @@ export default function UserTable({
     state: { rowSelection }
   })
 
-
   return (
-    <Card className=" h-fit p-0 overflow-hidden">
+    <Card className="h-full p-0 overflow-hidden">
       <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map(headerGroup => (
