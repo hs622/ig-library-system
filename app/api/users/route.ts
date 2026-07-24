@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     if (search) {
       filter.$or = [
         { fullName: { $regex: search, $options: "i" } },
-        { fatherName: { $regex: search, $options: "i" } }, 
+        { fatherName: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -81,16 +81,18 @@ export async function GET(req: NextRequest) {
     if (order) {
       const orderItems: string[] = order.split(",");
       if (orderItems.length == 2 && (Number(order.at(-1)) == 1 || 2)) {
-        const key = orderItems.at(0);
+        const key = String(orderItems.at(0));
         const condition = Number(orderItems.at(1)) == 1 ? 1 : -1;
-        sort.$sort = { key, value: condition };
-      } else sort.$sort = { _id: -1 };
-    }
+        sort.$sort = { [key]: condition };
+      }
+    } else sort.$sort = { _id: -1 };
+
+    console.log(sort);
 
     if (filter) pipeline.push({ $match: filter });
     if (project) pipeline.push(...projection);
     if (limit) pipeline.push({ $limit: limit + 1 });
-    if (order) pipeline.push({ $sort: sort }); // descending by _id
+    pipeline.push({ ...sort }); // descending by _id
 
     const res = await collection.aggregate(pipeline as Document[]).toArray();
 
@@ -105,7 +107,8 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     if (error instanceof MongoServerError) {
-      console.log(error.code);
+      console.log(error.code == 15976);
+      console.log(error.message);
     }
 
     return NextResponse.json({
