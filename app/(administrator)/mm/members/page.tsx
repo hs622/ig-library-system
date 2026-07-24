@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import UserTable from "./datatable/user-table";
 import { MemberSearchInput } from "./datatable/headers";
 import { AddDepositDialog } from "@/components/users/add-users-dialog";
+import { AddUserDrawer } from "@/components/user-drawer";
 
 export const metadata: Metadata = {
   title: "IGLS — Members"
@@ -56,6 +57,7 @@ export default async function Page({ searchParams }: PageProps) {
       </div>
 
       <AddDepositDialog module="user-funds" />
+      <AddUserDrawer module="user-view" />
     </div>
   )
 }
