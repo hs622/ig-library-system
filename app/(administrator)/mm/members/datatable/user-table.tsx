@@ -9,6 +9,7 @@ import { IMemberSchema } from "@/types/zod";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResourceSelectionStore } from "@/store/use-resource-selection-store";
+import { cn } from "@/lib/utils";
 
 interface MemberTableProps {
   initialData: IMemberSchema[];
@@ -77,7 +78,7 @@ export default function UserTable({
   })
 
   return (
-    <Card className="h-full p-0 overflow-hidden">
+    <Card className="max-h-fit h-full p-0">
       <Table className="w-full table-auto">
         <TableHeader className="sticky top-0 bg-background z-10">
           {table.getHeaderGroups().map(headerGroup => (
@@ -85,7 +86,7 @@ export default function UserTable({
               {headerGroup.headers.map(header => (
                 <TableHead
                   key={header.id}
-                  className={`${header.column.columnDef.meta?.className}`}
+                  className={`${cn("bg-accent", header.column.columnDef.meta?.className)}`}
                 >
                   {header.isPlaceholder
                     ? null
