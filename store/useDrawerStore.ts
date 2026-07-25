@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface DrawerResource {
+export interface DrawerResource {
   module: string;
   dialog: string;
   resourceId: string;
