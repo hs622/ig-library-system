@@ -42,7 +42,7 @@ export const MemberColumns = () => {
         )
       },
       meta: {
-        className: "w-16 cursor-pointer p-0!"
+        className: "w-4 sm:max-w-4 cursor-pointer p-0!"
       },
       enableHiding: false,
       enableSorting: false,
@@ -53,11 +53,10 @@ export const MemberColumns = () => {
       header: "Name",
       cell: ({ row }) => <span className="capitalize">{row.original.fullName.trim().toLocaleLowerCase()}</span>,
       meta: {
-        className: "max-w-10 truncate",
+        className: "w-10 sm:max-w-20 truncate",
       },
       enableSorting: false,
       enableHiding: false,
-
     },
     {
       id: "fatherName",
@@ -65,12 +64,10 @@ export const MemberColumns = () => {
       header: "Father/Husband Name",
       cell: ({ row }) => <span className="capitalize">{row.original.fatherName.trim().toLocaleLowerCase()}</span>,
       meta: {
-        className: "max-w-6 truncate border-x",
+        className: "w-10 sm:max-w-20 truncate border-x",
       },
       enableSorting: false,
-      enableHiding: false,
-      size: 40,
-      minSize: 40,
+      enableHiding: false
     },
     // {
     //   id: "Email",
@@ -102,7 +99,7 @@ export const MemberColumns = () => {
         )
       },
       meta: {
-        className: "max-w-6 border-x",
+        className: "w-10 sm:max-w-20 border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -124,7 +121,7 @@ export const MemberColumns = () => {
       header: "Gender",
       cell: ({ row }) => <Badge variant={"outline"}>{row.original.gender}</Badge>,
       meta: {
-        className: "max-w-6 truncate border-x",
+        className: "w-10 sm:max-w-50 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -158,7 +155,7 @@ export const MemberColumns = () => {
       header: "Joined At",
       cell: ({ row }) => formatReadableDate(row.original.createdAt),
       meta: {
-        className: "max-w-6 truncate border-x",
+        className: "w-10 sm:max-w-20 truncate border-x",
       },
       enableSorting: false,
       enableHiding: false,
@@ -168,7 +165,7 @@ export const MemberColumns = () => {
       accessorKey: "actions",
       header: "",
       meta: {
-        className: "max-w-20 border-x",
+        className: "w-10 sm:max-w-30 border-x",
       },
       cell: ({ row }) => ActionGroup(row)
     }
@@ -180,8 +177,6 @@ export const MemberColumns = () => {
 const ActionGroup = (row: Row<IMemberSchema>) => {
   const openDialog = useCreateDialog((s) => s.openDialog);
   const openDrawer = useDrawer(s => s.openDrawer)
-  // const { openDialog } = useDeleteDialogStore()
-  // const pathname = usePathname()
 
   return (
     <ButtonGroup>

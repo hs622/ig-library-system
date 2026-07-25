@@ -78,7 +78,7 @@ export default function UserTable({
 
   return (
     <Card className="h-full p-0 overflow-hidden">
-      <Table className="w-full">
+      <Table className="w-full table-auto">
         <TableHeader className="sticky top-0 bg-background z-10">
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
