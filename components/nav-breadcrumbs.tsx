@@ -12,9 +12,9 @@ import {
 } from "./ui/breadcrumb";
 import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
-import { ModeDropdown } from "./buttons/theme-button";
-import React from "react";
 import { formatSegmentName } from "@/lib/hepler";
+import React from "react";
+import { ModeToggle } from "./buttons/theme-button-3";
 
 interface Chunk {
   name: string;
@@ -70,7 +70,7 @@ export default function NavBreadcrumbs() {
       </header>
 
       <div className="px-4">
-        <ModeDropdown />
+        <ModeToggle />
       </div>
     </div>
   );
