@@ -16,7 +16,6 @@ import { calculateAge, formatCNICNumber, formatContactNumber } from "@/lib/heple
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
 import { GreenLamp } from "./lights";
-import { getNewKey } from "@/lib/getNewKey";
 
 type IMemberDetails = IMemberFormSchema & { role: string, financialRecords: (IDepositSchema & { _id: string, createdAt: string })[] }
 
@@ -26,31 +25,15 @@ export function AddUserDrawer({ module }: { module: string }) {
   const resource = useDrawer(s => s.resource)
   const closeDrawer = useDrawer(s => s.closeDrawer)
 
-
-
   return (
     <Drawer
       open={isOpen && (resource?.dialog == module)}
       onOpenChange={closeDrawer}
     >
-      {/* {isLoading
-        ? <IsLoadingContent /> */}
-      {/* :  */}
       <IsLoadedContent resource={resource} />
-      {/* } */}
     </Drawer>
   );
 }
-
-
-// function IsLoadingContent() {
-
-//   return (
-//     <DrawerContent className="max-h-[80vh] h-full w-full">
-//       <Skeleton />
-//     </DrawerContent>
-//   )
-// }
 
 function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
 
