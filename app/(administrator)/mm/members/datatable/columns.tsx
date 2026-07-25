@@ -4,16 +4,13 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox"
 import { IMemberSchema } from "@/types/zod";
 import { Button } from "@/components/ui/button";
-import { DollarSign, Info, Trash2 } from "lucide-react";
+import { DollarSign, Info } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge } from "@/lib/hepler";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 import { formatReadableDate } from "@/lib/format-date";
-import Link from "next/link";
 import { useDrawer } from "@/store/useDrawerStore";
-import { getNewKey } from "@/lib/getNewKey";
 
 export const MemberColumns = () => {
   const MemberColumns: ColumnDef<IMemberSchema>[] = [
@@ -187,7 +184,7 @@ const ActionGroup = (row: Row<IMemberSchema>) => {
   // const pathname = usePathname()
 
   return (
-    <ButtonGroup key={getNewKey()}>
+    <ButtonGroup>
       <Button
         className="cursor-pointer" variant={"outline"}
         size={"xs"}
