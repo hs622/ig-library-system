@@ -33,15 +33,14 @@ export default async function Page({ searchParams }: PageProps) {
   const { members, nextCursor, hasMore } = await res.json()
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] gap-4 p-4">
+    <div className="flex flex-col h-dvh sm:h-[calc(100vh-4rem)] overflow-hidden gap-4 p-4">
       <div className="col-span-2 flex flex-col flex-1 min-h-0">
-        <div className="flex justify-between py-2 shrink-0">
+        <div className="flex justify-between items-center py-2 shrink-0">
           <div className="flex items-center gap-4">
             <MemberSearchInput />
           </div>
 
           <div className="flex gap-4">
-            header right
           </div>
         </div>
 
