@@ -10,12 +10,13 @@ import { useFetch } from "@/hooks/useFetch";
 import { IDepositSchema, IMemberFormSchema } from "@/types/zod";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
-import { RotateCcw } from "lucide-react";
+import { RectangleCircle, RotateCcw } from "lucide-react";
 import { formatReadableDate } from "@/lib/format-date";
 import { calculateAge, formatCNICNumber, formatContactNumber } from "@/lib/hepler";
 import Image from "next/image";
 import { Skeleton } from "./ui/skeleton";
 import { GreenLamp } from "./lights";
+import React from "react";
 
 type IMemberDetails = IMemberFormSchema & { role: string, financialRecords: (IDepositSchema & { _id: string, createdAt: string })[] }
 
@@ -50,15 +51,15 @@ function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
   const isJunior = age <= 18 ? true : false
 
   return (
-    <DrawerContent className="max-h-[80vh] h-full w-full">
+    <DrawerContent className="max-h-[96vh] ms:max-h-[80vh] h-full w-full">
 
       {/* header with skeleton */}
       {isLoading ? (
-        <div className="flex justify-between items-center px-16 border-b">
-          <div className="flex items-center gap-4 pb-4">
+        <div className="flex justify-between items-center px-4 sm:px-16 border-b pb-4 pt-2">
+          <div className="flex items-center gap-4">
             <div className="flex flex-col gap-2 font-bold capitalize">
-              <Skeleton className="h-8 w-60" />
-              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-6 sm:h-8 w-40 sm:w-60" />
+              <Skeleton className="h-4 w-30 sm:w-40" />
             </div>
             <div>
               <Skeleton className="h-4 w-20" />
@@ -70,20 +71,20 @@ function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
           </div>
         </div>
       ) : (
-        <div className="flex justify-between items-center px-16 border-b">
-          <div className="flex items-center gap-4 pb-4">
+        <div className="flex justify-between items-center px-4 sm:px-16 border-b pb-4">
+          <div className="flex items-center gap-4">
             <div>
-              <div className="text-3xl font-bold capitalize">
+              <div className="text-xl sm:text-3xl font-bold capitalize trancate">
                 {data?.fullName.toLowerCase()}
               </div>
-              <div className="text-md font-medium capitalize">
+              <div className="text-sm sm:text-md font-medium capitalize">
                 {data?.fatherName.toLowerCase()}
               </div>
             </div>
             <div>
-              <Badge variant={"outline"}>
+              <Badge variant={"outline"} >
                 Status
-                <GreenLamp className="h-3 w-3" />
+                <GreenLamp className="size-2 ms:size-3" />
               </Badge>
             </div>
           </div>
@@ -106,21 +107,21 @@ function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
               </div> */}
 
       {/* body with skeleton */}
-      <div className="px-16 py-6 grid md:grid-cols-2 h-full w-full">
-        <div className="h-full border-r">
-          <ScrollArea className="h-160 pr-6">
+      <div className="px-4 sm:px-16 py-4 sm:py-6 grid grid-cols-1 sm:grid-cols-2 h-full w-full overflow-y-scroll">
+        <div className="h-full sm:border-r">
+          <ScrollArea className="h-full sm:h-160 ms:pr-6">
             {isLoading ? (
               <div className="flex flex-col gap-6">
                 <div>
-                  <Skeleton className="h-8 w-60" />
+                  <Skeleton className="h-4 sm:h-8 w-40 sm:w-60" />
 
-                  <div className="pt-2 grid grid-cols-2 gap-2">
+                  <div className="pt-2 grid grid-cols-1 gap-2">
                     <div className="flex flex-col gap-1">
                       <Skeleton className="h-4 w-20" />
                       <Skeleton className="h-6 w-30" />
                     </div>
                   </div>
-                  <div className="pt-2 grid grid-cols-3 gap-2">
+                  <div className="pt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <div className="flex flex-col gap-1">
                       <Skeleton className="h-4 w-20" />
                       <Skeleton className="h-6 w-30" />
@@ -196,13 +197,13 @@ function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
                 <div>
                   <div className="text-xl font-bold">Personal Details</div>
 
-                  <div className="pt-2 grid grid-cols-2 gap-2">
+                  <div className="pt-2 grid grid-cols-1 gap-2">
                     <div className="">
                       <div className="text-sm font-extralight">Email</div>
                       <div className="font-semibold lowercase">{data?.email}</div>
                     </div>
                   </div>
-                  <div className="pt-2 grid grid-cols-3 gap-2">
+                  <div className="pt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <div className="">
                       <div className="text-sm font-extralight">Role</div>
                       <div className="capitalize font-semibold" >{data?.role}</div>
@@ -271,73 +272,74 @@ function IsLoadedContent({ resource }: { resource: DrawerResource | null }) {
                 </div>
 
                 {/* <div className="p-4">
-                  {isLoading ? "loading" : ""}
-                  <pre>{JSON.stringify(data, null, 2)}</pre>
-                  {error ? error : ""}
-                </div> */}
+                    {isLoading ? "loading" : ""}
+                    <pre>{JSON.stringify(data, null, 2)}</pre>
+                    {error ? error : ""}
+                  </div> */}
               </div>
             )}
           </ScrollArea>
         </div>
 
+        <div className="sm:pl-6 pt-4 border-t sm:border-0">
+          {isLoading ? (
+            <React.Fragment>
+              <div className="pb-4">
+                <Skeleton className="h-8 w-46" />
+              </div>
 
-        {isLoading ? (
-          <div className="pl-6">
-            <div className="pb-4">
-              <Skeleton className="h-8 w-46" />
-            </div>
-
-            <div className="overflow-hidden flex flex-col gap-2">
-              {Array.from({ length: 5 }, (_, index) => (
-                <div key={index} className="overflow-hidden grid grid-cols-3">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-30" />
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="pl-6">
-            <div className="text-xl font-bold pb-4">Financial Records</div>
-
-            <div className="overflow-hidden flex flex-col gap-2">
-              {data?.financialRecords && data?.financialRecords.map((record, i) => (
-                <div key={i} className="overflow-hidden grid grid-cols-3">
-                  <div className="capitalize w-30">
-                    {record.reason.replaceAll("-", " ")}
+              <div className="overflow-hidden flex flex-col gap-2">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <div key={index} className="overflow-hidden grid grid-cols-3">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-30" />
                   </div>
-                  <div className="">
-                    Rs. {record.amount}
-                  </div>
-                  <div>
-                    {formatReadableDate(record.createdAt)}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className="text-xl font-bold pb-4">Financial Records</div>
 
-            <div className="h-140">
-              {!data?.financialRecords.length && (
-                <div className="flex justify-center items-center h-full">
-                  <div className="flex flex-col items-center justify-center">
-                    <Image
-                      width={1000}
-                      height={1000}
-                      className={"object-center size-38"}
-                      src={"/not-paid.png"}
-                      alt="not-paid"
-                    />
-                    <div className="text-center">No transations found.</div>
+              <div className="overflow-hidden flex flex-col gap-2">
+                {data?.financialRecords && data?.financialRecords.map((record, i) => (
+                  <div key={i} className="overflow-hidden grid grid-cols-3">
+                    <div className="capitalize w-30">
+                      {record.reason.replaceAll("-", " ")}
+                    </div>
+                    <div className="">
+                      Rs. {record.amount}
+                    </div>
+                    <div>
+                      {formatReadableDate(record.createdAt)}
+                    </div>
                   </div>
+                ))}
+              </div>
 
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+              <div className="h-140">
+                {!data?.financialRecords.length && (
+                  <div className="flex justify-center items-center h-full">
+                    <div className="flex flex-col items-center justify-center">
+                      <Image
+                        width={1000}
+                        height={1000}
+                        className={"object-center size-38"}
+                        src={"/not-paid.png"}
+                        alt="not-paid"
+                      />
+                      <div className="text-center">No transations found.</div>
+                    </div>
+
+                  </div>
+                )}
+              </div>
+            </React.Fragment>
+          )}
+        </div>
       </div>
 
-    </DrawerContent>
+    </DrawerContent >
   )
 }
