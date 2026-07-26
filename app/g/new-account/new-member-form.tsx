@@ -85,11 +85,21 @@ export default function NewMemberForm() {
     }
   }
 
-  // Skip option: available from any step, jumps straight back to step 1
   function handleSkip() {
     skipToFirstStep();
   }
 
+  function handleEnter(event: React.KeyboardEvent<HTMLFormElement>) {
+    if (event.key !== "Enter") return;
+
+    // don't hijack Enter inside a textarea (multi-line inputs)
+    const target = event.target as HTMLElement;
+    if (target.tagName === "TEXTAREA") return;
+
+    event.preventDefault();
+    goNext();
+  }
+  
   async function onSubmit(values: IMemberFormSchema) {
     setSubmitError(null);
     console.log(values)
@@ -148,7 +158,7 @@ export default function NewMemberForm() {
           </Button>
         </div>
       ) : (
-        <form onSubmit={(e) => e.preventDefault()} className="flex flex-1 flex-col justify-center overflow-hidden" noValidate>
+        <form onSubmit={(e) => e.preventDefault()} onKeyDown={handleEnter} className="flex flex-1 flex-col justify-center overflow-hidden" noValidate>
           <style>{stepAnimationStyles}</style>
           <div
             key={currentStep.id}
@@ -188,7 +198,7 @@ export default function NewMemberForm() {
       )}
 
       {/* footer */}
-      <div className="md:max-h-30 md:h-full overflow-hidden">
+      {/* <div className="md:max-h-30 md:h-full overflow-hidden">
         {currentIndex > 0 && currentIndex == steps.length && (
           <button
             type="button"
@@ -198,7 +208,7 @@ export default function NewMemberForm() {
             Skip
           </button>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function AskContactForm(
         <InputGroupInput
           id={step.id}
           type="text"
-          // autoFocus
+          autoFocus
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={11}

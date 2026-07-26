@@ -36,7 +36,7 @@ export default function AskGenderForm(
                 key={g}
                 htmlFor={`gender-${g}`}
                 className={cn(
-                  "cursor-pointer flex justify-center items-center px-5 py-2.5 text-9xl bg-transparent",
+                  "cursor-pointer flex justify-center items-center sm:px-5 py-2.5 text-8xl sm:text-9xl bg-transparent",
                   "has-data-checked:bg-transparent!"
                 )}
               >

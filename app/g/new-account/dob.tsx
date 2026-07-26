@@ -30,6 +30,7 @@ export default function AskDateOfBirthForm(
         <div className="flex flex-col gap-2">
           <Input
             id="year"
+            autoFocus
             type="number"
             inputMode="numeric"
             pattern="[0-9]*"

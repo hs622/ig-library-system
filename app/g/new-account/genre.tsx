@@ -19,6 +19,7 @@ export default function Genre({
       <QuestionLabel step={step} />
       <Input
         type="text"
+        autoFocus
         className={underlineClass(!!error)}
         { ...register("genre") }
       />

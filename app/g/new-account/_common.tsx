@@ -69,7 +69,7 @@ export function StepField({
       return (
         <Field data-invalid={!!error} className="gap-4">
           <QuestionLabel step={step} />
-          <Input id={step.id} className={underlineClass(!!error)} aria-invalid={!!error} {...register(step.id)} />
+          <Input id={step.id} autoFocus className={underlineClass(!!error)} aria-invalid={!!error} {...register(step.id)} />
           {step.description && <FieldDescription className="text-zinc-400">{step.description}</FieldDescription>}
           {error && <FieldError className="text-red-400">{error}</FieldError>}
         </Field>

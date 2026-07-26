@@ -25,6 +25,7 @@ export default function SuggestionForImpovement({
           <Textarea
             id={`${"form-new-account-suggestion"}`}
             value={field.value}
+            autoFocus
             onChange={field.onChange}
             aria-invalid={fieldState.invalid}
             className={`${cn(underlineClass(!!error), "resize-none h-45")}`}
