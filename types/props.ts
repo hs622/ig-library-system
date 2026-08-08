@@ -4,10 +4,6 @@ export default interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-
-
-
-
 export interface UserProps {
   params: Promise<{ userId: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

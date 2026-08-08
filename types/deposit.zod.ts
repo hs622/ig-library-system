@@ -6,3 +6,5 @@ export const DepositSchema = z.object({
   reason: z.string({ message: "What type of amount it is?" }),
   amount: z.number({ message: "Amount should be great than 0.00."})
 })
+
+export type IDepositSchema = z.infer<typeof DepositSchema>;

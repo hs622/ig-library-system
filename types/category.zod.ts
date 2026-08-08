@@ -10,3 +10,5 @@ export const CategorySchema = z.object({
   isParent: z.boolean(),
   visiable: z.boolean(),
 });
+
+export type ICategorySchema = z.infer<typeof CategorySchema>;

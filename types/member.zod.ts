@@ -8,3 +8,5 @@ export const MemberSchema = MemberFormSchema.extend({
   createdAt: z.string(),
   updatedAt: z.string()
 })
+
+export type IMemberSchema = z.infer<typeof MemberSchema>;

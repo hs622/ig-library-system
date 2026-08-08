@@ -50,3 +50,6 @@ function monthName(month: number) {
     month: "long",
   });
 }
+
+
+export type IDateOfBirthValues = z.infer<typeof DateOfBirthSchema>;

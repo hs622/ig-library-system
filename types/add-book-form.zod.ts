@@ -4,3 +4,5 @@ import { BookSchema } from "./book.zod";
 export const BookCreateSchema = BookSchema.extend({
   tags: z.array(z.string()).optional(),
 });
+
+export type IBookCreateSchema = z.infer<typeof BookCreateSchema>;

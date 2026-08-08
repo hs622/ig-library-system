@@ -32,3 +32,5 @@ export const BookEditSchema = z.object({
   ),
   categoryId: z.string().min(1, "Please select the category."),
 });
+
+export type IBookEditSchema = z.infer<typeof BookEditSchema>;

@@ -47,7 +47,7 @@ export const MemberFormSchema = z.object({
   partOfReadingClub: z.boolean({ message: "Select anyone." }),
   genre: z.string().min(1, "Enter at least one genre."),
   activities: z.string().optional(),
-  suggestionForImpovement: z
+  suggestionForImprovement: z
     .string()
     .max(200, { message: "200 characters limit." })
     .optional(),
@@ -59,46 +59,7 @@ export const MemberFromSchemaWithRefine = MemberFormSchema.superRefine(
     const date = new Date(data.dob.year, data.dob.month - 1, data.dob.day); // formating a date.
     const age = calculateAge(date);
     if (age === null) return;
-
-    // if (age < 18) {
-    // if (!data.formBNumber || data.formBNumber.trim().length < 5) {
-    //   ctx.addIssue({
-    //     code: z.ZodIssueCode.custom,
-    //     message: "Form B Number is required for junior members",
-    //     path: ["formBNumber"],
-    //   });
-    // }
-    // } else {
-    //   if (!data.cnicNumber || !cnicRegex.test(data.cnicNumber)) {
-    //     ctx.addIssue({
-    //       code: z.ZodIssueCode.custom,
-    //       message:
-    //         "Valid CNIC (12345-1234567-1) is required for senior members",
-    //       path: ["cnicNumber"],
-    //     });
-    //   }
-    // if (!data.profession || data.profession.trim().length < 2) {
-    //   ctx.addIssue({
-    //     code: z.ZodIssueCode.custom,
-    //     message: "Profession is required for senior members",
-    //     path: ["profession"],
-    //   });
-    // }
-    // if (!data.company || data.company.trim().length < 2) {
-    //   ctx.addIssue({
-    //     code: z.ZodIssueCode.custom,
-    //     message: "Company is required for senior members",
-    //     path: ["company"],
-    //   });
-    // }
-    // if (!data.designation || data.designation.trim().length < 2) {
-    //   ctx.addIssue({
-    //     code: z.ZodIssueCode.custom,
-    //     message: "Designation is required for senior members",
-    //     path: ["designation"],
-    //   });
-    // }
-    // }
   },
 );
 
+export type IMemberFormSchema = z.infer<typeof MemberFormSchema>;

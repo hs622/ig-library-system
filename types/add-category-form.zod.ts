@@ -29,3 +29,7 @@ export const AddCategorySchema_v2 = z.object({
     })
   }
 });
+
+export type ISubCategory = z.infer<typeof SubCategory>;
+export type IAddCategorySchema = z.infer<typeof AddCategorySchema>;
+export type IAddCategorySchema_v2 = z.infer<typeof AddCategorySchema_v2>;
