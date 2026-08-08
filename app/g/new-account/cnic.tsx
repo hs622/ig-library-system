@@ -2,10 +2,10 @@
 
 import { Field, FieldDescription, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { IMemberFormSchema } from "@/types/zod";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"; 
 import { formatCNICNumber } from "@/lib/hepler";
 import { QuestionLabel, underlineClass } from "./_common";
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 export default function AskCINCForm(
   { error, step, register, setValue }:

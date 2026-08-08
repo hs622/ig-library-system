@@ -1,24 +1,20 @@
 "use client"
 
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { FieldLabel } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 import AskDateOfBirthForm from "./dob";
 import AskGenderForm from "./gender";
 import AskEmailForm from "./email";
 import AskContactForm from "./contact";
 import AskCINCForm from "./cnic";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { IMemberFormSchema } from "@/types/zod";
 import AreaOfInterest from "./area-of-Interest";
 import PartOfReadingClub from "./part-of-our-reading-club";
 import Genre from "./genre";
 import Activities from "./activities";
-import SuggestionForImpovement from "./suggestion-for-impovement";
-
-// import AskEducationForm from "./education";
-// import AskYearOfCompletionForm from "./year-of-completion";
-// import AskBFormNumberForm from "./b-form";
+import SuggestionForImprovement from "./suggestion-for-impovement";
+import TextInput from "./text-input";
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 type SectionKey = "personal" | "education" | "opinion" | "interest";
 
@@ -66,14 +62,7 @@ export function StepField({
     case "address":
     case "institution":
     case "highestEducation":
-      return (
-        <Field data-invalid={!!error} className="gap-4">
-          <QuestionLabel step={step} />
-          <Input id={step.id} autoFocus className={underlineClass(!!error)} aria-invalid={!!error} {...register(step.id)} />
-          {step.description && <FieldDescription className="text-zinc-400">{step.description}</FieldDescription>}
-          {error && <FieldError className="text-red-400">{error}</FieldError>}
-        </Field>
-      );
+      return <TextInput error={error} step={step} register={register} />;
 
     case "areaOfInterest":
       return <AreaOfInterest error={error} step={step} control={control} />
@@ -102,8 +91,8 @@ export function StepField({
     case "activities":
       return <Activities step={step} error={error} register={register} />
 
-    case "suggestionForImpovement":
-      return <SuggestionForImpovement step={step} error={error} control={control} />
+    case "suggestionForImprovement":
+      return <SuggestionForImprovement step={step} error={error} control={control} />
 
     default:
       return null;

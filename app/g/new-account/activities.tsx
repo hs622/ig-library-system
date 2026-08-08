@@ -1,8 +1,8 @@
 import { UseFormRegister } from "react-hook-form";
 import { QuestionLabel, underlineClass } from "./_common";
-import { IMemberFormSchema } from "@/types/zod";
 import { Input } from "@/components/ui/input";
 import { Field, FieldDescription, FieldError } from "@/components/ui/field";
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 
 

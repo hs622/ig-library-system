@@ -1,10 +1,8 @@
 import { Field, FieldDescription, FieldError, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { QuestionLabel, underlineClass } from "./_common";
-import { Control, Controller, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { IMemberFormSchema } from "@/types/zod";
+import { Control, Controller, UseFormSetValue } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 export default function PartOfReadingClub({
     step,

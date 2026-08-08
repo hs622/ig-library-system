@@ -1,4 +1,4 @@
-import { IMemberFormSchema } from "@/types/zod"
+
 import { Control, Controller } from "react-hook-form"
 import { QuestionLabel } from "./_common"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Check } from "lucide-react"
 import { InterestOfOptions } from "@/constants/new-account-form"
+import { IMemberFormSchema } from "@/types/member-form.zod"
 
 export default function AreaOfInterest({
   error,

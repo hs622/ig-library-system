@@ -1,10 +1,10 @@
 "use client"
 
 import { Field, FieldDescription, FieldError } from "@/components/ui/field";
-import { IMemberFormSchema } from "@/types/zod";
 import { UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { QuestionLabel, underlineClass } from "./_common";
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 export default function AskEmailForm(
   { error, step, register }: {

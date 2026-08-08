@@ -1,12 +1,13 @@
 import { Field, FieldDescription, FieldError } from "@/components/ui/field"
-import { IMemberFormSchema } from "@/types/zod"
+
 import { Control, Controller } from "react-hook-form"
 import { QuestionLabel, underlineClass } from "./_common"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { IMemberFormSchema } from "@/types/member-form.zod"
 
 
-export default function SuggestionForImpovement({
+export default function SuggestionForImprovement({
   step,
   error,
   control
@@ -17,7 +18,7 @@ export default function SuggestionForImpovement({
 }) {
   return (
     <Controller
-      name="suggestionForImpovement"
+      name="suggestionForImprovement"
       control={control}
       render={({ field, fieldState }) => (
         <Field>

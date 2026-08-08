@@ -1,12 +1,12 @@
 "use client";
 
 import { Field, FieldDescription, FieldError } from "@/components/ui/field";
-import { IMemberFormSchema } from "@/types/zod";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { QuestionLabel, underlineClass } from "./_common";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { cn } from "@/lib/utils";
 import { formatContactNumber } from "@/lib/hepler";
+import { IMemberFormSchema } from "@/types/member-form.zod";
 
 export default function AskContactForm(
   { error, step, register, setValue }: {

@@ -10,9 +10,8 @@ import { Button } from "@/components/ui/button";
 
 import { FieldGroup } from "@/components/ui/field";
 import { calculateAge } from "@/lib/hepler";
-import { IMemberFormSchema } from "@/types/zod";
 import { ModeSwitcher } from "@/components/buttons/theme-button-2";
-import { MemberFormSchema } from "@/types/member-form.zod";
+import { IMemberFormSchema, MemberFormSchema } from "@/types/member-form.zod";
 import { StepField } from "./_common";
 import getSteps from "./_questions";
 import { defaultMemberFormValues, useMemberFormStore } from "@/store/member-form-store";
@@ -25,14 +24,12 @@ export default function NewMemberForm() {
     stepIndex,
     direction,
     submitted,
-    dateOfBirth,
     formData,
     setDateOfBirth,
     setSubmitted,
     setFormData,
     goNext: storeGoNext,
     goBack: storeGoBack,
-    skipToFirstStep,
     resetForm,
   } = useMemberFormStore();
 
@@ -66,7 +63,7 @@ export default function NewMemberForm() {
   const currentStep = steps[currentIndex];
   const isLastStep = currentIndex === steps.length - 1;
 
-  const [submitError, setSubmitError] = React.useState<string | null>(null);
+  const [_, setSubmitError] = React.useState<string | null>(null);
 
   async function goNext() {
     const valid = await form.trigger(currentStep.id);
@@ -85,10 +82,6 @@ export default function NewMemberForm() {
     }
   }
 
-  function handleSkip() {
-    skipToFirstStep();
-  }
-
   function handleEnter(event: React.KeyboardEvent<HTMLFormElement>) {
     if (event.key !== "Enter") return;
 
@@ -96,10 +89,12 @@ export default function NewMemberForm() {
     const target = event.target as HTMLElement;
     if (target.tagName === "TEXTAREA") return;
 
+    console.log(event)
     event.preventDefault();
+    if (event.key && event.shiftKey) goBack()
     goNext();
   }
-  
+
   async function onSubmit(values: IMemberFormSchema) {
     setSubmitError(null);
     console.log(values)
@@ -197,18 +192,6 @@ export default function NewMemberForm() {
         </form>
       )}
 
-      {/* footer */}
-      {/* <div className="md:max-h-30 md:h-full overflow-hidden">
-        {currentIndex > 0 && currentIndex == steps.length && (
-          <button
-            type="button"
-            onClick={handleSkip}
-            className="text-sm md:text-lg text-zinc-400 underline-offset-4 hover:text-zinc-200 hover:underline"
-          >
-            Skip
-          </button>
-        )}
-      </div> */}
     </div>
   );
 }

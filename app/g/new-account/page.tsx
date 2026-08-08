@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default async function Page() {
 
   return (
-    <div className="w-full h-dvh overflow-hidden md:h-screen p-2 sm:p-4">
+    <div className="w-full h-dvh md:h-screen overflow-hidden p-2 sm:p-4">
       <NewMemberForm />
     </div>
   )

@@ -2,11 +2,11 @@
 
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { IMemberFormSchema } from "@/types/zod"
 import { Control, Controller, UseFormSetValue } from "react-hook-form"
 import { cn } from "@/lib/utils"
 import { QuestionLabel } from "./_common"
 import { Check } from "lucide-react"
+import { IMemberFormSchema } from "@/types/member-form.zod"
 
 
 export default function AskGenderForm(

@@ -4,10 +4,10 @@ import { Field, FieldDescription, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { IMemberFormSchema } from "@/types/zod"; 
 import React from "react";
 import { Control, Controller, FormState, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { QuestionLabel, underlineClass } from "./_common";
+import { IMemberFormSchema } from "@/types/member-form.zod";
  
 
 export default function AskDateOfBirthForm(
