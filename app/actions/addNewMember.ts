@@ -3,8 +3,7 @@
 import { ObjectId } from "mongodb";
 import { v4 as uuidv4 } from "uuid";
 import clientPromise from "@/lib/mongodb";
-import { MemberFormSchema } from "@/types/member-form.zod";
-import { IMemberFormSchema } from "@/types/zod";
+import { IMemberFormSchema, MemberFormSchema } from "@/types/member-form.zod";
 import { formatContactNumber } from "@/lib/hepler";
 
 // Adjust to whatever your actual database name is (or keep it in an env var).
@@ -14,7 +13,6 @@ const COLLECTION = "users";
 export type UserDocument = IMemberFormSchema & {
   _id?: ObjectId;
   role: "member";
-  /** uuidv4-generated, library-unique identifier for this member. */
   libraryId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -53,7 +51,7 @@ export async function createLibraryMember(
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
-    const collection = db.collection<UserDocument>("users");
+    const collection = db.collection<UserDocument>(COLLECTION);
 
     collection.createIndex({ cnicNumber: 1 }, { unique: true });
 
