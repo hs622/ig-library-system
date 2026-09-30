@@ -11,6 +11,10 @@ export const formatSegmentName = (segment: string): string => {
       return "Circulation Control";
     case "sc":
       return "Settings & Configurations";
+    case "cm":
+      return "Content Management";
+    case "ie":
+      return "Import & Export";
     default:
       return segment
         .split("-")
@@ -45,3 +49,31 @@ export const formatContactNumber = (value: string): string => {
   if (digits.length <= 3) return digits;
   return `${digits.slice(0, 3)}-${digits.slice(3)}`;
 };
+
+
+export const generateCode = (title: string): string => {
+  const words: string[] = title.trim().split(" ")
+  const length: number = words.length
+
+  if (length === 1) {
+    return words.at(0)?.substring(0, 2) ?? ""
+  } else return words.map(word => word.at(0)).join("")
+}
+
+// used in AWS S3 uploads.
+export function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${Math.round(kb)} KB`;
+  return `${(kb / 1024).toFixed(1)} MB`;
+}
+
+export function extOf(name: string): string {
+  const parts = name.split(".");
+  return parts.length > 1 ? (parts.pop() as string).toUpperCase() : "FILE";
+}
+
+export function isValidUUID(uuid: string): boolean {
+  const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return regex.test(uuid) as boolean;
+}
