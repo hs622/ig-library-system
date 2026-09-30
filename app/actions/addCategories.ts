@@ -2,13 +2,13 @@
 
 import { ObjectId } from "mongodb";
 import { ActionResponse } from "@/lib/action-response";
-import clientPromise from "@/lib/mongodb";
-import { IAddCategorySchema, IAddCategorySchema_v2 } from "@/types/zod";
+import clientPromise from "@/lib/mongodb"; 
 import {
   AddCategorySchema,
   AddCategorySchema_v2,
+  IAddCategorySchema,
+  IAddCategorySchema_v2,
 } from "@/types/add-category-form.zod";
-import { getBaseUrl } from "@/lib/get-base-url";
 
 export const AddCategory = async (data: IAddCategorySchema) => {
   const parsed = AddCategorySchema.safeParse(data);
@@ -39,7 +39,6 @@ export const AddCategory = async (data: IAddCategorySchema) => {
     const now = new Date();
 
     const hasSubCategories = !!sub_category && sub_category.length > 0;
-    // console.log({ hasSubCategories });
 
     await session.withTransaction(async () => {
       // Parent category document
@@ -118,16 +117,14 @@ export const AddCategory_v2 = async (data: IAddCategorySchema_v2) => {
   }
 
   // destructuring...
-  const { category, type, categoryId } = data;
+  const { category, typeOfCategory, categoryId } = data;
 
   // initializing mongo client.
   const client = await clientPromise;
   const db = client.db(process.env.DATABASE_NAME);
   const collection = db.collection("categories");
 
-  // fetching lib-sequence number
   const record = await collection.find().sort({ _id: -1 }).limit(1)
-  console.log(record.toArray())
 
   // creating unique index.
   await collection.createIndex({ title: 1 }, { unique: true });
@@ -135,22 +132,21 @@ export const AddCategory_v2 = async (data: IAddCategorySchema_v2) => {
   // initializing session
   const session = client.startSession();
 
-
   try {
     // creating objectId and date.
     const categoryObjectId = new ObjectId();
     const now = new Date();
 
     await session.withTransaction(async () => {
-      if (type && categoryId && !ObjectId.isValid(categoryId)) {
+      if (typeOfCategory && categoryId && !ObjectId.isValid(categoryId)) {
         await collection.insertOne({
           _id: categoryObjectId,
           title: categoryId,
-          // lab_number:
+          // lab_number: , 
           parentId: null,
-          isParent: type,
-          isAccosciated: !type, // initial always false
-          visiable: type,
+          isParent: typeOfCategory,
+          isAccosciated: !typeOfCategory, // initial always false
+          visiable: typeOfCategory,
           createdAt: now,
           updatedAt: now,
         });
@@ -159,22 +155,22 @@ export const AddCategory_v2 = async (data: IAddCategorySchema_v2) => {
           _id: new ObjectId(),
           title: category,
           parentId: categoryObjectId,
-          isParent: !type,
-          isAccosciated: !type, // initial always false
-          visiable: type,
+          isParent: !typeOfCategory,
+          isAccosciated: !typeOfCategory, // initial always false
+          visiable: typeOfCategory,
           createdAt: now,
           updatedAt: now,
         });
       }
 
-      if (type && categoryId && ObjectId.isValid(categoryId)) {
+      if (typeOfCategory && categoryId && ObjectId.isValid(categoryId)) {
         await collection.insertOne(
           {
             _id: categoryObjectId,
             title: category,
             parentId: new ObjectId(categoryId),
-            isParent: !type,
-            isAccosciated: !type, // initial always false
+            isParent: !typeOfCategory,
+            isAccosciated: !typeOfCategory, // initial always false
             visiable: true,
             createdAt: now,
             updatedAt: now,
@@ -185,15 +181,15 @@ export const AddCategory_v2 = async (data: IAddCategorySchema_v2) => {
         );
       }
 
-      if (!type) {
+      if (!typeOfCategory) {
         await collection.insertOne(
           {
             _id: categoryObjectId,
             title: category,
             parentId: null,
-            isParent: !type,
-            isAccosciated: type, // initial always false
-            visiable: !type,
+            isParent: !typeOfCategory,
+            isAccosciated: typeOfCategory, // initial always false
+            visiable: !typeOfCategory,
             createdAt: now,
             updatedAt: now,
           },
