@@ -2,9 +2,8 @@
 
 import { ActionResponse } from "@/lib/action-response"
 import { ApiError } from "@/lib/api-error"
-import getClientPromise from "@/lib/mongodb"
-import { CategoryForm } from "@/types/attach-category-form.zod"
-import { ICategoryForm } from "@/types/zod"
+import clientPromise from "@/lib/mongodb"
+import { CategoryForm, ICategoryForm } from "@/types/attach-category-form.zod" 
 import { ObjectId } from "mongodb"
 
 export const AttachCategoryAction = async (data: ICategoryForm) => {
@@ -32,7 +31,7 @@ export const AttachCategoryAction = async (data: ICategoryForm) => {
         statusCode: 400
       })
 
-    const client = await getClientPromise
+    const client = await clientPromise
     const db = client.db(process.env.DATABASE_NAME)
     const collection = db.collection("books")
 
