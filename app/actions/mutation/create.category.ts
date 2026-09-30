@@ -77,7 +77,7 @@ export const mutateCategory = async (
     const parentCategoryObject = {
       _id: categoryObjectId,
       title: category.toLowerCase(),
-      code,
+      code: "need-to-fix-it",
       isAssociated: typeOfCategory, // Is associated with child categories?
       visiable: typeOfCategory,
       isParent: typeOfCategory,
