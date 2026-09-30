@@ -91,7 +91,7 @@ export default function getSteps(age: number | null): StepDef[] {
       label: "Services and activities you would like us to offer",
     },
     {
-      id: "suggestionForImpovement",
+      id: "suggestionForImprovement",
       section: "opinion",
       label: "Your suggestions for improving the library",
     },
