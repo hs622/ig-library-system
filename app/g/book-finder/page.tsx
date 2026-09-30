@@ -4,17 +4,17 @@ import React from "react"
 import QrCodeReader from "./qr-code-reader"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { BookRow } from "@/app/(administrator)/ci/book-inventory/datatable/columns"
 import { toast } from "sonner"
 import { Camera } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/buttons/theme-button-3"
+import { IEditBookSchema } from "@/types/book.zod"
 
 export default function Page() {
   const [value, setValue] = React.useState<string | null>(null)
-  const [book, setBook] = React.useState<BookRow & { deletedAt: string } | null>(null)
-  const [errors, setErrors] = React.useState<string | null>(null)
+  const [book, setBook] = React.useState<IEditBookSchema & { deletedAt: string } | null>(null)
+  const [_, setErrors] = React.useState<string | null>(null)
   const [paused, setPaused] = React.useState<boolean>(false)
   const { _id, deletedAt,   ...bookWithId } = book || {}
 
