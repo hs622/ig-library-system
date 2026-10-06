@@ -19,6 +19,7 @@ jobs:
           version: 9.12.0
 
       - run: echo "it's working."
+      - run: echo ${{ secrets.VERCEL_ORG_ID }}
 
       # - name: Install Vercel CLI
       #   run: npm install --global vercel@latest
