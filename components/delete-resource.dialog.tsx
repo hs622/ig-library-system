@@ -10,7 +10,7 @@ import z from "zod";
 import { Spinner } from "./ui/spinner";
 import React from "react";
 import { useDeleteDialogStore } from "@/store/use-delete-dialog-store"; 
-import DeleteBookAction from "@/app/actions/deleteBookAction";
+import DeleteBookAction from "@/app/actions/mutation/delete.book";
 import { DeleteConfirmationDialog } from "@/types/delete-confirmation-form.zod";
 
 export default function DeleteResourceDialog() {
@@ -39,8 +39,7 @@ export default function DeleteResourceDialog() {
   const isMatch = confirmationValue === resource?.title
 
   const handleForm = async (data: IDeletingConfirmationDialog) => {
-    console.log({ data })
-    await DeleteBookAction({ confirmation: data.confirmation, module: resource?.title ?? "", resourceId: resource?.resourceId ?? "" })
+    await DeleteBookAction({ confirmation: data.confirmation, module: resource?.title ?? "", resourceId: String(resource?.resourceId) })
     // reset()
     // closeDialog()
   }
