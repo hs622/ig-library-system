@@ -25,7 +25,7 @@ export default function Page() {
 
     const fetchBookdetails = async () => {
       try {
-        const response = await fetch(`/api/books?bookId=${value}`)
+        const response = await fetch(`/api/books/${value}`)
         if (!response.ok) throw new Error("Couldn't find the book.")
 
         const jsonDecoded = await response.json()
