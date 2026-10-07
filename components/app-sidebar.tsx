@@ -10,12 +10,11 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon, UsersRound } from "lucide-react"
+import { BotIcon, BookOpenIcon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon, UsersRound, FileStack } from "lucide-react"
 import SidebarMenuHeader from "./menu-header"
 import { NavUser } from "./nav-user"
 import { usePathname } from "next/navigation"
 
-// This is sample data.
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
@@ -26,7 +25,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: [
       {
         title: "Dashboard",
-        url: "/d",
+        url: "/console/d",
         icon: (<LayoutDashboardIcon />),
         isActive: Boolean(chunks[0] == "d"),
         nested: false,
@@ -34,50 +33,68 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         title: "Circulation Control",
-        url: "/cc",
+        url: "/console/cc",
         icon: (<BotIcon />),
         isActive: Boolean(chunks[0] == "cc"),
         items: [
           {
             title: "Issue and return",
-            url: "/cc/issue-and-return",
+            url: "/console/cc/issue-and-return",
             isActive: Boolean(chunks[1] == "")
           }, 
           {
             title: "Holds & Reservations",
-            url: "/cc/holds-reservations",
+            url: "/console/cc/holds-reservations",
             isActive: Boolean(chunks[1] == "")
           },
         ],
       },
       {
         title: "Cataloging & Inventory",
-        url: "/ci",
+        url: "/console/ci",
         icon: (<BookOpenIcon />),
         isActive: Boolean(chunks[0] == "ci"),
         items: [
           {
             title: "Book Inventory",
-            url: "/ci/book-inventory",
+            url: "/console/ci/book-inventory",
             isActive: Boolean( chunks[1] == "book-inventory")
           }, 
           {
             title: "Categories",
-            url: "/ci/categories",
+            url: "/console/ci/categories",
             isActive: Boolean( chunks[1] == "categories")
           }
         ],
       },
       {
         title: "Member Management",
-        url: "/mm",
+        url: "/console/mm",
         icon: (<UsersRound />),
         isActive: Boolean(chunks[0] == "mm"),
         items: [
           {
             title: "Members",
-            url: "/mm/members",
-            isActive: Boolean(chunks[1] == "")
+            url: "/console/mm/members",
+            isActive: Boolean(chunks[1] == "members")
+          },
+        ],
+      },
+      {
+        title: "Content Management",
+        url: "/cm",
+        icon: (<FileStack />),
+        isActive: Boolean(chunks[0] == "cm"),
+        items: [
+          {
+            title: "Articles",
+            url: "/cm/articles",
+            isActive: Boolean(chunks[1] == "articles")
+          },
+          {
+            title: "Announcements",
+            url: "/cm/announcements",
+            isActive: Boolean(chunks[1] == "announcement")
           },
         ],
       },
