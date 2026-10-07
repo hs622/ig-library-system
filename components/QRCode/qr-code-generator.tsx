@@ -38,17 +38,13 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
   const handleSizeBlur = () => {
     // Snap the visible input back to whatever the clamped value actually is
     setInputValue(String(qrSize));
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
+  }; 
+  
   return (
-    <div className="flex flex-col items-center gap-4 p-6 rounded-xl bg-white shadow-md border w-fit print:shadow-none print:border-none">
+    <div className="p-4 w-fit print:shadow-none print:border-none">
 
       {/* Controls - hidden when printing */}
-      <div className="flex items-end gap-3 print:hidden">
+      {/* <div className="flex items-end gap-3 print:hidden">
         <div className="flex flex-col gap-1">
           <label htmlFor="qr-size" className="text-sm font-medium text-gray-700">
             QR Size (px)
@@ -71,7 +67,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
         >
           Print
         </Button>
-      </div>
+      </div> */}
 
       {/* Master SVG Canvas */}
       <svg
@@ -86,7 +82,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
         <rect width={totalWidth} height={totalHeight} fill="#ffffff" />
 
         {/* Left Side: Vertical Text Sequence */}
-        <text
+        {/* <text
           x={textWidth / 2}
           y={totalHeight / 2 - 10}
           fill="#000000"
@@ -99,7 +95,7 @@ export default function QRCodeWithSequence({ value, sequence, size = 256 }: QRCo
           letterSpacing="4"
         >
           {sequence}
-        </text>
+        </text> */}
 
         {/* Right Side: Embedded QR Code */}
         <g transform={`translate(${textWidth}, 0)`}>
