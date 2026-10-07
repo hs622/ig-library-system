@@ -11,11 +11,11 @@ export function ModeToggle() {
   return (
     <React.Fragment>
       {theme === "light" ? (
-        <Button variant={"outline"} className="text-foreground" onClick={() => setTheme("dark")}>
+        <Button variant={"link"} className="text-foreground cursor-pointer" onClick={() => setTheme("dark")}>
           <Sun />
         </Button>
       ) : (
-        <Button variant={"outline"} className="text-foreground" onClick={() => setTheme("light")}>
+        <Button variant={"link"} className="text-foreground cursor-pointer" onClick={() => setTheme("light")}>
           <Moon />
         </Button>
       )}
