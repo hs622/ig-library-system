@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 export interface CreateResource {
-  module: string,
-  dialog: string
-  resourceId: string,
+  module?: string,
+  dialog: string,
+  resourceId?: string,
 }
 
 export interface CreateDialogState {
