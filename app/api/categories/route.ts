@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     );
     const search = searchParams.get("search")?.trim();
     const type = searchParams.get("type")?.trim();
+    const select = searchParams.get("select")?.trim();
 
     if (cursor && !ObjectId.isValid(cursor)) {
       return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
@@ -37,13 +38,38 @@ export async function GET(req: NextRequest) {
     if (type == "child") filter.isParent = false;
     if (type == "parent") filter.isParent = true;
 
-    if (search) {
-      filter.$or = [{ title: { $regex: search, $options: "i" } }];
+    const projection: Record<string, 1> = {};
+    if (select) {
+      const allowedFields = new Set([
+        "title",
+        "code",
+        "parentId",
+        "isAssociated",
+        "isParent",
+        "visiable",
+        "createdAt",
+        "updatedAt",
+      ]);
+      const fields = select.split(",").map((field) => field.trim());
+      if (fields.some((field) => !allowedFields.has(field))) {
+        return NextResponse.json({ error: "Invalid selected field" }, { status: 400 });
+      }
+      for (const field of fields) projection[field] = 1;
+      projection._id = 1;
     }
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { code: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const totalCount = cursor ? undefined : await collection.countDocuments(filter);
 
     // Fetch limit + 1 to know if there's a next page without a second query
     const categories = await collection
-      .find(filter)
+      .find(filter, Object.keys(projection).length ? { projection } : {})
       .sort({ _id: -1 })
       .limit(limit + 1)
       .toArray();
@@ -56,6 +82,7 @@ export async function GET(req: NextRequest) {
       categories: items,
       nextCursor,
       hasMore,
+      totalCount,
     });
   } catch (err) {
     console.error("[GET /api/categories]", err);
@@ -66,4 +93,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
