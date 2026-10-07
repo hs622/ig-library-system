@@ -1,22 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// import { type UserProps } from "@/types/props";
 import clientPromise from "@/lib/mongodb";
 import { Document, MongoServerError, ObjectId } from "mongodb";
+import { validate } from "uuid";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   const userId = (await params).userId;
   const searchParams = request.nextUrl.searchParams;
-
-  // const project = searchParams.get("select")?.trim();
   const w = searchParams.get("w")?.trim();
 
-  if (userId && !ObjectId.isValid(userId)) {
+
+  if (userId && !ObjectId.isValid(userId) && !validate(userId)) {
     return NextResponse.json({
       error: "invalid user Id",
       status: 400,
     });
-  }
+  } 
 
   try {
     const client = await clientPromise;
@@ -25,9 +23,17 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     const pipeline: Document[] = [];
 
-    pipeline.push({
-      $match: { _id: new ObjectId(userId) },
-    });
+    if (ObjectId.isValid(userId)) {
+      pipeline.push({
+        $match: { _id: new ObjectId(userId) },
+      });
+    }
+
+    if (validate(userId)) {
+      pipeline.push({
+        $match: { libraryId: userId },
+      })
+    }
 
     if (w == "finance") {
       pipeline.push(
