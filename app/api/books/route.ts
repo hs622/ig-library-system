@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get("search")?.trim();
     const author = searchParams.get("author")?.trim();
     const genre = searchParams.get("genre")?.trim();
-    const bookId = searchParams.get("bookId")?.trim();
 
     if (cursor && !ObjectId.isValid(cursor)) {
       return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
@@ -30,23 +29,6 @@ export async function GET(req: NextRequest) {
 
     // Build the filter
     const filter: Record<string, unknown> = {};
-
-    if (bookId && ObjectId.isValid(bookId)) {
-      const book = await collection
-        .aggregate([
-          { $match: { _id: new ObjectId(bookId) } },
-          { $addFields: { categoryId: { $toObjectId: "$categoryId" } } },
-          { $lookup: { from: "categories", localField: "categoryId",foreignField: "_id", as: "category"} },
-          { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
-          { $addFields: { category: { $ifNull: ["$category", null] } } },
-          { $project: { categoryId: 0 } },
-        ])
-        .toArray();
-
-      return NextResponse.json({
-        book: book.at(0),
-      });
-    }
 
     if (cursor) {
       // assumes default sort by _id (insertion order / ObjectId timestamp)
@@ -109,4 +91,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
