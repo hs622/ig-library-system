@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Plus } from "lucide-react";
 import { BookSearchInput, BulkQRCodeGeneratingForPrinting, DeleteBulkResources, ExportBulkDataButton, ImportBulkDataButton } from "./datatable/header";
-// import { RefreshButton } from "./datatable/refresh-button";
 import { BookDetailsDrawer } from "@/components/drawers/book-details-drawer";
 import DeleteBulkResourcesDialog from "@/components/delete-bulk-resources.dialog";
 import DeleteResourceDialog from "@/components/delete-resource.dialog";
