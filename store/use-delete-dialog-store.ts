@@ -1,8 +1,9 @@
+import { ObjectId } from "mongodb";
 import { create } from "zustand";
 
 interface DeleteResourceDialogProps {
   title: string;
-  resourceId: string;
+  resourceId: string | ObjectId;
   module: string;
 }
 
