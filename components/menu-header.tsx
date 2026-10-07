@@ -13,7 +13,7 @@ export default function SidebarMenuHeader() {
           asChild
           className="data-[slot=sidebar-menu-button]:p-1.5!"
         >
-          <Link href="/dashboard">
+          <Link href="console/dashboard">
             <IconInnerShadowTop className="size-5!" />
             <span className="text-base font-semibold">IG library system.</span>
           </Link>

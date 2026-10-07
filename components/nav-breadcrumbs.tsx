@@ -13,13 +13,18 @@ import {
 import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
 import { formatSegmentName } from "@/lib/hepler";
+import dynamic from "next/dynamic";
 import React from "react";
-import { ModeToggle } from "./buttons/theme-button-3";
 
 interface Chunk {
   name: string;
   href: string;
 }
+
+const DynamicModeToggle = dynamic(
+  () => import("./buttons/theme-button-3").then(mod => mod.ModeToggle),
+  { ssr: false }
+)
 
 export default function NavBreadcrumbs() {
   const pathname = usePathname();
@@ -70,7 +75,7 @@ export default function NavBreadcrumbs() {
       </header>
 
       <div className="px-4">
-        <ModeToggle />
+        <DynamicModeToggle />
       </div>
     </div>
   );
