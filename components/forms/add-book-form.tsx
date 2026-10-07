@@ -27,7 +27,6 @@ import { cn } from "@/lib/utils"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
  
 import { generateCode } from "@/lib/hepler"
-import { Categories } from "@/app/actions/query/categories.query"
 
 export default function AddBookForm() {
   "use no memo"
@@ -344,17 +343,11 @@ function BookCategoryDropdown({
   const getData = React.useCallback(async () => {
     setIsLoading(true)
     try {
-      const response = await Categories({
-        searchParams: Promise.resolve({ type: "child", select: "title,code" })
-      })
+      const response = await fetch("/api/categories?type=child&select=title,code")
+      if (!response.ok) throw new Error("Failed to fetch categories")
 
-      if (!response.success) {
-        throw new Error(response.error)
-      }
-
-      const { categories } = response.data
-      const categoriesObj = JSON.parse(categories) as { title: string, _id: string, code: string }[]
-      setCategories(categoriesObj)
+      const { categories } = await response.json()
+      setCategories(categories as { title: string, _id: string, code: string }[])
     } catch (error) {
       console.error(error)
       setCategories([])
