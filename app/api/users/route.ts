@@ -8,7 +8,6 @@ const MAX_LIMIT = 100;
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
 
-  // const mId = searchParams.get("mid");
   const cursor = searchParams.get("cursor")?.trim();
   const search = searchParams.get("search")?.trim();
   const limit = Math.min(
@@ -36,6 +35,7 @@ export async function GET(req: NextRequest) {
     const pipeline: Document[] = [];
 
     if (cursor) {
+      // assumes default sort by _id (insertion order / ObjectId timestamp)
       filter._id = { $lt: new ObjectId(cursor) };
     }
 
@@ -87,14 +87,18 @@ export async function GET(req: NextRequest) {
       }
     } else sort.$sort = { _id: -1 };
 
-    console.log(sort);
-
-    if (filter) pipeline.push({ $match: filter });
+    pipeline.push({ $match: filter });
     if (project) pipeline.push(...projection);
     if (limit) pipeline.push({ $limit: limit + 1 });
     pipeline.push({ ...sort }); // descending by _id
 
-    const res = await collection.aggregate(pipeline as Document[]).toArray();
+    const [res, totalCount] = await Promise.all([
+      collection
+        .aggregate(pipeline as Document[])
+        .toArray(),
+        
+      collection.countDocuments(),
+    ]);
 
     const hasMore = res.length > limit;
     const items = hasMore ? res.slice(0, limit) : res;
@@ -104,8 +108,10 @@ export async function GET(req: NextRequest) {
       members: items,
       nextCursor,
       hasMore,
+      totalCount,
     });
   } catch (error) {
+    console.error("[GET /api/users]", error);
     if (error instanceof MongoServerError) {
       console.log(error.code == 15976);
       console.log(error.message);
