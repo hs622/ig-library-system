@@ -1,7 +1,7 @@
 "use client";
 
-import { create } from "zustand";
-import { IMemberFormSchema } from "@/types/zod";
+import { IMemberFormSchema } from "@/types/member-form.zod";
+import { create } from "zustand"; 
 
 export type StepDirection = "forward" | "backward";
 

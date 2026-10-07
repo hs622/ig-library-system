@@ -1,10 +1,10 @@
-import { BookRow } from "@/app/(administrator)/ci/book-inventory/datatable/columns";
+import { IBookSchema } from "@/types/book.zod";
 import { create } from "zustand";
 
 interface DrawerState {
   isOpen: boolean;
-  selectedBook: BookRow | null;
-  openDrawer: (book: BookRow) => void;
+  selectedBook: IBookSchema & { _id: string } | null;
+  openDrawer: (book: IBookSchema & { _id: string }) => void;
   closeDrawer: () => void;
 }
 
