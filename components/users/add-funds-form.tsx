@@ -2,15 +2,14 @@
 
 import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field";
-import { Input } from "../ui/input";
-import { IDepositSchema } from "@/types/zod";
-import { DepositSchema } from "@/types/deposit.zod";
+import { Input } from "../ui/input"; 
+import { DepositSchema, IDepositSchema } from "@/types/deposit.zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import { AddDeposit } from "@/app/actions/addDeposit";
+import { depositAmount } from "@/app/actions/mutation/deposit.amount";
 import { toast } from "sonner";
 import { useCreateDialog } from "@/store/use-create-dialog-store";
 
@@ -38,7 +37,7 @@ export default function AddFunds({ options }: {
   }, [setValue, resource?.resourceId])
 
   const HandleFeeForm = async (data: IDepositSchema) => {
-    const response = await AddDeposit(data)
+    const response = await depositAmount(data)
 
     if (response.statusCode === 200) {
       reset()
