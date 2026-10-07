@@ -8,7 +8,7 @@ interface ResourceSelectionStore {
   clearSelection: () => void;
 }
 
-export const useResourceSelectionStore = create<ResourceSelectionStore>((set, get) => ({
+export const useResourceSelectionStore = create<ResourceSelectionStore>((set) => ({
   rowSelection: {}, // initializing blank object
 
   setRowSelection: (updater) =>
