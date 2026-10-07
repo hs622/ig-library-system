@@ -7,7 +7,7 @@ import DeleteBulkResourcesDialog from "@/components/delete-bulk-resources.dialog
 import DeleteResourceDialog from "@/components/delete-resource.dialog";
 import { Books } from "@/app/actions/query/books.query";
 import QRCodeDrawer from "@/components/drawers/qr-code-drawer";
-import { ImportExcelData } from "@/components/dialog/import-excel-data";
+// import { ImportExcelData } from "@/components/dialog/import-excel-data";
 import BookTable from "./datatable/book-table";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -84,7 +84,7 @@ export default async function Page({ searchParams }: PageProps) {
       </div>
 
       <QRCodeDrawer />
-      <ImportExcelData />
+      {/* <ImportExcelData /> */}
       <BookDetailsDrawer />
       <DeleteResourceDialog />
       <DeleteBulkResourcesDialog />
