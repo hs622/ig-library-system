@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
-import getClientPromise from "@/lib/mongodb"; // your singleton client pattern
+import { Document, ObjectId } from "mongodb";
+import clientPromise from "@/lib/mongodb"; // your singleton client pattern
 import { ApiError } from "@/lib/api-error";
 
 const DEFAULT_LIMIT = 20;
@@ -17,13 +17,14 @@ export async function GET(req: NextRequest) {
     );
     const search = searchParams.get("search")?.trim();
     const type = searchParams.get("type")?.trim();
-    const select = searchParams.get("select")?.trim();
+    const project = searchParams.get("select")?.trim();
+    const order = searchParams.get("order")?.trim();
 
     if (cursor && !ObjectId.isValid(cursor)) {
       return NextResponse.json({ error: "Invalid cursor" }, { status: 400 });
     }
 
-    const client = await getClientPromise;
+    const client = await clientPromise;
     const db = client.db(process.env.DATABASE_NAME);
     const collection = db.collection("categories");
 
@@ -39,7 +40,7 @@ export async function GET(req: NextRequest) {
     if (type == "parent") filter.isParent = true;
 
     const projection: Record<string, 1> = {};
-    if (select) {
+    if (project) {
       const allowedFields = new Set([
         "title",
         "code",
@@ -50,7 +51,7 @@ export async function GET(req: NextRequest) {
         "createdAt",
         "updatedAt",
       ]);
-      const fields = select.split(",").map((field) => field.trim());
+      const fields = project.split(",").map((field) => field.trim());
       if (fields.some((field) => !allowedFields.has(field))) {
         return NextResponse.json({ error: "Invalid selected field" }, { status: 400 });
       }
@@ -58,21 +59,33 @@ export async function GET(req: NextRequest) {
       projection._id = 1;
     }
 
-    if (search) {
-      filter.$or = [
-        { title: { $regex: search, $options: "i" } },
-        { code: { $regex: search, $options: "i" } },
-      ];
+    const pipeline: Document[] = [
+      { $match: filter },
+      { $sort: { _id: -1 } },
+      { $limit: limit + 1 },
+    ];
+
+    if (project) {
+      const fields = project.split(",").map((f) => f.trim());
+      const projection = fields.reduce(
+        (acc, field) => {
+          acc[field] = 1;
+          return acc;
+        },
+        {} as Record<string, 1>,
+      );
+
+      pipeline.push({ $project: projection });
     }
 
-    const totalCount = cursor ? undefined : await collection.countDocuments(filter);
-
     // Fetch limit + 1 to know if there's a next page without a second query
-    const categories = await collection
-      .find(filter, Object.keys(projection).length ? { projection } : {})
-      .sort({ _id: -1 })
-      .limit(limit + 1)
-      .toArray();
+    const [categories, totalCount] = await Promise.all([
+      collection
+        .aggregate(pipeline as Document[])
+        .toArray(),
+     
+      collection.countDocuments()
+    ])
 
     const hasMore = categories.length > limit;
     const items = hasMore ? categories.slice(0, limit) : categories;
