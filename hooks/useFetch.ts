@@ -61,9 +61,6 @@ export function useFetch<TData>({
         const decodedResponse = await requestWrapper.json();
         setData(decodedResponse.member);
 
-        // // payload isn't stored in data state.
-        // console.log(data);
-
         setSuccess(true);
       } catch (err) {
         if ((err as Error).name === "AbortError") return; // unmount/cleanup, not a real error
@@ -93,9 +90,9 @@ export function useFetch<TData>({
   }, [initiateRequest]);
 
   // only for debugging purpose.
-  React.useEffect(() => {
-    console.log("data updated:", data);
-  }, [data]);
+  // React.useEffect(() => {
+  //   console.log("data updated:", data);
+  // }, [data]);
 
   const refetch = React.useCallback(() => {
     const controller = new AbortController();
