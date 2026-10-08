@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* @import "./editorjs_theme.css"; */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,6 +47,40 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --animate-step-in-right: step-in-right 100ms ease-in-out;
+  --animate-step-in-left: step-in-left 100ms ease-in-out;
+  --animate-fu-spin: fu-spin 200ms ease-linear;
+
+  @keyframes step-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes step-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fu-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 :root {
@@ -121,6 +156,9 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* *:focus-visible {
+    @apply outline-none;
+  } */
   body {
     @apply bg-background text-foreground;
   }
@@ -128,3 +166,4 @@
     @apply font-sans;
   }
 }
+
