@@ -1,5 +1,3 @@
-
-
 export const InterestOfOptions = [
   "reading room",
   "digital literacy programs",
