@@ -62,7 +62,7 @@ export default function AddFunds({ options }: {
             control={control}
             render={({ field }) => (
               <Field>
-                <FieldLabel htmlFor="reason">Reason</FieldLabel>
+                <FieldLabel htmlFor="reason">Type</FieldLabel>
                 <Select
                   value={field.value}
                   onValueChange={field.onChange}

@@ -24,12 +24,12 @@ export function AddDepositDialog(
     <Dialog
       open={(isOpen && resource?.dialog == module)}
       onOpenChange={closeDialog}
-    >
+    > 
       <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Add Funds</DialogTitle>
-          <DialogDescription>
-          </DialogDescription>
+          {/* <DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
         <AddFunds options={options} />
       </DialogContent>
