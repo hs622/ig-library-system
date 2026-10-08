@@ -42,3 +42,5 @@ next-env.d.ts
 
 #development
 /temp
+Caddyfile
+drawingBook.excalidraw
