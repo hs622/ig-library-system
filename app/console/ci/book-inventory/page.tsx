@@ -61,7 +61,7 @@ export default async function Page({ searchParams }: PageProps) {
             <ButtonGroup>
               {/* <RefreshButton /> */}
               <Button variant="outline" asChild>
-                <Link href={"/ci/book-inventory/new"}>
+                <Link href={"/console/ci/book-inventory/new"}>
                   <Plus />
                 </Link>
               </Button>
