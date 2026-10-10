@@ -2,7 +2,6 @@
 
 import { ModeToggle } from "@/components/buttons/theme-button-3";
 import { MoveRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 // import { Button } from "@/components/ui/button";
@@ -221,15 +220,15 @@ export default function Page() {
         <div className="p-4 overflow-hidden">
           {/* Featured Article */}
           <div className="m-auto sm:w-[40vw] flex flex-col gap-4 h-full overflow-y-auto scrollbar-none">
-            <div className="">
+            {/* <div className="">
               <div className="text-3xl sm:text-4xl font-bold">
                 Lorem ipsum dolor sit.
               </div>
               <div className="">
                 Lorem ipsum dolor sit amet consectetur.
               </div>
-            </div>
-            <div className="text-lg">
+            </div> */}
+            {/* <div className="text-lg">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, doloribus. Sunt inventore vero corrupti voluptatum laboriosam provident quo ducimus perspiciatis libero nostrum, sed consequuntur atque quam quisquam reprehenderit dolorem eius autem dolore quas officia fugit? Molestias sunt ipsum nostrum dolorum dolore aliquid assumenda unde modi sit ratione. Tenetur quidem aperiam voluptate in. Debitis modi illum earum sit dignissimos quod! Laboriosam inventore cupiditate laudantium rerum provident recusandae quas libero, fuga deserunt praesentium consectetur officia beatae magnam, sit minima nulla iusto excepturi. Quam esse similique maiores illo possimus. In iusto repudiandae excepturi totam ducimus. Eum quos corporis expedita temporibus a atque odit fuga asperiores porro, saepe nemo ea, voluptatibus voluptate vitae earum voluptates impedit omnis repellendus libero, excepturi nostrum eos quisquam. Eveniet?
             </div>
             <div className="text-lg">
@@ -240,13 +239,13 @@ export default function Page() {
             </div>
             <div className="text-lg">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, doloribus. Sunt inventore vero corrupti voluptatum laboriosam provident quo ducimus perspiciatis libero nostrum, sed consequuntur atque quam quisquam reprehenderit dolorem eius autem dolore quas officia fugit.
-            </div>
-            <div className="w-full pb-20">
+            </div> */}
+            {/* <div className="w-full pb-20">
               <div className="text-lg flex flex-col items-end w-full">
                 <span>— <span className="font-bold">Nova Smith</span></span>
                 <span className="font-extralight">23 Mar, 2026</span>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* <div className="grid grid-cols-3 gap-4">
