@@ -14,9 +14,13 @@ import { BotIcon, BookOpenIcon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboar
 import SidebarMenuHeader from "./menu-header"
 import { NavUser } from "./nav-user"
 import { usePathname } from "next/navigation"
+import type { Session } from "next-auth"
 
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  user: Session["user"] | null;
+}
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   
   const pathname = usePathname()
   const chunks = pathname.replace("/", "").split("/")
@@ -164,11 +168,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={{
-          name: "Hussain Ali",
-          username: "hussainalee",
-          avatar: "#"
-        }} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
