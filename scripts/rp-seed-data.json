@@ -1,0 +1,56 @@
+{
+  "roles": [
+    {
+      "title": "Super Administrator",
+      "slug": "super-admin",
+      "level": 100,
+      "permissions": {
+        "users": ["create", "edit", "delete", "view"],
+        "roles": ["create", "edit", "delete", "view"],
+        "permissions": ["create", "edit", "delete", "view"],
+        "payments": ["create", "edit", "delete", "view"],
+        "subscriptions": ["create", "edit", "delete", "view"],
+        "books": ["create", "edit", "delete", "view"],
+        "categories": ["create", "edit", "delete", "view"]
+      }
+    },
+    {
+      "title": "Administrator",
+      "slug": "admin",
+      "level": 80,
+      "permissions": {
+        "users": ["create", "edit", "delete", "view"],
+        "roles": ["view", "edit"],
+        "permissions": ["view", "edit"],
+        "payments": ["create", "edit", "view"],
+        "subscriptions": ["create", "edit", "delete", "view"],
+        "books": ["create", "edit", "delete", "view"],
+        "categories": ["create", "edit", "delete", "view"]
+      }
+    },
+    {
+      "title": "Librarian",
+      "slug": "librarian",
+      "level": 50,
+      "permissions": {
+        "users": ["view"],
+        "roles": ["view"],
+        "permissions": ["view"],
+        "payments": ["view"],
+        "subscriptions": ["view"],
+        "books": ["create", "edit", "delete", "view"],
+        "categories": ["create", "edit", "delete", "view"]
+      }
+    },
+    {
+      "title": "Member",
+      "slug": "member",
+      "level": 10,
+      "permissions": {
+        "subscriptions": ["view"],
+        "books": ["view"],
+        "categories": ["view"]
+      }
+    }
+  ]
+}

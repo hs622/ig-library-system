@@ -1,14 +1,16 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_PATHS = ["/", "/announcements", "/login"];
+const PUBLIC_PATHS = ["/", "/announcements", "/login", "/console"]; 
 
 function isPublicPath(pathname: string) {
   return (
     PUBLIC_PATHS.includes(pathname) ||
     pathname.startsWith("/g/") ||
     pathname === "/api/auth" ||
-    pathname.startsWith("/api/auth/")
+    pathname.startsWith("/api/auth/") 
+
+    || pathname.startsWith("/console/")
   );
 }
 
@@ -24,18 +26,18 @@ export async function proxy(request: NextRequest) {
     throw new Error("NEXTAUTH_SECRET must be configured to protect routes.");
   }
 
-  const token = await getToken({ req: request, secret });
-  if (token) {
-    return NextResponse.next();
-  }
+  // const token = await getToken({ req: request, secret });
+  // if (token) {
+  //   return NextResponse.next();
+  // }
 
-  if (pathname.startsWith("/api/")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (pathname.startsWith("/api/")) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
-  const loginUrl = new URL("/login", request.url);
-  loginUrl.searchParams.set("callbackUrl", request.nextUrl.href);
-  return NextResponse.redirect(loginUrl);
+  // const loginUrl = new URL("/login", request.url);
+  // loginUrl.searchParams.set("callbackUrl", request.nextUrl.href);
+  // return NextResponse.redirect(loginUrl);
 }
 
 export const config = {

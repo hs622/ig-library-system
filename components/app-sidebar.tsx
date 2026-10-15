@@ -10,7 +10,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BotIcon, BookOpenIcon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon, UsersRound, FileStack } from "lucide-react"
+import { BotIcon, BookOpenIcon, FrameIcon, PieChartIcon, MapIcon, LayoutDashboardIcon, UsersRound, FileStack, ShieldCheck } from "lucide-react"
 import SidebarMenuHeader from "./menu-header"
 import { NavUser } from "./nav-user"
 import { usePathname } from "next/navigation"
@@ -79,6 +79,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             isActive: Boolean(chunks[1] == "members")
           },
         ],
+      },
+      {
+        title: "Roles & Permissions",
+        url: "/console/rp",
+        icon: (<ShieldCheck />),
+        isActive: Boolean(chunks[1] == "rp"),
+        items: [],
       },
       {
         title: "Content Management",

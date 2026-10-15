@@ -3,12 +3,13 @@
   "author": "hussain-ali",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@12.9.1",
+   "packageManager": "pnpm@12.11.2",
   "scripts": {
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=1 next dev -p 3030",
     "build": "next build",
     "start": "next start -p 3030",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:rp": "node --env-file-if-exists=.env.local scripts/seed-rp.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1121.0",
