@@ -26,18 +26,10 @@ export default function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      const requestedCallbackUrl = new URLSearchParams(
-        window.location.search,
-      ).get("callbackUrl");
-      const callbackUrl =
-        requestedCallbackUrl?.startsWith("/") &&
-        !requestedCallbackUrl.startsWith("//")
-          ? requestedCallbackUrl
-          : "/";
       const result = await signIn("credentials", {
         username,
         password,
-        callbackUrl,
+        callbackUrl: "/",
         redirect: false,
       });
 
