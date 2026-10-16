@@ -3,7 +3,7 @@ import CategoryTable from "./datatable/category-table";
 import { AddCreateDialogTirgger, CategorySearchInput } from "./datatable/header";
 import { getBaseUrl } from "@/lib/get-base-url";
 import RefreshButton from "./datatable/refresh-button";
-import { AddCategoryDialog } from "@/components/category/add-category-dialog";
+import { AddCategoryDialog } from "@/components/category/add-category.dialog";
 
 interface PageProps {
   searchParams: Promise<{ search?: string }>;
