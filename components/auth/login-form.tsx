@@ -1,8 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,19 +15,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { LoginSchema, type ILoginSchema } from "@/types/login.zod";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signInError, setSignInError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ILoginSchema>({
+    resolver: zodResolver(LoginSchema),
+  });
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
+  async function onSubmit({ username, password }: ILoginSchema) {
+    setSignInError("");
     try {
       const result = await signIn("credentials", {
         username,
@@ -34,7 +40,7 @@ export default function LoginForm() {
       });
 
       if (!result?.ok) {
-        setError(
+        setSignInError(
           result?.error
             ? "Invalid username or password."
             : "Unable to sign in right now. Please try again.",
@@ -45,9 +51,7 @@ export default function LoginForm() {
       router.replace(result.url ?? "/");
       router.refresh();
     } catch {
-      setError("Unable to sign in right now. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      setSignInError("Unable to sign in right now. Please try again.");
     }
   }
 
@@ -60,38 +64,63 @@ export default function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
+        <form
+          className="grid gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <div className="grid gap-2">
             <label className="text-sm font-medium" htmlFor="username">
               Username
             </label>
             <Input
               id="username"
-              name="username"
               autoComplete="username"
               autoFocus
-              required
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              aria-invalid={!!errors.username}
+              {...register("username")}
             />
+            {errors.username && (
+              <p className="text-sm text-destructive" role="alert">
+                {errors.username.message}
+              </p>
+            )}
           </div>
           <div className="grid gap-2">
             <label className="text-sm font-medium" htmlFor="password">
               Password
             </label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                aria-invalid={!!errors.password}
+                className="pr-10"
+                {...register("password")}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                className="absolute top-1/2 right-1 -translate-y-1/2"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-controls="password"
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((visible) => !visible)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </Button>
+            </div>
+            {errors.password && (
+              <p className="text-sm text-destructive" role="alert">
+                {errors.password.message}
+              </p>
+            )}
           </div>
-          {error && (
+          {signInError && (
             <p className="text-sm text-destructive" role="alert">
-              {error}
+              {signInError}
             </p>
           )}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
